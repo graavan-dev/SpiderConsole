@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="spiderconsole.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SpiderConsole"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="6"/>
+        <CursorPos X="35" Y="118"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="spiderengine.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SpiderEngine"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="18"/>
+        <CursorPos X="17" Y="222"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="carddeck.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="CardDeck"/>
+        <EditorIndex Value="2"/>
+        <CursorPos Y="3"/>
+        <UsageCount Value="20"/>
+        <Bookmarks Count="1">
+          <Item0 X="20" Y="3" Left="1" Top="1"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="3">
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="12" Column="4"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="6" Column="37"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderengine.pas"/>
+        <Caret Line="83" Column="7" TopLine="71"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="6" Column="36"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>
