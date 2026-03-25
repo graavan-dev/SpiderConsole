@@ -7,6 +7,7 @@ uses
 
 var
   G: TSpiderGame;
+  F: Text;
 
 procedure PrintGame;
 var
@@ -53,6 +54,49 @@ begin
   WriteLn;
 end;
 
+procedure SaveGame(var G: TSpiderGame; var F: Text);
+var
+  p, i, maxLen, len: Integer;
+  c: TCard;
+begin
+  WriteLn(F);
+  WriteLn(F, 'Completed runs: ', G.CompletedRuns, ' / 8');
+  WriteLn(F, 'Stock deals remaining: ', GetStockDealsRemaining(G));
+  WriteLn(F);
+
+  maxLen := 0;
+  for p := 0 to 9 do
+    if Length(G.Tableau[p]) > maxLen then
+      maxLen := Length(G.Tableau[p]);
+
+  Write(F, 'Pile: ');
+  for p := 0 to 9 do
+    Write(F, Format(' %2d ', [p]));
+  WriteLn(F);
+
+  for i := 0 to maxLen - 1 do
+  begin
+    Write(F, Format('%3d: ', [i]));
+    for p := 0 to 9 do
+    begin
+      len := Length(G.Tableau[p]);
+      if i < len then
+      begin
+        c := G.Tableau[p][i];
+        if c.FaceUp then
+          Write(F, Format('%2s%s ', [RankToStr(c.Rank), SuitToStr(c.Suit)]))
+        else
+          Write(F, ' XX ');
+      end
+      else
+        Write(F, '    ');
+    end;
+    WriteLn(F);
+  end;
+
+  WriteLn(F);
+end;
+
 procedure GameLoop;
 var
   cmd: string;
@@ -70,6 +114,7 @@ begin
     WriteLn('Commands:');
     WriteLn('  m <fromPile> <startIndex> <toPile>  - move sequence');
     WriteLn('  d                                   - deal from stock');
+    writeln('  s                                   - save game');
     WriteLn('  q                                   - quit');
     Write('> ');
     ReadLn(cmd);
@@ -110,6 +155,15 @@ begin
             MoveSequence(G, fromPile, startIdx, toPile)
           else
             WriteLn('Illegal move.');
+        end;
+      's', 'S':
+        begin
+          // printgame;
+          // but send to text file
+          AssignFile(F, 'spider_output.txt');
+          Rewrite(F);
+          PrintGame(G, F);
+          CloseFile(F);
         end;
     else
       WriteLn('Unknown command.');

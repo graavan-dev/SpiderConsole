@@ -10,8 +10,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderConsole"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="6"/>
-        <CursorPos X="35" Y="118"/>
+        <TopLine Value="154"/>
+        <CursorPos X="15" Y="165"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit>
@@ -19,8 +19,8 @@
         <Filename Value="spiderengine.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderEngine"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="18"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="148"/>
         <CursorPos X="17" Y="222"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
@@ -29,7 +29,7 @@
         <Filename Value="carddeck.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="CardDeck"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="3"/>
         <CursorPos Y="3"/>
         <UsageCount Value="20"/>
         <Bookmarks Count="1">
@@ -37,8 +37,16 @@
         </Bookmarks>
         <Loaded Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="code backup.txt"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit>
     </Units>
-    <JumpHistory HistoryIndex="3">
+    <JumpHistory HistoryIndex="5">
       <Position>
         <Filename Value="spiderconsole.lpr"/>
         <Caret Line="12" Column="4"/>
@@ -54,6 +62,14 @@
       <Position>
         <Filename Value="spiderconsole.lpr"/>
         <Caret Line="6" Column="36"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="52" Column="5"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="167" TopLine="157"/>
       </Position>
     </JumpHistory>
     <RunParams>
