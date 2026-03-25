@@ -3,7 +3,7 @@ program SpiderConsole;
 {$mode objfpc}{$H+}
 
 uses
-  SysUtils, CardDeck, SpiderEngine, StrUtils;
+  SysUtils, CardDeck, SpiderEngine, StrUtils, SpiderLog;
 
 var
   G: TSpiderGame;

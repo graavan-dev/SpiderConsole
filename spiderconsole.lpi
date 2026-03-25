@@ -44,6 +44,11 @@
         <Filename Value="code backup.txt"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="spiderlog.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SpiderLog"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

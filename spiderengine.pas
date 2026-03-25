@@ -5,14 +5,15 @@ unit SpiderEngine;
 interface
 
 uses
-  CardDeck;
+  CardDeck, SpiderLog;
 
 type
   TSpiderGame = record
     Tableau: TTableau;
-    Stock: array[0..49] of TCard; // 50 cards after initial deal
-    StockPos: Integer;            // next card index in Stock to deal
-    CompletedRuns: Integer;       // 0..8
+    Stock: array[0..49] of TCard;
+    StockPos: Integer;
+    CompletedRuns: Integer;
+    Logger: TSpiderLogger;   // NEW
   end;
 
 // Game lifecycle

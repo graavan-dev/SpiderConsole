@@ -162,7 +162,7 @@ begin
           // but send to text file
           AssignFile(F, 'spider_output.txt');
           Rewrite(F);
-          PrintGame(G, F);
+          SaveGame(G, F);
           CloseFile(F);
         end;
     else
