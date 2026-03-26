@@ -16,6 +16,7 @@ type
   end;
 
 const
+  NUM_OF_DECKS = 2;
   CARDS_PER_DECK = 52;
   TOTAL_CARDS = 104;
 
@@ -37,7 +38,7 @@ var
   d, r, s, i: Integer;
 begin
   d := 0;
-  for i := 1 to 2 do
+  for i := 1 to NUM_OF_DECKS do
     for s := Ord(Low(TSuit)) to Ord(High(TSuit)) do
       for r := Ord(Low(TRank)) to Ord(High(TRank)) do
       begin

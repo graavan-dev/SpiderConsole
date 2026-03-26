@@ -3,7 +3,7 @@ program SpiderConsole;
 {$mode objfpc}{$H+}
 
 uses
-  SysUtils, CardDeck, SpiderEngine, StrUtils;
+  SysUtils, CardDeck, SpiderEngine, StrUtils, SpiderLog;
 
 var
   G: TSpiderGame;
@@ -97,6 +97,9 @@ begin
   WriteLn(F);
 end;
 
+// ******************
+// ** Main Loop
+// ******************
 procedure GameLoop;
 var
   cmd: string;
@@ -162,7 +165,7 @@ begin
           // but send to text file
           AssignFile(F, 'spider_output.txt');
           Rewrite(F);
-          SaveGame(G, F);
+          SaveGame(G, F);{ #todo : SaveGame is only "saving" the tableau with cards face down yet and no stock cards either.  }
           CloseFile(F);
         end;
     else

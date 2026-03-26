@@ -1,4 +1,16 @@
 program SpiderConsole;
+// **************************************
+// **
+// ** Started on 3/23/2026
+// ** Created by Peter Kraus
+// ** With major assistance by MS Copilot
+// ** Program is being built to first play
+// ** a game of Spider Solitaire, then to
+// ** also create an engine to solve
+// ** games of Spider. Numerous other
+// ** features are being built in also.
+// **
+// **************************************
 
 {$mode objfpc}{$H+}
 
@@ -97,6 +109,9 @@ begin
   WriteLn(F);
 end;
 
+// ******************
+// ** Main Loop
+// ******************
 procedure GameLoop;
 var
   cmd: string;
@@ -162,7 +177,7 @@ begin
           // but send to text file
           AssignFile(F, 'spider_output.txt');
           Rewrite(F);
-          SaveGame(G, F);
+          SaveGame(G, F);{ #todo : SaveGame is only "saving" the tableau with cards face down yet and no stock cards either.  }
           CloseFile(F);
         end;
     else

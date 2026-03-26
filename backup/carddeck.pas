@@ -12,6 +12,7 @@ type
     Rank: TRank;
     Suit: TSuit;
     FaceUp: Boolean;
+    Value: Integer;
   end;
 
 const
@@ -43,6 +44,7 @@ begin
         Deck[d].Rank := TRank(r);
         Deck[d].Suit := TSuit(s);
         Deck[d].FaceUp := False;
+        Deck[d].Value := r + 1;
         Inc(d);
       end;
 end;
