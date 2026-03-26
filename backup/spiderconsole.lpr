@@ -1,4 +1,16 @@
 program SpiderConsole;
+// **************************************
+// **
+// ** Started on 3/23/2026
+// ** Created by Peter Kraus
+// ** With major assistance by MS Copilot
+// ** Program is being built to first play
+// ** a game of Spider Solitaire, then to
+// ** also create an engine to solve
+// ** games of Spider. Numerous other
+// ** features are being built in also.
+// **
+// **************************************
 
 {$mode objfpc}{$H+}
 
@@ -118,6 +130,9 @@ begin
     WriteLn('  m <fromPile> <startIndex> <toPile>  - move sequence');
     WriteLn('  d                                   - deal from stock');
     writeln('  s                                   - save game');
+    WriteLn('  l <filename>                        - start logging to file');
+    WriteLn('  x                                   - stop logging');
+    WriteLn('  r <filename>                        - replay log file');
     WriteLn('  q                                   - quit');
     Write('> ');
     ReadLn(cmd);
@@ -168,6 +183,37 @@ begin
           SaveGame(G, F);{ #todo : SaveGame is only "saving" the tableau with cards face down yet and no stock cards either.  }
           CloseFile(F);
         end;
+      'l', 'L':
+        begin
+          Delete(cmd, 1, 1);
+          cmd := Trim(cmd);
+          if cmd = '' then
+          begin
+            WriteLn('Usage: l <filename>');
+            Continue;
+          end;
+          StartLog(G.Logger, cmd);
+          WriteLn('Logging started.');
+        end;
+      'x', 'X':
+        begin
+          EndLog(G.Logger);
+          WriteLn('Logging stopped.');
+        end;
+      'r', 'R':
+        begin
+          Delete(cmd, 1, 1);
+          cmd := Trim(cmd);
+          if cmd = '' then
+          begin
+            WriteLn('Usage: r <filename>');
+            Continue;
+          end;
+          ReplayLog(cmd);
+          WriteLn('Replay complete.');
+        end;
+
+
     else
       WriteLn('Unknown command.');
     end;

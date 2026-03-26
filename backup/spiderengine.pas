@@ -5,7 +5,7 @@ unit SpiderEngine;
 interface
 
 uses
-  CardDeck;
+  CardDeck, SpiderLog, SysUtils;
 
 type
   TSpiderGame = record
@@ -87,6 +87,8 @@ begin
   ShuffleDeck(Deck);
   G.CompletedRuns := 0;
   InitialDeal(Deck, G);
+
+  LogLine(G.Logger, 'New game started.');
 end;
 
 function GetPileCount(const G: TSpiderGame; Pile: Integer): Integer;
@@ -196,6 +198,7 @@ begin
             // Remove the 13 cards
             SetLength(G.Tableau[p], len - 13);
             Inc(G.CompletedRuns);
+            LogLine(G.Logger, Format('Completed run removed. Total now: %d', [G.CompletedRuns]));
             len := Length(G.Tableau[p]);
             // Flip new top card if any
             if len > 0 then
@@ -215,7 +218,12 @@ var
   temp: array of TCard;
 begin
   if not CanMoveSequence(G, FromPile, StartIndex, ToPile) then
+  begin
+    LogLine(G.Logger, Format('Illegal move attempted: %d %d %d', [FromPile, StartIndex, ToPile]));
     Exit;
+  end;
+
+  LogLine(G.Logger, Format('Move: from %d start %d to %d', [FromPile, StartIndex, ToPile]));
 
   srcLen := Length(G.Tableau[FromPile]);
   moveCount := srcLen - StartIndex;
@@ -262,9 +270,14 @@ end;
 procedure DealFromStock(var G: TSpiderGame);
 var
   p: Integer;
+
 begin
-  if not CanDealFromStock(G) then
+  begin
+    LogLine(G.Logger, 'Attempted illegal stock deal.');
     Exit;
+  end;
+
+  LogLine(G.Logger, 'Deal from stock.');
 
   for p := 0 to 9 do
   begin
