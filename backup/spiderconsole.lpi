@@ -49,6 +49,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderLog"/>
       </Unit>
+      <Unit>
+        <Filename Value="spiderstats.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SpiderStats"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

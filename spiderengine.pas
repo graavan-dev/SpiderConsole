@@ -5,25 +5,45 @@ unit SpiderEngine;
 interface
 
 uses
-  CardDeck, SpiderLog, SysUtils;
+  CardDeck, SpiderLog, SysUtils, SpiderStats;
 
 type
+  // A full snapshot of the game state for undo/redo
+  TSpiderGameState = record
+    Tableau: TTableau;
+    Stock: array[0..49] of TCard;
+    StockPos: Integer;
+    CompletedRuns: Integer;
+  end;
+
   TSpiderGame = record
     Tableau: TTableau;
     Stock: array[0..49] of TCard;
     StockPos: Integer;
     CompletedRuns: Integer;
-    Logger: TSpiderLogger;   // NEW
+
+    Logger: TSpiderLogger;
+
+    Stats: ^TSpiderStats;  // pointer so stats live outside the engine
+    MovesThisGame: Integer;
+    Difficulty: TSpiderDifficulty;
+
+    UndoStack: array of TSpiderGameState;
+    RedoStack: array of TSpiderGameState;
   end;
 
 // Game lifecycle
-procedure NewGame(var G: TSpiderGame);
+procedure NewGame(var G: TSpiderGame; Difficulty: TSpiderDifficulty);
 
 // Moves and actions
 function CanMoveSequence(const G: TSpiderGame; FromPile, StartIndex, ToPile: Integer): Boolean;
 procedure MoveSequence(var G: TSpiderGame; FromPile, StartIndex, ToPile: Integer);
 function CanDealFromStock(const G: TSpiderGame): Boolean;
 procedure DealFromStock(var G: TSpiderGame);
+
+// Undo/Redo
+procedure Undo(var G: TSpiderGame);
+procedure Redo(var G: TSpiderGame);
 
 // State queries
 function IsWon(const G: TSpiderGame): Boolean;
@@ -33,17 +53,87 @@ function GetCard(const G: TSpiderGame; Pile, Index: Integer): TCard;
 
 implementation
 
+// ---------------------------
+// State Save/Restore
+// ---------------------------
+
+function SaveState(const G: TSpiderGame): TSpiderGameState;
+begin
+  Result.Tableau := G.Tableau;
+  Result.Stock := G.Stock;
+  Result.StockPos := G.StockPos;
+  Result.CompletedRuns := G.CompletedRuns;
+end;
+
+procedure RestoreState(var G: TSpiderGame; const S: TSpiderGameState);
+begin
+  G.Tableau := S.Tableau;
+  G.Stock := S.Stock;
+  G.StockPos := S.StockPos;
+  G.CompletedRuns := S.CompletedRuns;
+end;
+
+procedure PushUndo(var G: TSpiderGame);
+var
+  S: TSpiderGameState;
+begin
+  S := SaveState(G);
+  SetLength(G.UndoStack, Length(G.UndoStack) + 1);
+  G.UndoStack[High(G.UndoStack)] := S;
+
+  // Clear redo stack
+  SetLength(G.RedoStack, 0);
+end;
+
+procedure Undo(var G: TSpiderGame);
+var
+  S: TSpiderGameState;
+begin
+  if Length(G.UndoStack) = 0 then Exit;
+
+  // Save current state to redo
+  SetLength(G.RedoStack, Length(G.RedoStack) + 1);
+  G.RedoStack[High(G.RedoStack)] := SaveState(G);
+
+  // Restore last undo state
+  S := G.UndoStack[High(G.UndoStack)];
+  SetLength(G.UndoStack, Length(G.UndoStack) - 1);
+
+  RestoreState(G, S);
+  LogLine(G.Logger, 'Undo performed.');
+end;
+
+procedure Redo(var G: TSpiderGame);
+var
+  S: TSpiderGameState;
+begin
+  if Length(G.RedoStack) = 0 then Exit;
+
+  // Save current state to undo
+  SetLength(G.UndoStack, Length(G.UndoStack) + 1);
+  G.UndoStack[High(G.UndoStack)] := SaveState(G);
+
+  // Restore last redo state
+  S := G.RedoStack[High(G.RedoStack)];
+  SetLength(G.RedoStack, Length(G.RedoStack) - 1);
+
+  RestoreState(G, S);
+  LogLine(G.Logger, 'Redo performed.');
+end;
+
+// ---------------------------
+// Initial Deal
+// ---------------------------
+
 procedure InitialDeal(const Deck: TDeck; var G: TSpiderGame);
 var
   d, p, i: Integer;
 begin
   d := 0;
 
-  // Clear tableau
   for p := 0 to 9 do
     SetLength(G.Tableau[p], 0);
 
-  // First 4 piles: 6 cards
   for p := 0 to 3 do
   begin
     SetLength(G.Tableau[p], 6);
@@ -55,7 +145,6 @@ begin
     G.Tableau[p][5].FaceUp := True;
   end;
 
-  // Next 6 piles: 5 cards
   for p := 4 to 9 do
   begin
     SetLength(G.Tableau[p], 5);
@@ -67,7 +156,6 @@ begin
     G.Tableau[p][4].FaceUp := True;
   end;
 
-  // Remaining 50 cards to stock
   G.StockPos := 0;
   while d < TOTAL_CARDS do
   begin
@@ -75,20 +163,39 @@ begin
     Inc(G.StockPos);
     Inc(d);
   end;
-  // After filling, StockPos points past last; reset to 0 for dealing
+
   G.StockPos := 0;
 end;
 
-procedure NewGame(var G: TSpiderGame);
+// ---------------------------
+// New Game
+// ---------------------------
+
+procedure NewGame(var G: TSpiderGame; Difficulty: TSpiderDifficulty);
 var
   Deck: TDeck;
 begin
-  BuildDeck(Deck);
+  G.Difficulty := Difficulty;
+  G.MovesThisGame := 0;
+
+  RecordGameStart(G.Stats^, Difficulty);
+
+  BuildDeck(Deck, Difficulty);
   ShuffleDeck(Deck);
+
   G.CompletedRuns := 0;
   InitialDeal(Deck, G);
-  LogLine(G.Logger, 'New game started.');
+
+  SetLength(G.UndoStack, 0);
+  SetLength(G.RedoStack, 0);
+
+  LogLine(G.Logger, 'New game started with difficulty: ' +
+    IntToStr(Ord(Difficulty)));
 end;
+
+// ---------------------------
+// Utility
+// ---------------------------
 
 function GetPileCount(const G: TSpiderGame; Pile: Integer): Integer;
 begin
@@ -102,7 +209,6 @@ end;
 
 function GetStockDealsRemaining(const G: TSpiderGame): Integer;
 begin
-  // 10 cards per deal, 50 cards total
   Result := (50 - G.StockPos) div 10;
 end;
 
@@ -111,6 +217,10 @@ begin
   Result := Ord(Upper.Rank) = Ord(Lower.Rank) + 1;
 end;
 
+// ---------------------------
+// Move Validation
+// ---------------------------
+
 function CanMoveSequence(const G: TSpiderGame; FromPile, StartIndex, ToPile: Integer): Boolean;
 var
   pileLen, i: Integer;
@@ -118,43 +228,35 @@ var
 begin
   Result := False;
 
-  if (FromPile < 0) or (FromPile > 9) or (ToPile < 0) or (ToPile > 9) then
-    Exit;
+  if (FromPile < 0) or (FromPile > 9) or (ToPile < 0) or (ToPile > 9) then Exit;
 
   pileLen := Length(G.Tableau[FromPile]);
-  if (StartIndex < 0) or (StartIndex >= pileLen) then
-    Exit;
+  if (StartIndex < 0) or (StartIndex >= pileLen) then Exit;
 
-  // All cards in sequence must be face up and descending by one, same suit
   for i := StartIndex to pileLen - 2 do
   begin
     c1 := G.Tableau[FromPile][i];
     c2 := G.Tableau[FromPile][i + 1];
-    if (not c1.FaceUp) or (not c2.FaceUp) then
-      Exit;
-    if not IsDescendingByOne(c1, c2) then
-      Exit;
-    if c1.Suit <> c2.Suit then
-      Exit;
+    if (not c1.FaceUp) or (not c2.FaceUp) then Exit;
+    if not IsDescendingByOne(c1, c2) then Exit;
+    if c1.Suit <> c2.Suit then Exit;
   end;
 
-  // Destination rules
   if Length(G.Tableau[ToPile]) = 0 then
-  begin
-    Result := True;
-    Exit;
-  end
+    Exit(True)
   else
   begin
     c1 := G.Tableau[ToPile][High(G.Tableau[ToPile])];
     c2 := G.Tableau[FromPile][StartIndex];
-    if not c1.FaceUp then
-      Exit;
-    if not IsDescendingByOne(c1, c2) then
-      Exit;
-    Result := True;
+    if not c1.FaceUp then Exit;
+    if not IsDescendingByOne(c1, c2) then Exit;
+    Exit(True);
   end;
 end;
+
+// ---------------------------
+// Completed Run Removal
+// ---------------------------
 
 procedure RemoveCompletedRuns(var G: TSpiderGame);
 var
@@ -165,22 +267,19 @@ begin
   for p := 0 to 9 do
   begin
     len := Length(G.Tableau[p]);
-    if len < 13 then
-      Continue;
+    if len < 13 then Continue;
 
-    // Look from top down for a K..A run
     i := len - 1;
     while i >= 12 do
     begin
-      // Check last 13 cards: i-12 .. i
       if G.Tableau[p][i].Rank = Ace then
       begin
         startIdx := i - 12;
         if (startIdx >= 0) and (G.Tableau[p][startIdx].Rank = King) then
         begin
-          // Check descending and same suit
           sameSuit := True;
           s := G.Tableau[p][startIdx].Suit;
+
           while (startIdx < i) and sameSuit do
           begin
             if (not IsDescendingByOne(G.Tableau[p][startIdx], G.Tableau[p][startIdx + 1])) or
@@ -194,15 +293,15 @@ begin
 
           if sameSuit then
           begin
-            // Remove the 13 cards
             SetLength(G.Tableau[p], len - 13);
             Inc(G.CompletedRuns);
             LogLine(G.Logger, Format('Completed run removed. Total now: %d', [G.CompletedRuns]));
+
             len := Length(G.Tableau[p]);
-            // Flip new top card if any
             if len > 0 then
               G.Tableau[p][len - 1].FaceUp := True;
-            Break; // only one run at a time per scan
+
+            Break;
           end;
         end;
       end;
@@ -210,6 +309,10 @@ begin
     end;
   end;
 end;
+
+// ---------------------------
+// Move Sequence
+// ---------------------------
 
 procedure MoveSequence(var G: TSpiderGame; FromPile, StartIndex, ToPile: Integer);
 var
@@ -222,6 +325,7 @@ begin
     Exit;
   end;
 
+  PushUndo(G);
   LogLine(G.Logger, Format('Move: from %d start %d to %d', [FromPile, StartIndex, ToPile]));
 
   srcLen := Length(G.Tableau[FromPile]);
@@ -231,37 +335,31 @@ begin
   for i := 0 to moveCount - 1 do
     temp[i] := G.Tableau[FromPile][StartIndex + i];
 
-  // Shrink source pile
   SetLength(G.Tableau[FromPile], StartIndex);
   if Length(G.Tableau[FromPile]) > 0 then
     G.Tableau[FromPile][High(G.Tableau[FromPile])].FaceUp := True;
 
-  // Append to destination
   i := Length(G.Tableau[ToPile]);
   SetLength(G.Tableau[ToPile], i + moveCount);
   Move(temp[0], G.Tableau[ToPile][i], moveCount * SizeOf(TCard));
 
-  // Check for completed runs
+  RecordMove(G.Stats^);
+  Inc(G.MovesThisGame);
   RemoveCompletedRuns(G);
 end;
+
+// ---------------------------
+// Deal From Stock
+// ---------------------------
 
 function CanDealFromStock(const G: TSpiderGame): Boolean;
 var
   p: Integer;
 begin
-  // Must have stock left and no empty pile
-  if GetStockDealsRemaining(G) <= 0 then
-  begin
-    Result := False;
-    Exit;
-  end;
+  if GetStockDealsRemaining(G) <= 0 then Exit(False);
 
   for p := 0 to 9 do
-    if Length(G.Tableau[p]) = 0 then
-    begin
-      Result := False;
-      Exit;
-    end;
+    if Length(G.Tableau[p]) = 0 then Exit(False);
 
   Result := True;
 end;
@@ -269,13 +367,14 @@ end;
 procedure DealFromStock(var G: TSpiderGame);
 var
   p: Integer;
-
 begin
+  if not CanDealFromStock(G) then
   begin
     LogLine(G.Logger, 'Attempted illegal stock deal.');
     Exit;
   end;
 
+  PushUndo(G);
   LogLine(G.Logger, 'Deal from stock.');
 
   for p := 0 to 9 do
@@ -286,13 +385,20 @@ begin
     Inc(G.StockPos);
   end;
 
+  RecordMove(G.Stats^);
+  Inc(G.MovesThisGame);
   RemoveCompletedRuns(G);
 end;
+
+// ---------------------------
+// Win Check
+// ---------------------------
 
 function IsWon(const G: TSpiderGame): Boolean;
 begin
   Result := (G.CompletedRuns = 8);
+  if IsWon(G) then
+    RecordGameEnd(G.Stats^, G.Difficulty, True);
 end;
 
 end.
-

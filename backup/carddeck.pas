@@ -7,6 +7,7 @@ interface
 type
   TSuit = (Hearts, Diamonds, Clubs, Spades);
   TRank = (Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King);
+  TSpiderDifficulty = (sdOneSuit, sdTwoSuit, sdFourSuit);
 
   TCard = record
     Rank: TRank;
@@ -16,6 +17,7 @@ type
   end;
 
 const
+  NUM_OF_DECKS = 2;
   CARDS_PER_DECK = 52;
   TOTAL_CARDS = 104;
 
@@ -25,7 +27,7 @@ type
   TPile = array of TCard;          // A tableau pile
   TTableau = array[0..9] of TPile; // 10 piles
 
-procedure BuildDeck(var Deck: TDeck);
+procedure BuildDeck(var Deck: TDeck; Difficulty: TSpiderDifficulty);
 procedure ShuffleDeck(var Deck: TDeck);
 function RankToStr(R: TRank): string;
 function SuitToStr(S: TSuit): string;
@@ -37,7 +39,7 @@ var
   d, r, s, i: Integer;
 begin
   d := 0;
-  for i := 1 to 2 do
+  for i := 1 to NUM_OF_DECKS do
     for s := Ord(Low(TSuit)) to Ord(High(TSuit)) do
       for r := Ord(Low(TRank)) to Ord(High(TRank)) do
       begin

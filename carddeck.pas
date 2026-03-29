@@ -7,6 +7,7 @@ interface
 type
   TSuit = (Hearts, Diamonds, Clubs, Spades);
   TRank = (Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King);
+  TSpiderDifficulty = (sdOneSuit, sdTwoSuit, sdFourSuit);
 
   TCard = record
     Rank: TRank;
@@ -26,28 +27,64 @@ type
   TPile = array of TCard;          // A tableau pile
   TTableau = array[0..9] of TPile; // 10 piles
 
-procedure BuildDeck(var Deck: TDeck);
+procedure BuildDeck(var Deck: TDeck; Difficulty: TSpiderDifficulty);
 procedure ShuffleDeck(var Deck: TDeck);
 function RankToStr(R: TRank): string;
 function SuitToStr(S: TSuit): string;
 
 implementation
 
-procedure BuildDeck(var Deck: TDeck);
+procedure BuildDeck(var Deck: TDeck; Difficulty: TSpiderDifficulty);
 var
-  d, r, s, i: Integer;
+  d, r, i: Integer;
+  s: TSuit;
 begin
   d := 0;
-  for i := 1 to NUM_OF_DECKS do
-    for s := Ord(Low(TSuit)) to Ord(High(TSuit)) do
-      for r := Ord(Low(TRank)) to Ord(High(TRank)) do
+
+  case Difficulty of
+
+    sdOneSuit:
       begin
-        Deck[d].Rank := TRank(r);
-        Deck[d].Suit := TSuit(s);
-        Deck[d].FaceUp := False;
-        Deck[d].Value := r + 1;
-        Inc(d);
+        // 1-suit Spider: 8 copies of Spades
+        for i := 1 to 8 do
+          for r := Ord(Low(TRank)) to Ord(High(TRank)) do
+          begin
+            Deck[d].Rank := TRank(r);
+            Deck[d].Suit := Spades;
+            Deck[d].FaceUp := False;
+            Inc(d);
+          end;
       end;
+
+    sdTwoSuit:
+      begin
+        // 2-suit Spider: 4 copies of Hearts, 4 copies of Spades
+        for i := 1 to 4 do
+          for s in [Hearts, Spades] do
+            for r := Ord(Low(TRank)) to Ord(High(TRank)) do
+            begin
+              Deck[d].Rank := TRank(r);
+              Deck[d].Suit := s;
+              Deck[d].FaceUp := False;
+              Inc(d);
+            end;
+      end;
+
+    sdFourSuit:
+      begin
+        // 4-suit Spider: 2 copies of each suit
+        for i := 1 to 2 do
+          for s := Low(TSuit) to High(TSuit) do
+            for r := Ord(Low(TRank)) to Ord(High(TRank)) do
+            begin
+              Deck[d].Rank := TRank(r);
+              Deck[d].Suit := s;
+              Deck[d].FaceUp := False;
+              Inc(d);
+            end;
+      end;
+
+  end;
 end;
 
 procedure ShuffleDeck(var Deck: TDeck);

@@ -15,10 +15,11 @@ program SpiderConsole;
 {$mode objfpc}{$H+}
 
 uses
-  SysUtils, CardDeck, SpiderEngine, StrUtils, SpiderLog;
+  SysUtils, CardDeck, SpiderEngine, StrUtils, SpiderLog, SpiderStats;
 
 var
   G: TSpiderGame;
+  Stats: TSpiderStats;
   F: Text;
 
 procedure PrintGame;
@@ -119,20 +120,27 @@ var
 begin
   while True do
   begin
+    LoadStats(Stats, 'spider_stats.txt');  // optional
+    G.Stats := @Stats;
+
     PrintGame;
     if IsWon(G) then
-    begin
-      WriteLn('You won! All 8 runs completed.');
-      Exit;
-    end;
+      begin
+        WriteLn('You won! All 8 runs completed.');
+        Exit;
+      end
+    else
+      RecordGameEnd(G.Stats^, G.Difficulty, False);
 
     WriteLn('Commands:');
     WriteLn('  m <fromPile> <startIndex> <toPile>  - move sequence');
     WriteLn('  d                                   - deal from stock');
-    writeln('  s                                   - save game');
+    WriteLn('  s                                   - save game');
     WriteLn('  l <filename>                        - start logging to file');
     WriteLn('  x                                   - stop logging');
-    WriteLn('  r <filename>                        - replay log file');
+    //WriteLn('  r <filename>                        - replay log file');
+    WriteLn('  u                                   - undo');
+    WriteLn('  r                                   - redo');
     WriteLn('  q                                   - quit');
     Write('> ');
     ReadLn(cmd);
@@ -142,7 +150,10 @@ begin
 
     case cmd[1] of
       'q', 'Q':
-        Exit;
+        begin
+          RecordGameEnd(G.Stats^, G.Difficulty, False);
+          Exit;
+        end;
       'd', 'D':
         begin
           if CanDealFromStock(G) then
@@ -200,7 +211,7 @@ begin
           EndLog(G.Logger);
           WriteLn('Logging stopped.');
         end;
-      'r', 'R':
+      'p', 'P':
         begin
           Delete(cmd, 1, 1);
           cmd := Trim(cmd);
@@ -209,17 +220,38 @@ begin
             WriteLn('Usage: r <filename>');
             Continue;
           end;
-          ReplayLog(cmd);
+          //ReplayLog(cmd);
           WriteLn('Replay complete.');
         end;
+      'u', 'U': Undo(G);
+      'r', 'R': Redo(G);
     else
       WriteLn('Unknown command.');
     end;
   end;
 end;
 
+var
+  diff: Integer;
 begin
   Randomize;
-  NewGame(G);
+  WriteLn('Select difficulty:');
+  WriteLn('1 = One Suit (Easy)');
+  WriteLn('2 = Two Suit (Medium)');
+  WriteLn('4 = Four Suit (Hard)');
+  ReadLn(diff);
+
+  if G.Stats = nil then
+    WriteLn('Stats pointer is NIL!');
+
+  case diff of
+    1: NewGame(G, sdOneSuit);
+    2: NewGame(G, sdTwoSuit);
+    4: NewGame(G, sdFourSuit);
+  else
+    NewGame(G, sdFourSuit); // default
+  end;
+
   GameLoop;
 end.
+
