@@ -15,7 +15,8 @@ program SpiderConsole;
 {$mode objfpc}{$H+}
 
 uses
-  SysUtils, CardDeck, SpiderEngine, StrUtils, SpiderLog, SpiderStats;
+  SysUtils, CardDeck, SpiderEngine, StrUtils,
+    CRT, SpiderLog, SpiderStats, Drivers;
 
 var
   G: TSpiderGame;
@@ -27,6 +28,7 @@ var
   p, i, maxLen, len: Integer;
   c: TCard;
 begin
+  //ClrScr;
   WriteLn;
   WriteLn('Completed runs: ', G.CompletedRuns, ' / 8');
   WriteLn('Stock deals remaining: ', GetStockDealsRemaining(G));
@@ -41,7 +43,7 @@ begin
   // Header
   Write('Pile: ');
   for p := 0 to 9 do
-    Write(Format('%2d ', [p]));
+    Write(Format('%2d  ', [p]));
   WriteLn;
 
   // Rows
@@ -121,8 +123,9 @@ begin
   while True do
   begin
     LoadStats(Stats, 'spider_stats.txt');  // optional
-    G.Stats := @Stats;
+    G.Stats := Stats;
 
+    ClearScreen();
     PrintGame;
     if IsWon(G) then
       begin
@@ -130,7 +133,7 @@ begin
         Exit;
       end
     else
-      RecordGameEnd(G.Stats^, G.Difficulty, False);
+      RecordGameEnd(G.Stats, G.Difficulty, False);
 
     WriteLn('Commands:');
     WriteLn('  m <fromPile> <startIndex> <toPile>  - move sequence');
@@ -151,7 +154,7 @@ begin
     case cmd[1] of
       'q', 'Q':
         begin
-          RecordGameEnd(G.Stats^, G.Difficulty, False);
+          RecordGameEnd(G.Stats, G.Difficulty, False);
           Exit;
         end;
       'd', 'D':
@@ -185,7 +188,7 @@ begin
           else
             WriteLn('Illegal move.');
         end;
-      's', 'S':
+      's', 'S':  //** Save Game **//
         begin
           // printgame;
           // but send to text file
@@ -246,9 +249,10 @@ begin
     2: NewGame(G, sdTwoSuit);
     4: NewGame(G, sdFourSuit);
   else
-    NewGame(G, sdFourSuit); // default
+    NewGame(G, sdTwoSuit); // default
   end;
 
   GameLoop;
+
 end.
 

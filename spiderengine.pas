@@ -24,7 +24,7 @@ type
 
     Logger: TSpiderLogger;
 
-    Stats: ^TSpiderStats;  // pointer so stats live outside the engine
+    Stats: TSpiderStats;
     MovesThisGame: Integer;
     Difficulty: TSpiderDifficulty;
 
@@ -46,7 +46,7 @@ procedure Undo(var G: TSpiderGame);
 procedure Redo(var G: TSpiderGame);
 
 // State queries
-function IsWon(const G: TSpiderGame): Boolean;
+function IsWon(var G: TSpiderGame): Boolean;
 function GetPileCount(const G: TSpiderGame; Pile: Integer): Integer;
 function GetStockDealsRemaining(const G: TSpiderGame): Integer;
 function GetCard(const G: TSpiderGame; Pile, Index: Integer): TCard;
@@ -175,10 +175,13 @@ procedure NewGame(var G: TSpiderGame; Difficulty: TSpiderDifficulty);
 var
   Deck: TDeck;
 begin
+  if G.Stats.GamesPlayed = 0 then
+    InitStats(G.Stats);
+
   G.Difficulty := Difficulty;
   G.MovesThisGame := 0;
 
-  RecordGameStart(G.Stats^, Difficulty);
+  RecordGameStart(G.Stats, Difficulty);
 
   BuildDeck(Deck, Difficulty);
   ShuffleDeck(Deck);
@@ -343,7 +346,7 @@ begin
   SetLength(G.Tableau[ToPile], i + moveCount);
   Move(temp[0], G.Tableau[ToPile][i], moveCount * SizeOf(TCard));
 
-  RecordMove(G.Stats^);
+  RecordMove(G.Stats);
   Inc(G.MovesThisGame);
   RemoveCompletedRuns(G);
 end;
@@ -385,7 +388,7 @@ begin
     Inc(G.StockPos);
   end;
 
-  RecordMove(G.Stats^);
+  RecordMove(G.Stats);
   Inc(G.MovesThisGame);
   RemoveCompletedRuns(G);
 end;
@@ -394,11 +397,10 @@ end;
 // Win Check
 // ---------------------------
 
-function IsWon(const G: TSpiderGame): Boolean;
+function IsWon(var G: TSpiderGame): Boolean;
 begin
   Result := (G.CompletedRuns = 8);
-  if IsWon(G) then
-    RecordGameEnd(G.Stats^, G.Difficulty, True);
+  RecordGameEnd(G.Stats, G.Difficulty, True);
 end;
 
 end.
