@@ -14,6 +14,11 @@
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
     </General>
+    <VersionInfo>
+      <UseVersionInfo Value="True"/>
+      <MinorVersionNr Value="5"/>
+      <StringTable CompanyName="Myriad Software"/>
+    </VersionInfo>
     <BuildModes>
       <Item Name="Default" Default="True"/>
     </BuildModes>
@@ -53,6 +58,14 @@
         <Filename Value="spiderstats.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderStats"/>
+      </Unit>
+      <Unit>
+        <Filename Value="GameLoopBU 040826.txt"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="GameLoop2BU 040826.txt"/>
+        <IsPartOfProject Value="True"/>
       </Unit>
     </Units>
   </ProjectOptions>

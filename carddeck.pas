@@ -110,11 +110,14 @@ begin
 end;
 
 function SuitToStr(S: TSuit): string;
-const
-  SuitNames: array[TSuit] of string =
-    ('H', 'D', 'C', 'S'); // short for display
+  //** Work on why unicode characters are'nt working
 begin
-  Result := SuitNames[S];
+  case S of
+    Hearts:   Result := 'H';
+    Diamonds: Result := 'D';
+    Clubs:    Result := 'C';
+    Spades:   Result := 'S';
+  end;
 end;
 
 end.

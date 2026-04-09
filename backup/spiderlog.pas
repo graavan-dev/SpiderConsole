@@ -16,7 +16,7 @@ type
 procedure StartLog(var L: TSpiderLogger; const FileName: string);
 procedure LogLine(var L: TSpiderLogger; const S: string);
 procedure EndLog(var L: TSpiderLogger);
-procedure ReplayLog(const FileName: string);
+//procedure ReplayLog(const FileName: string);
 
 function Timestamp: string;
 

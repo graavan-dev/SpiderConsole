@@ -8,7 +8,6 @@ uses
   CardDeck, SpiderLog, SysUtils, SpiderStats;
 
 type
-  // A full snapshot of the game state for undo/redo
   TSpiderGameState = record
     Tableau: TTableau;
     Stock: array[0..49] of TCard;
@@ -38,6 +37,7 @@ procedure NewGame(var G: TSpiderGame; Difficulty: TSpiderDifficulty);
 // Moves and actions
 function CanMoveSequence(const G: TSpiderGame; FromPile, StartIndex, ToPile: Integer): Boolean;
 procedure MoveSequence(var G: TSpiderGame; FromPile, StartIndex, ToPile: Integer);
+function ParseMove(const S: string; out FromPile, StartIndex, ToPile: Integer): Boolean;
 function CanDealFromStock(const G: TSpiderGame): Boolean;
 procedure DealFromStock(var G: TSpiderGame);
 
@@ -221,7 +221,7 @@ begin
 end;
 
 // ---------------------------
-// Move Validation
+// Parsing / Move Validation
 // ---------------------------
 
 function CanMoveSequence(const G: TSpiderGame; FromPile, StartIndex, ToPile: Integer): Boolean;
@@ -255,6 +255,32 @@ begin
     if not IsDescendingByOne(c1, c2) then Exit;
     Exit(True);
   end;
+end;
+
+function ParseMove(const S: string; out FromPile, StartIndex, ToPile: Integer): Boolean;
+var
+  t: string;
+begin
+  Result := False;
+
+  // Remove all spaces so "m 4 5 3" becomes "m453"
+  t := StringReplace(S, ' ', '', [rfReplaceAll]);
+
+  // Must start with m/M and have exactly 4 characters: mXYZ
+  if (Length(t) <> 4) or (UpCase(t[1]) <> 'M') then
+    Exit;
+
+  // All three following characters must be digits
+  if not (t[2] in ['0'..'9']) then Exit;
+  if not (t[3] in ['0'..'9']) then Exit;
+  if not (t[4] in ['0'..'9']) then Exit;
+
+  // Convert characters to numbers
+  FromPile := Ord(t[2]) - Ord('0');
+  StartIndex := Ord(t[3]) - Ord('0');
+  ToPile   := Ord(t[4]) - Ord('0');
+
+  Result := True;
 end;
 
 // ---------------------------

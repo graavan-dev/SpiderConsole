@@ -10,10 +10,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderConsole"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="55"/>
-        <CursorPos Y="126"/>
-        <FoldState Value=" T3iR0fQ"/>
-        <UsageCount Value="185"/>
+        <TopLine Value="59"/>
+        <CursorPos Y="304"/>
+        <FoldState Value=" T3Y0C7 pjSkJ0{IJ"/>
+        <UsageCount Value="229"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -21,9 +21,9 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderEngine"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="212"/>
-        <CursorPos Y="405"/>
-        <UsageCount Value="185"/>
+        <CursorPos X="25" Y="287"/>
+        <FoldState Value=" T3iG065 pj2jS0N7]9Vl00W3 Pcib0~"/>
+        <UsageCount Value="229"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -31,9 +31,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="CardDeck"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="27"/>
-        <CursorPos Y="4"/>
-        <UsageCount Value="185"/>
+        <TopLine Value="25"/>
+        <CursorPos Y="122"/>
+        <FoldState Value=" T3a0p3 PRiW0("/>
+        <UsageCount Value="229"/>
         <Bookmarks Count="1">
           <Item0 X="20" Y="3" Left="1" Top="1"/>
         </Bookmarks>
@@ -42,19 +43,19 @@
       <Unit>
         <Filename Value="code backup.txt"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="4" Y="2"/>
-        <UsageCount Value="184"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="228"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit>
       <Unit>
         <Filename Value="spiderlog.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderLog"/>
-        <EditorIndex Value="5"/>
-        <CursorPos X="10"/>
-        <UsageCount Value="184"/>
+        <EditorIndex Value="4"/>
+        <CursorPos X="7" Y="86"/>
+        <FoldState Value=" T3O033 PGJ0/"/>
+        <UsageCount Value="228"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -63,129 +64,157 @@
         <UnitName Value="SpiderStats"/>
         <EditorIndex Value="1"/>
         <CursorPos X="20" Y="33"/>
-        <UsageCount Value="118"/>
+        <FoldState Value=" T3d036 Pj9j30R"/>
+        <UsageCount Value="234"/>
         <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="GameLoopBU 040826.txt"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="59"/>
+        <CursorPos X="13" Y="72"/>
+        <UsageCount Value="27"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit>
+      <Unit>
+        <Filename Value="GameLoop2BU 040826.txt"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="61"/>
+        <CursorPos X="43" Y="29"/>
+        <UsageCount Value="26"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-objpas\src\inc\strutils.pp"/>
+        <UnitName Value="StrUtils"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="134"/>
+        <CursorPos X="10" Y="201"/>
+        <UsageCount Value="10"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
       <Position>
-        <Filename Value="spiderengine.pas"/>
-        <Caret Line="178" Column="14" TopLine="160"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderstats.pas"/>
-        <Caret Column="17"/>
-      </Position>
-      <Position>
         <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="127" Column="11" TopLine="118"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderengine.pas"/>
-        <Caret Line="36" Column="11" TopLine="25"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderengine.pas"/>
-        <Caret Line="8" Column="45"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderstats.pas"/>
-        <Caret Line="6"/>
+        <Caret Line="16" Column="29"/>
       </Position>
       <Position>
         <Filename Value="carddeck.pas"/>
-        <Caret Line="88" Column="5"/>
+        <Caret Line="5" Column="14"/>
+      </Position>
+      <Position>
+        <Filename Value="carddeck.pas"/>
+        <Caret Line="119" Column="28" TopLine="32"/>
       </Position>
       <Position>
         <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="156" Column="18"/>
+        <Caret Line="309" TopLine="61"/>
       </Position>
       <Position>
-        <Filename Value="spiderstats.pas"/>
-        <Caret Line="8" Column="22"/>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="119" Column="27" TopLine="110"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="217" TopLine="201"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="248" TopLine="244"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="251" Column="56" TopLine="239"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="218" Column="5" TopLine="207"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="214" Column="19" TopLine="204"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="294" Column="5" TopLine="119"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="178" Column="15" TopLine="135"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="199" Column="7" TopLine="178"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="191" Column="18" TopLine="181"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="186" Column="14" TopLine="180"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="198" Column="7" TopLine="184"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="194" Column="9" TopLine="184"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="228" Column="5" TopLine="218"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="270" Column="26" TopLine="239"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="247" Column="16" TopLine="237"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="184" TopLine="181"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="228" Column="5" TopLine="211"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="75" Column="11" TopLine="65"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="228" Column="12" TopLine="216"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="178" Column="45" TopLine="65"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="240" Column="45" TopLine="230"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="233" Column="19" TopLine="225"/>
       </Position>
       <Position>
         <Filename Value="spiderengine.pas"/>
-        <Caret Line="2"/>
+        <Caret Line="280" Column="8" TopLine="270"/>
       </Position>
       <Position>
         <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="239" Column="34" TopLine="233"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderengine.pas"/>
-        <Caret Line="2"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderengine.pas"/>
-        <Caret Line="404" Column="26" TopLine="386"/>
+        <Caret Line="235" Column="40" TopLine="227"/>
       </Position>
       <Position>
         <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="239" Column="34" TopLine="233"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="133" Column="28" TopLine="115"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="154" Column="32" TopLine="137"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="117" Column="4"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderstats.pas"/>
-        <Caret Line="47"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="188" Column="37" TopLine="189"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderengine.pas"/>
-        <Caret Line="396" Column="29" TopLine="386"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderengine.pas"/>
-        <Caret Line="400" Column="10" TopLine="386"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderengine.pas"/>
-        <Caret Line="337" Column="17" TopLine="359"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="44" Column="24" TopLine="32"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="28" Column="12" TopLine="21"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="18" Column="78" TopLine="6"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="19" Column="13" TopLine="23"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="30" Column="6"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="257" Column="3" TopLine="244"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="14"/>
+        <Caret Line="240" TopLine="223"/>
       </Position>
     </JumpHistory>
     <RunParams>

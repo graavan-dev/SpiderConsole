@@ -14,21 +14,72 @@ program SpiderConsole;
 
 {$mode objfpc}{$H+}
 
+
 uses
   SysUtils, CardDeck, SpiderEngine, StrUtils,
-    CRT, SpiderLog, SpiderStats, Drivers;
+    Windows, SpiderLog, SpiderStats, Drivers;
 
 var
   G: TSpiderGame;
   Stats: TSpiderStats;
   F: Text;
+  cardStr: string;
+  cmd: string;
+  FromPile, ToPile, StartIndex: Integer;
+  ViewMenu: Boolean;
 
+// *******************************
+// ** Enable ANSI / Color Codes
+// *******************************
+
+procedure EnableANSI;
+var
+  hOut: THandle;
+  dwMode: DWORD;
+begin
+  dwMode := 0;
+  hOut := GetStdHandle(STD_OUTPUT_HANDLE);
+  if GetConsoleMode(hOut, dwMode) then
+  begin
+    dwMode := dwMode or ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, dwMode);
+  end;
+end;
+
+procedure ClearScreen;
+begin
+  Write(#27'[2J'#27'[H');
+end;
+
+function ColorText(const S, FG, BG: string): string;
+begin
+  Result := #27'[' + FG + ';' + BG + 'm' + S + #27'[0m';
+end;
+
+function RedCard(const S: string): string;
+begin
+  Result := ColorText(S, '31', '47');  // red on white
+end;
+
+function BlackCard(const S: string): string;
+begin
+  Result := ColorText(S, '30', '47');  // black on white
+end;
+
+function FaceDownCard: string;
+begin
+  Result := ColorText('XX', '30', '47');  // dim black on white
+end;
+
+// *****************
+// ** Print / Save Game
+// *****************
 procedure PrintGame;
 var
   p, i, maxLen, len: Integer;
   c: TCard;
+
 begin
-  //ClrScr;
   WriteLn;
   WriteLn('Completed runs: ', G.CompletedRuns, ' / 8');
   WriteLn('Stock deals remaining: ', GetStockDealsRemaining(G));
@@ -43,7 +94,7 @@ begin
   // Header
   Write('Pile: ');
   for p := 0 to 9 do
-    Write(Format('%2d  ', [p]));
+    Write(Format('%2d   ', [p]));
   WriteLn;
 
   // Rows
@@ -54,19 +105,33 @@ begin
     begin
       len := Length(G.Tableau[p]);
       if i < len then
-      begin
+      begin  // print card loop
         c := G.Tableau[p][i];
-        if c.FaceUp then
-          Write(Format('%2s%s ', [RankToStr(c.Rank), SuitToStr(c.Suit)]))
-        else
-          Write(' XX ');
-      end
+        begin
+          if c.FaceUp then
+          begin
+            cardStr := RankToStr(c.Rank) + SuitToStr(c.Suit);
+
+            case c.Suit of
+              Hearts, Diamonds:
+                cardStr := RedCard(cardStr);
+              Clubs, Spades:
+                cardStr := BlackCard(cardStr);
+            end;
+            if c.Rank = Ten then
+              Write('', cardStr:4, '  ')
+            else
+              Write(' ', cardStr:4, '  ');
+          end
+          else
+            Write(' ', FaceDownCard:4, '  ');
+        end;
+      end   // end print card loop
       else
-        Write('    ');
+        Write('     ');  // 5 spaces for empty slot
     end;
-    WriteLn;
-  end;
   WriteLn;
+  end;
 end;
 
 procedure SaveGame(var G: TSpiderGame; var F: Text);
@@ -116,16 +181,12 @@ end;
 // ** Main Loop
 // ******************
 procedure GameLoop;
-var
-  cmd: string;
-  fromPile, toPile, startIdx: Integer;
 begin
   while True do
   begin
-    LoadStats(Stats, 'spider_stats.txt');  // optional
+    LoadStats(Stats, 'spider_stats.txt');
     G.Stats := Stats;
-
-    ClearScreen();
+    ClearScreen;
     PrintGame;
     if IsWon(G) then
       begin
@@ -141,7 +202,6 @@ begin
     WriteLn('  s                                   - save game');
     WriteLn('  l <filename>                        - start logging to file');
     WriteLn('  x                                   - stop logging');
-    //WriteLn('  r <filename>                        - replay log file');
     WriteLn('  u                                   - undo');
     WriteLn('  r                                   - redo');
     WriteLn('  q                                   - quit');
@@ -166,32 +226,19 @@ begin
         end;
       'm', 'M':
         begin
-          // read rest of line
-          Delete(cmd, 1, 1);
-          cmd := Trim(cmd);
-          if cmd = '' then
+          if ParseMove(cmd, FromPile, StartIndex, ToPile) then
           begin
-            WriteLn('Usage: m <fromPile> <startIndex> <toPile>');
-            Continue;
-          end;
-          try
-            fromPile := StrToInt(ExtractWord(1, cmd, [' ']));
-            startIdx := StrToInt(ExtractWord(2, cmd, [' ']));
-            toPile   := StrToInt(ExtractWord(3, cmd, [' ']));
-          except
-            WriteLn('Invalid move parameters.');
-            Continue;
-          end;
-
-          if CanMoveSequence(G, fromPile, startIdx, toPile) then
-            MoveSequence(G, fromPile, startIdx, toPile)
+            if CanMoveSequence(G, FromPile, StartIndex, ToPile) then
+              MoveSequence(G, FromPile, StartIndex, ToPile)
+              //WriteLn('Move OK.')
+            else
+              WriteLn('Illegal move.');
+          end
           else
-            WriteLn('Illegal move.');
+            WriteLn('Invalid move. Use mXYZ or m X Y Z.');
         end;
       's', 'S':  //** Save Game **//
         begin
-          // printgame;
-          // but send to text file
           AssignFile(F, 'spider_output.txt');
           Rewrite(F);
           SaveGame(G, F);{ #todo : SaveGame is only "saving" the tableau with cards face down yet and no stock cards either.  }
@@ -236,7 +283,13 @@ end;
 
 var
   diff: Integer;
+
+{$R *.res}
+
 begin
+  SetConsoleOutputCP(CP_UTF8);
+  SetConsoleCP(CP_UTF8);
+  EnableANSI;
   Randomize;
   WriteLn('Select difficulty:');
   WriteLn('1 = One Suit (Easy)');

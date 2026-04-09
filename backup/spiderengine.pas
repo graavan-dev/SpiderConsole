@@ -8,7 +8,6 @@ uses
   CardDeck, SpiderLog, SysUtils, SpiderStats;
 
 type
-  // A full snapshot of the game state for undo/redo
   TSpiderGameState = record
     Tableau: TTableau;
     Stock: array[0..49] of TCard;
@@ -38,6 +37,7 @@ procedure NewGame(var G: TSpiderGame; Difficulty: TSpiderDifficulty);
 // Moves and actions
 function CanMoveSequence(const G: TSpiderGame; FromPile, StartIndex, ToPile: Integer): Boolean;
 procedure MoveSequence(var G: TSpiderGame; FromPile, StartIndex, ToPile: Integer);
+function ParseMove(const S: string; out FromPile, StartIndex, ToPile: Integer): Boolean;
 function CanDealFromStock(const G: TSpiderGame): Boolean;
 procedure DealFromStock(var G: TSpiderGame);
 
@@ -50,9 +50,6 @@ function IsWon(var G: TSpiderGame): Boolean;
 function GetPileCount(const G: TSpiderGame; Pile: Integer): Integer;
 function GetStockDealsRemaining(const G: TSpiderGame): Integer;
 function GetCard(const G: TSpiderGame; Pile, Index: Integer): TCard;
-
-// Other Utilities
-//procedure ClearScreen;
 
 implementation
 
@@ -260,6 +257,57 @@ begin
   end;
 end;
 
+function ParseMove(const S: string; out FromPile, StartIndex, ToPile: Integer): Boolean;
+var
+  t: string;
+begin
+  Result := False;
+
+  // Remove all spaces so "m 4 5 3" becomes "m453"
+  t := StringReplace(S, ' ', '', [rfReplaceAll]);
+
+  // Must start with m/M and have exactly 4 characters: mXYZ
+  if (Length(t) <> 4) or (UpCase(t[1]) <> 'M') then
+    Exit;
+
+  // All three following characters must be digits
+  if not (t[2] in ['0'..'9']) then Exit;
+  if not (t[3] in ['0'..'9']) then Exit;
+  if not (t[4] in ['0'..'9']) then Exit;
+
+  // Convert characters to numbers
+  FromPile := Ord(t[2]) - Ord('0');
+  StartIndex := Ord(t[3]) - Ord('0');
+  ToPile   := Ord(t[4]) - Ord('0');
+
+  Result := True;
+end;
+
+//function ParseMove(const S: string; out FromPile, ToPile, Count: Integer): Boolean;
+//var
+//  t: string;
+//begin
+//  Result := False;
+//
+//  // Remove spaces: allow "m 5 5 4" or "m554"
+//  t := StringReplace(S, ' ', '', [rfReplaceAll]);
+//
+//  // Must start with 'm' or 'M'
+//  if (Length(t) < 4) or (UpCase(t[1]) <> 'M') then
+//    Exit;
+//
+//  // Expect exactly 3 digits after 'm'
+//  if not (t[2] in ['0'..'9']) then Exit;
+//  if not (t[3] in ['0'..'9']) then Exit;
+//  if not (t[4] in ['0'..'9']) then Exit;
+//
+//  FromPile := Ord(t[2]) - Ord('0');
+//  ToPile   := Ord(t[3]) - Ord('0');
+//  Count    := Ord(t[4]) - Ord('0');
+//
+//  Result := True;
+//end;
+
 // ---------------------------
 // Completed Run Removal
 // ---------------------------
@@ -404,12 +452,6 @@ function IsWon(var G: TSpiderGame): Boolean;
 begin
   Result := (G.CompletedRuns = 8);
   RecordGameEnd(G.Stats, G.Difficulty, True);
-end;
-
-procedure ClearScreen;
-begin
-  Write(#27'[2J'#27'[H');
-  Writeln('Cleared screen. ');
 end;
 
 end.

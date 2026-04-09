@@ -1,0 +1,121 @@
+// ******************
+// ** Main Loop
+// ******************
+procedure GameLoop;
+var
+  cmd: string;
+  fromPile, toPile, startIdx: Integer;
+begin
+  while True do
+  begin
+    LoadStats(Stats, 'spider_stats.txt');  // optional
+    G.Stats := Stats;
+    ClearScreen;
+    PrintGame;
+    if IsWon(G) then
+      begin
+        WriteLn('You won! All 8 runs completed.');
+        Exit;
+      end
+    else
+      RecordGameEnd(G.Stats, G.Difficulty, False);
+
+    WriteLn('Commands:');
+    WriteLn('  m <fromPile> <startIndex> <toPile>  - move sequence');
+    WriteLn('  d                                   - deal from stock');
+    WriteLn('  s                                   - save game');
+    WriteLn('  l <filename>                        - start logging to file');
+    WriteLn('  x                                   - stop logging');
+    //WriteLn('  r <filename>                        - replay log file');
+    WriteLn('  u                                   - undo');
+    WriteLn('  r                                   - redo');
+    WriteLn('  q                                   - quit');
+    Write('> ');
+    ReadLn(cmd);
+
+    if cmd = '' then
+      Continue;
+
+    case cmd[1] of
+      'q', 'Q':
+        begin
+          RecordGameEnd(G.Stats, G.Difficulty, False);
+          Exit;
+        end;
+      'd', 'D':
+        begin
+          if CanDealFromStock(G) then
+            DealFromStock(G)
+          else
+            WriteLn('Cannot deal from stock (either empty or a pile is empty).');
+        end;
+      'm', 'M':
+        begin
+          // read rest of line
+          Delete(cmd, 1, 1);
+          cmd := Trim(cmd);
+          if cmd = '' then
+          begin
+            WriteLn('Usage: m <fromPile> <startIndex> <toPile>');
+            Continue;
+          end;
+          try
+            fromPile := StrToInt(ExtractWord(1, cmd, [' ']));
+            startIdx := StrToInt(ExtractWord(2, cmd, [' ']));
+            toPile   := StrToInt(ExtractWord(3, cmd, [' ']));
+          except
+            WriteLn('Invalid move parameters.');
+            Continue;
+          end;
+
+          if CanMoveSequence(G, fromPile, startIdx, toPile) then
+            MoveSequence(G, fromPile, startIdx, toPile)
+          else
+            WriteLn('Illegal move.');
+        end;
+      's', 'S':  //** Save Game **//
+        begin
+          // printgame;
+          // but send to text file
+          AssignFile(F, 'spider_output.txt');
+          Rewrite(F);
+          SaveGame(G, F);{ #todo : SaveGame is only "saving" the tableau with cards face down yet and no stock cards either.  }
+          CloseFile(F);
+        end;
+      'l', 'L':
+        begin
+          Delete(cmd, 1, 1);
+          cmd := Trim(cmd);
+          if cmd = '' then
+          begin
+            WriteLn('Usage: l <filename>');
+            Continue;
+          end;
+          StartLog(G.Logger, cmd);
+          WriteLn('Logging started.');
+        end;
+      'x', 'X':
+        begin
+          EndLog(G.Logger);
+          WriteLn('Logging stopped.');
+        end;
+      'p', 'P':
+        begin
+          Delete(cmd, 1, 1);
+          cmd := Trim(cmd);
+          if cmd = '' then
+          begin
+            WriteLn('Usage: r <filename>');
+            Continue;
+          end;
+          //ReplayLog(cmd);
+          WriteLn('Replay complete.');
+        end;
+      'u', 'U': Undo(G);
+      'r', 'R': Redo(G);
+    else
+      WriteLn('Unknown command.');
+    end;
+  end;
+end;
+
