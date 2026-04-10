@@ -221,7 +221,7 @@ begin
 end;
 
 // ---------------------------
-// Move Validation
+// Parsing / Move Validation
 // ---------------------------
 
 function CanMoveSequence(const G: TSpiderGame; FromPile, StartIndex, ToPile: Integer): Boolean;
@@ -260,53 +260,53 @@ end;
 function ParseMove(const S: string; out FromPile, StartIndex, ToPile: Integer): Boolean;
 var
   t: string;
+  nums: array[1..3] of string;
+  i, n, count: Integer;
 begin
   Result := False;
 
-  // Remove all spaces so "m 4 5 3" becomes "m453"
+  // Remove all spaces
   t := StringReplace(S, ' ', '', [rfReplaceAll]);
 
-  // Must start with m/M and have exactly 4 characters: mXYZ
-  if (Length(t) <> 4) or (UpCase(t[1]) <> 'M') then
+  // Must start with M/m and have at least 4 characters
+  if (Length(t) < 4) or (UpCase(t[1]) <> 'M') then
     Exit;
 
-  // All three following characters must be digits
-  if not (t[2] in ['0'..'9']) then Exit;
-  if not (t[3] in ['0'..'9']) then Exit;
-  if not (t[4] in ['0'..'9']) then Exit;
+  // Strip the leading 'm'
+  t := Copy(t, 2, Length(t) - 1);
 
-  // Convert characters to numbers
-  FromPile := Ord(t[2]) - Ord('0');
-  StartIndex := Ord(t[3]) - Ord('0');
-  ToPile   := Ord(t[4]) - Ord('0');
+  // Now t must contain exactly 3 numbers, but each may be multi-digit.
+  // We split them by detecting transitions between digits and non-digits.
+  // But since t is digits only, we must split by *position*:
+  //
+  // Format: <from><row><to>
+  //
+  // The only way to know boundaries is:
+  // - from pile: 1 digit (0–9)
+  // - to pile:   1 digit (0–9)
+  // - row index: everything in the middle
+
+  if Length(t) < 3 then
+    Exit;
+
+  nums[1] := t[1];                         // from pile (1 digit)
+  nums[3] := t[Length(t)];                 // to pile (1 digit)
+  nums[2] := Copy(t, 2, Length(t) - 2);    // row index (1+ digits)
+
+  // Convert all three to integers
+  for i := 1 to 3 do
+  begin
+    if not TryStrToInt(nums[i], n) then
+      Exit;
+    case i of
+      1: FromPile := n;
+      2: StartIndex := n;
+      3: ToPile   := n;
+    end;
+  end;
 
   Result := True;
 end;
-
-//function ParseMove(const S: string; out FromPile, ToPile, Count: Integer): Boolean;
-//var
-//  t: string;
-//begin
-//  Result := False;
-//
-//  // Remove spaces: allow "m 5 5 4" or "m554"
-//  t := StringReplace(S, ' ', '', [rfReplaceAll]);
-//
-//  // Must start with 'm' or 'M'
-//  if (Length(t) < 4) or (UpCase(t[1]) <> 'M') then
-//    Exit;
-//
-//  // Expect exactly 3 digits after 'm'
-//  if not (t[2] in ['0'..'9']) then Exit;
-//  if not (t[3] in ['0'..'9']) then Exit;
-//  if not (t[4] in ['0'..'9']) then Exit;
-//
-//  FromPile := Ord(t[2]) - Ord('0');
-//  ToPile   := Ord(t[3]) - Ord('0');
-//  Count    := Ord(t[4]) - Ord('0');
-//
-//  Result := True;
-//end;
 
 // ---------------------------
 // Completed Run Removal
@@ -374,10 +374,10 @@ var
   temp: array of TCard;
 begin
   if not CanMoveSequence(G, FromPile, StartIndex, ToPile) then
-  begin
-    LogLine(G.Logger, Format('Illegal move attempted: %d %d %d', [FromPile, StartIndex, ToPile]));
-    Exit;
-  end;
+    begin
+      LogLine(G.Logger, Format('Illegal move attempted: %d %d %d', [FromPile, StartIndex, ToPile]));
+      Exit;
+    end;
 
   PushUndo(G);
   LogLine(G.Logger, Format('Move: from %d start %d to %d', [FromPile, StartIndex, ToPile]));

@@ -58,12 +58,12 @@ end;
 
 function RedCard(const S: string): string;
 begin
-  Result := ColorText(S, '31', '47');  // red on white
+  Result := ColorText(S, '30', '41');  // red on white  '31', '47'
 end;
 
 function BlackCard(const S: string): string;
 begin
-  Result := ColorText(S, '30', '47');  // black on white
+  Result := ColorText(S, '40', '37');  // black on white  '30', '47'
 end;
 
 function FaceDownCard: string;
@@ -196,15 +196,18 @@ begin
     else
       RecordGameEnd(G.Stats, G.Difficulty, False);
 
-    WriteLn('Commands:');
-    WriteLn('  m <fromPile> <startIndex> <toPile>  - move sequence');
-    WriteLn('  d                                   - deal from stock');
-    WriteLn('  s                                   - save game');
-    WriteLn('  l <filename>                        - start logging to file');
-    WriteLn('  x                                   - stop logging');
-    WriteLn('  u                                   - undo');
-    WriteLn('  r                                   - redo');
-    WriteLn('  q                                   - quit');
+    if (ViewMenu) then
+    begin
+      WriteLn('Commands:');
+      WriteLn('  m <fromPile> <startIndex> <toPile>  - move sequence');
+      WriteLn('  d                                   - deal from stock');
+      WriteLn('  s                                   - save game');
+      WriteLn('  l <filename>                        - start logging to file');
+      WriteLn('  x                                   - stop logging');
+      WriteLn('  u                                   - undo');
+      WriteLn('  r                                   - redo');
+      WriteLn('  q                                   - quit');
+    end;
     Write('> ');
     ReadLn(cmd);
 
@@ -212,6 +215,13 @@ begin
       Continue;
 
     case cmd[1] of
+      'v', 'V':
+        begin
+          if (ViewMenu) then
+            ViewMenu := false
+          else
+            ViewMenu := true;
+        end;
       'q', 'Q':
         begin
           RecordGameEnd(G.Stats, G.Difficulty, False);
@@ -301,10 +311,9 @@ begin
     1: NewGame(G, sdOneSuit);
     2: NewGame(G, sdTwoSuit);
     4: NewGame(G, sdFourSuit);
-  else
-    NewGame(G, sdTwoSuit); // default
   end;
 
+  ViewMenu := true;
   GameLoop;
 
 end.
