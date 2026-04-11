@@ -27,6 +27,8 @@ var
   cmd: string;
   FromPile, ToPile, StartIndex: Integer;
   ViewMenu: Boolean;
+  ViewStatsMenu: Boolean;
+  ViewUtilMenu: Boolean;
 
 // *******************************
 // ** Enable ANSI / Color Codes
@@ -177,6 +179,35 @@ begin
   WriteLn(F);
 end;
 
+procedure ViewMenus(var ViewMenu, ViewStatsMenu, ViewUtilMenu: Boolean);
+begin
+  if (ViewMenu) then
+  begin
+    WriteLn('Commands:');
+    WriteLn('  m <fromPile> <startIndex> <toPile>  - move sequence');
+    WriteLn('  d                                   - deal from stock');
+    WriteLn('  s                                   - save game');
+    WriteLn('  u                                   - undo');
+    WriteLn('  r                                   - redo');
+    WriteLn('  q                                   - quit');
+  end;
+
+  if (ViewStatsMenu) then
+  begin
+    WriteLn('  q                                   - quit');
+    WriteLn('  q                                   - quit');
+    WriteLn('  q                                   - quit');
+    WriteLn('  q                                   - quit');
+  end;
+
+  if (ViewUtilMenu) then
+  begin
+    WriteLn('  l <filename>                        - start logging to file');
+    WriteLn('  x                                   - stop logging');
+  end;
+
+end;
+
 // ******************
 // ** Main Loop
 // ******************
@@ -188,26 +219,18 @@ begin
     G.Stats := Stats;
     ClearScreen;
     PrintGame;
-    if IsWon(G) then
+    if IsWon(G) then //** WINNER! WINNER! CHICKEN DINNER!
       begin
+        ClearScreen;
+        WriteLn('CONGRATULATIONS!! ');
         WriteLn('You won! All 8 runs completed.');
+        ReadLn;
         Exit;
       end
     else
       RecordGameEnd(G.Stats, G.Difficulty, False);
 
-    if (ViewMenu) then
-    begin
-      WriteLn('Commands:');
-      WriteLn('  m <fromPile> <startIndex> <toPile>  - move sequence');
-      WriteLn('  d                                   - deal from stock');
-      WriteLn('  s                                   - save game');
-      WriteLn('  l <filename>                        - start logging to file');
-      WriteLn('  x                                   - stop logging');
-      WriteLn('  u                                   - undo');
-      WriteLn('  r                                   - redo');
-      WriteLn('  q                                   - quit');
-    end;
+    ViewMenus(ViewMenu, ViewStatsMenu, ViewUtilMenU);
     Write('> ');
     ReadLn(cmd);
 
@@ -218,9 +241,41 @@ begin
       'v', 'V':
         begin
           if (ViewMenu) then
-            ViewMenu := false
+            begin
+              ViewMenu := false;
+            end
           else
-            ViewMenu := true;
+            begin
+              ViewMenu := true;
+              ViewStatsMenu := false;
+              ViewUtilMenu := false;
+            end;
+        end;
+      't', 'T':
+        begin
+          if (ViewUtilMenu) then
+            begin
+              ViewUtilMenu := false;
+            end
+          else
+            begin
+              ViewMenu := false;
+              ViewStatsMenu := false;
+              ViewUtilMenu := true;
+            end;
+        end;
+      'a', 'A':
+        begin
+          if (ViewStatsMenu) then
+            begin
+              ViewStatsMenu := false;
+            end
+          else
+            begin
+              ViewMenu := false;
+              ViewStatsMenu := true;
+              ViewUtilMenu := false;
+            end;
         end;
       'q', 'Q':
         begin
@@ -313,6 +368,8 @@ begin
   end;
 
   ViewMenu := true;
+  ViewStatsMenu := false;
+  ViewUtilMenu := false;
   GameLoop;
 
 end.

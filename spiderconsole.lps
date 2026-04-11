@@ -10,9 +10,9 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderConsole"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="150"/>
-        <CursorPos X="26" Y="253"/>
-        <FoldState Value=" T3Y0C131A"/>
+        <TopLine Value="191"/>
+        <CursorPos X="9" Y="240"/>
+        <FoldState Value=" T3a0C016 PjPjG0!"/>
         <UsageCount Value="229"/>
         <Loaded Value="True"/>
       </Unit>
@@ -21,8 +21,9 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderEngine"/>
         <EditorIndex Value="2"/>
-        <CursorPos Y="371"/>
-        <FoldState Value=" T3iG065 pj2jS0N6]96kC0o4 PiRk70V"/>
+        <TopLine Value="370"/>
+        <CursorPos X="10" Y="49"/>
+        <FoldState Value=" T3iG065 pj2jS0N6]96kC0o3 PiNjK0N"/>
         <UsageCount Value="229"/>
         <Loaded Value="True"/>
       </Unit>
@@ -63,9 +64,9 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderStats"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="34"/>
+        <TopLine Value="55"/>
         <CursorPos X="58" Y="33"/>
-        <FoldState Value=" T3d036 Pj9j30R"/>
+        <FoldState Value=" T3d03213 Pidj30$"/>
         <UsageCount Value="234"/>
         <Loaded Value="True"/>
       </Unit>
@@ -75,7 +76,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="59"/>
         <CursorPos X="13" Y="72"/>
-        <UsageCount Value="28"/>
+        <UsageCount Value="64"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit>
       <Unit>
@@ -84,7 +85,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="61"/>
         <CursorPos X="43" Y="29"/>
-        <UsageCount Value="27"/>
+        <UsageCount Value="63"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit>
       <Unit>
@@ -93,22 +94,10 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="134"/>
         <CursorPos X="10" Y="201"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="6"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="294" Column="5" TopLine="119"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="178" Column="15" TopLine="135"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="199" Column="7" TopLine="178"/>
-      </Position>
       <Position>
         <Filename Value="spiderconsole.lpr"/>
         <Caret Line="191" Column="18" TopLine="181"/>
@@ -216,6 +205,18 @@
       <Position>
         <Filename Value="spiderengine.pas"/>
         <Caret Line="264" Column="7" TopLine="213"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="184" Column="3" TopLine="55"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="237" TopLine="221"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="222" Column="13" TopLine="214"/>
       </Position>
     </JumpHistory>
     <RunParams>
