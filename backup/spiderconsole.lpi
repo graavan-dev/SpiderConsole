@@ -67,6 +67,11 @@
         <Filename Value="GameLoop2BU 040826.txt"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="userprofiles.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UserProfiles"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

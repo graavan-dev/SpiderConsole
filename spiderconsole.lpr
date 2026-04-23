@@ -17,7 +17,7 @@ program SpiderConsole;
 
 uses
   SysUtils, CardDeck, SpiderEngine, StrUtils,
-    Windows, SpiderLog, SpiderStats, Drivers;
+    Windows, SpiderLog, SpiderStats, Drivers, UserProfiles;
 
 var
   G: TSpiderGame;
@@ -29,6 +29,8 @@ var
   ViewMenu: Boolean;
   ViewStatsMenu: Boolean;
   ViewUtilMenu: Boolean;
+  Users: TUserList;
+  CurrentUserIndex: Integer = -1;
 
 // *******************************
 // ** Enable ANSI / Color Codes
@@ -183,10 +185,11 @@ procedure ViewMenus(var ViewMenu, ViewStatsMenu, ViewUtilMenu: Boolean);
 begin
   if (ViewMenu) then
   begin
-    WriteLn('Commands:');
+    WriteLn('Main Menu');
     WriteLn('  m <fromPile> <startIndex> <toPile>  - move sequence');
     WriteLn('  d                                   - deal from stock');
     WriteLn('  s                                   - save game');
+    WriteLn('  TBD                                 - load game');
     WriteLn('  u                                   - undo');
     WriteLn('  r                                   - redo');
     WriteLn('  q                                   - quit');
@@ -194,18 +197,19 @@ begin
 
   if (ViewStatsMenu) then
   begin
-    WriteLn('  q                                   - quit');
-    WriteLn('  q                                   - quit');
-    WriteLn('  q                                   - quit');
-    WriteLn('  q                                   - quit');
+    WriteLn('Stats Menu ');
+    WriteLn('  TBD                                 - save stats');
+    WriteLn('  TBD                                 - load stats');
+    WriteLn('  TBD                                 - print stats');
+    WriteLn('  TBD                                 - reset stats');
   end;
 
   if (ViewUtilMenu) then
   begin
+    WriteLn('Utilities Menu ');
     WriteLn('  l <filename>                        - start logging to file');
     WriteLn('  x                                   - stop logging');
   end;
-
 end;
 
 // ******************
@@ -238,7 +242,7 @@ begin
       Continue;
 
     case cmd[1] of
-      'v', 'V':
+      'v', 'V':  //** View Main Menu **//
         begin
           if (ViewMenu) then
             begin
@@ -251,7 +255,7 @@ begin
               ViewUtilMenu := false;
             end;
         end;
-      't', 'T':
+      't', 'T':  //** View Utility Menu **//
         begin
           if (ViewUtilMenu) then
             begin
@@ -264,7 +268,7 @@ begin
               ViewUtilMenu := true;
             end;
         end;
-      'a', 'A':
+      'a', 'A':  //** View Stats Menu **//
         begin
           if (ViewStatsMenu) then
             begin
@@ -277,19 +281,21 @@ begin
               ViewUtilMenu := false;
             end;
         end;
-      'q', 'Q':
+      'q', 'Q':  //** Quit Game **//
         begin
+          AddUser('Peter');
+          SaveUsers;
           RecordGameEnd(G.Stats, G.Difficulty, False);
           Exit;
         end;
-      'd', 'D':
+      'd', 'D':  //** Deal From Stock **//
         begin
           if CanDealFromStock(G) then
             DealFromStock(G)
           else
             WriteLn('Cannot deal from stock (either empty or a pile is empty).');
         end;
-      'm', 'M':
+      'm', 'M':  //** View Main Menu **//
         begin
           if ParseMove(cmd, FromPile, StartIndex, ToPile) then
           begin
@@ -308,7 +314,7 @@ begin
           SaveGame(G, F);
           CloseFile(F);
         end;
-      'l', 'L':
+      'l', 'L':  //** Start Logging **//
         begin
           Delete(cmd, 1, 1);
           cmd := Trim(cmd);
@@ -320,12 +326,12 @@ begin
           StartLog(G.Logger, cmd);
           WriteLn('Logging started.');
         end;
-      'x', 'X':
+      'x', 'X':  //** Stop Logging **//
         begin
           EndLog(G.Logger);
           WriteLn('Logging stopped.');
         end;
-      'p', 'P':
+      'p', 'P':  //** ??? **//
         begin
           Delete(cmd, 1, 1);
           cmd := Trim(cmd);
