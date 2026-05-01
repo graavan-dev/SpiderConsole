@@ -49,6 +49,8 @@ begin
   L.Active := False;
 end;
 
+end.
+
 //procedure ReplayLog(const FileName: string);
 //var
 //  F: Text;
@@ -82,6 +84,3 @@ end;
 //  end;
 //  CloseFile(F);
 //end;
-
-end.
-

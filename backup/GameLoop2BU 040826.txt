@@ -1,0 +1,124 @@
+procedure GameLoop();  // var G: TSpiderGame
+var
+  cmd: string;
+  action: char;
+  p1, p2, count: Integer;
+
+  //procedure FlushInput;
+  //var
+  //  ch: char;
+  //begin
+  //  while not SeekEof do
+  //  begin
+  //    Read(ch);
+  //    if not (ch in [#10, #13]) then
+  //    begin
+  //      // Put the character back into the input buffer
+  //      Unread(ch);
+  //      Break;
+  //    end;
+  //  end;
+  //end;
+
+  function ParseMove(const S: string; out FromPile, ToPile, Count: Integer): Boolean;
+  var
+    t: string;
+  begin
+    Result := False;
+
+    // Remove spaces: allow "m 5 5 4" or "m554"
+    t := StringReplace(S, ' ', '', [rfReplaceAll]);
+
+    // Must start with 'm' or 'M'
+    if (Length(t) < 4) or (UpCase(t[1]) <> 'M') then
+      Exit;
+
+    // Expect exactly 3 digits after 'm'
+    if not (t[2] in ['0'..'9']) then Exit;
+    if not (t[3] in ['0'..'9']) then Exit;
+    if not (t[4] in ['0'..'9']) then Exit;
+
+    FromPile := Ord(t[2]) - Ord('0');
+    ToPile   := Ord(t[3]) - Ord('0');
+    Count    := Ord(t[4]) - Ord('0');
+
+    Result := True;
+  end;
+
+begin
+  repeat
+    ClearScreen;
+    PrintGame();
+
+    Write('Command (mXYZ, d, u, r, q): ');
+    cmd := CleanReadLn;
+
+    if cmd = '' then
+      Continue;
+
+    action := UpCase(cmd[1]);
+
+    case action of
+
+      // -----------------------------
+      // MOVE COMMAND (mXYZ or m X Y Z)
+      // -----------------------------
+      'M':
+        begin
+          if ParseMove(cmd, p1, p2, count) then
+          begin
+            if MoveSequence(G, p1, p2, count) then
+              WriteLn('Move OK.')
+            else
+              WriteLn('Illegal move.');
+          end
+          else
+            WriteLn('Invalid move format. Use mXYZ or m X Y Z.');
+        end;
+
+      // -----------------------------
+      // DEAL FROM STOCK
+      // -----------------------------
+      'D':
+        begin
+          if not DealFromStock(G) then
+            WriteLn('Cannot deal: stock empty or piles not ready.');
+        end;
+
+      // -----------------------------
+      // UNDO
+      // -----------------------------
+      'U':
+        begin
+          if not Undo(G) then
+            WriteLn('Nothing to undo.');
+        end;
+
+      // -----------------------------
+      // REDO
+      // -----------------------------
+      'R':
+        begin
+          if not Redo(G) then
+            WriteLn('Nothing to redo.');
+        end;
+
+      // -----------------------------
+      // QUIT
+      // -----------------------------
+      'Q':
+        begin
+          WriteLn('Exiting game.');
+          Break;
+        end;
+
+    else
+      WriteLn('Unknown command.');
+    end;
+
+    WriteLn('Press Enter...');
+    ReadLn;
+
+  until False;
+end;
+

@@ -29,6 +29,7 @@ var
   ViewMenu: Boolean;
   ViewStatsMenu: Boolean;
   ViewUtilMenu: Boolean;
+  ViewPlayersMenu: Boolean;
   Users: TUserList;
   CurrentUserIndex: Integer = -1;
 
@@ -181,7 +182,7 @@ begin
   WriteLn(F);
 end;
 
-procedure ViewMenus(var ViewMenu, ViewStatsMenu, ViewUtilMenu: Boolean);
+procedure ViewMenus(var ViewMenu, ViewStatsMenu, ViewUtilMenu, ViewPlayersMenu: Boolean);
 begin
   if (ViewMenu) then
   begin
@@ -189,10 +190,14 @@ begin
     WriteLn('  m <fromPile> <startIndex> <toPile>  - move sequence');
     WriteLn('  d                                   - deal from stock');
     WriteLn('  s                                   - save game');
-    WriteLn('  TBD                                 - load game');
+    WriteLn('  o                                   - open game');
     WriteLn('  u                                   - undo');
     WriteLn('  r                                   - redo');
     WriteLn('  q                                   - quit');
+    WriteLn('  v                                   - show/hide main menu');
+    WriteLn('  t                                   - show/hide utility menu');
+    WriteLn('  a                                   - show/hide stats menu');
+    WriteLn('  p                                   - show/hide players menu');
   end;
 
   if (ViewStatsMenu) then
@@ -202,6 +207,10 @@ begin
     WriteLn('  TBD                                 - load stats');
     WriteLn('  TBD                                 - print stats');
     WriteLn('  TBD                                 - reset stats');
+    WriteLn('  v                                   - show/hide main menu');
+    WriteLn('  t                                   - show/hide utility menu');
+    WriteLn('  a                                   - show/hide stats menu');
+    WriteLn('  p                                   - show/hide players menu');
   end;
 
   if (ViewUtilMenu) then
@@ -209,6 +218,21 @@ begin
     WriteLn('Utilities Menu ');
     WriteLn('  l <filename>                        - start logging to file');
     WriteLn('  x                                   - stop logging');
+    WriteLn('  v                                   - show/hide main menu');
+    WriteLn('  t                                   - show/hide utility menu');
+    WriteLn('  a                                   - show/hide stats menu');
+    WriteLn('  p                                   - show/hide players menu');
+  end;
+
+  if (ViewPlayersMenu) then
+  begin
+    WriteLn('  ?                                   - add player');
+    WriteLn('  ?                                   - remove player');
+    WriteLn('  ?                                   - show players');
+    WriteLn('  v                                   - show/hide main menu');
+    WriteLn('  t                                   - show/hide utility menu');
+    WriteLn('  a                                   - show/hide stats menu');
+    WriteLn('  p                                   - show/hide players menu');
   end;
 end;
 
@@ -253,6 +277,7 @@ begin
               ViewMenu := true;
               ViewStatsMenu := false;
               ViewUtilMenu := false;
+              ViewPlayersMenu := false;
             end;
         end;
       't', 'T':  //** View Utility Menu **//
@@ -266,6 +291,7 @@ begin
               ViewMenu := false;
               ViewStatsMenu := false;
               ViewUtilMenu := true;
+              ViewPlayersMenu := false;
             end;
         end;
       'a', 'A':  //** View Stats Menu **//
@@ -279,12 +305,27 @@ begin
               ViewMenu := false;
               ViewStatsMenu := true;
               ViewUtilMenu := false;
+              ViewPlayersMenu: false;
+            end;
+        end;
+      'p', 'P':  //** View Players Menu **//
+        begin
+          if (ViewPlayersMenu) then
+            begin
+              ViewPlayersMenu := false;
+            end
+          else
+            begin
+              ViewMenu := false;
+              ViewStatsMenu := false;
+              ViewUtilMenu := false;
+              ViewPlayersMenu := true;
             end;
         end;
       'q', 'Q':  //** Quit Game **//
         begin
-          AddUser('Peter');
-          SaveUsers;
+          //AddUser('Peter');
+          //SaveUsers;
           RecordGameEnd(G.Stats, G.Difficulty, False);
           Exit;
         end;
@@ -311,7 +352,7 @@ begin
         begin
           AssignFile(F, 'spider_output.txt');
           Rewrite(F);
-          SaveGame(G, F);
+          SaveGame(G, F);  { #todo : Need to confirm file is correct format. }
           CloseFile(F);
         end;
       'l', 'L':  //** Start Logging **//
@@ -331,7 +372,7 @@ begin
           EndLog(G.Logger);
           WriteLn('Logging stopped.');
         end;
-      'p', 'P':  //** ??? **//
+      'p', 'P':  //** Replay Log (replay game?) **//
         begin
           Delete(cmd, 1, 1);
           cmd := Trim(cmd);
@@ -340,10 +381,10 @@ begin
             WriteLn('Usage: r <filename>');
             Continue;
           end;
-          //ReplayLog(cmd);
+          //ReplayLog(cmd);  { #todo : Completely untested so far. };
           WriteLn('Replay complete.');
         end;
-      'u', 'U': Undo(G);
+      'z', 'Z': Undo(G);
       'r', 'R': Redo(G);
     else
       WriteLn('Unknown command.');
@@ -376,6 +417,9 @@ begin
   ViewMenu := true;
   ViewStatsMenu := false;
   ViewUtilMenu := false;
+  ViewPlayersMenu := false;
+
+
   GameLoop;
 
 end.
