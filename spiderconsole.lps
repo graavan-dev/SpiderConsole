@@ -9,10 +9,9 @@
         <Filename Value="spiderconsole.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderConsole"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="241"/>
-        <CursorPos X="52" Y="261"/>
-        <FoldState Value=" T3d0C7 PjSlU0 T0mZ661212[443[54]RAjd8&apos;"/>
+        <TopLine Value="21"/>
+        <CursorPos X="15" Y="27"/>
+        <FoldState Value=" T3d0C7 pjSkG0q1 PkMiE0 T0mZ661215123]72 Pifjd8-"/>
         <UsageCount Value="229"/>
         <Loaded Value="True"/>
       </Unit>
@@ -20,7 +19,7 @@
         <Filename Value="spiderengine.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderEngine"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="3"/>
         <TopLine Value="458"/>
         <CursorPos X="10" Y="5"/>
         <FoldState Value=" T3iG065 pj2jS0N6]96kC0o4 PiRk70V"/>
@@ -31,7 +30,7 @@
         <Filename Value="carddeck.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="CardDeck"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="5"/>
         <CursorPos Y="122"/>
         <FoldState Value=" T3a0p3 PRiW0("/>
         <UsageCount Value="229"/>
@@ -42,7 +41,6 @@
       </Unit>
       <Unit>
         <Filename Value="code backup.txt"/>
-        <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="4" Y="2"/>
         <UsageCount Value="228"/>
@@ -52,7 +50,7 @@
         <Filename Value="spiderlog.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderLog"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="6"/>
         <CursorPos Y="9"/>
         <FoldState Value=" T3N033 PGJ0 TMi90W1"/>
         <UsageCount Value="228"/>
@@ -70,7 +68,6 @@
       </Unit>
       <Unit>
         <Filename Value="GameLoopBU 040826.txt"/>
-        <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="59"/>
         <CursorPos X="13" Y="72"/>
@@ -79,44 +76,35 @@
       </Unit>
       <Unit>
         <Filename Value="GameLoop2BU 040826.txt"/>
-        <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="61"/>
         <CursorPos X="43" Y="29"/>
-        <UsageCount Value="199"/>
+        <UsageCount Value="200"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit>
       <Unit>
         <Filename Value="userprofiles.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="UserProfiles"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="24"/>
-        <CursorPos Y="63"/>
-        <FoldState Value=" T3Z0P5 Pi7id0c"/>
-        <UsageCount Value="155"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="10"/>
+        <CursorPos X="5" Y="22"/>
+        <FoldState Value=" T3iL0E4 PaiC0}"/>
+        <UsageCount Value="157"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="UserData.json"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="9"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="16" Y="2"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="305" TopLine="288"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="29" Column="3" TopLine="13"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="223" Column="32" TopLine="197"/>
-      </Position>
       <Position>
         <Filename Value="spiderconsole.lpr"/>
         <Caret Line="221" Column="31" TopLine="213"/>
@@ -224,6 +212,18 @@
       <Position>
         <Filename Value="spiderconsole.lpr"/>
         <Caret Line="58" Column="19"/>
+      </Position>
+      <Position>
+        <Filename Value="userprofiles.pas"/>
+        <Caret Line="9" Column="8"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="261" TopLine="247"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="308" Column="33" TopLine="298"/>
       </Position>
     </JumpHistory>
     <RunParams>

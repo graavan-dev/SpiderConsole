@@ -46,10 +46,6 @@
         <UnitName Value="CardDeck"/>
       </Unit>
       <Unit>
-        <Filename Value="code backup.txt"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
         <Filename Value="spiderlog.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderLog"/>
@@ -60,17 +56,13 @@
         <UnitName Value="SpiderStats"/>
       </Unit>
       <Unit>
-        <Filename Value="GameLoopBU 040826.txt"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="GameLoop2BU 040826.txt"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
         <Filename Value="userprofiles.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="UserProfiles"/>
+      </Unit>
+      <Unit>
+        <Filename Value="UserData.json"/>
+        <IsPartOfProject Value="True"/>
       </Unit>
     </Units>
   </ProjectOptions>

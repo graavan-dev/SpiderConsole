@@ -258,7 +258,7 @@ begin
     else
       RecordGameEnd(G.Stats, G.Difficulty, False);
 
-    ViewMenus(ViewMenu, ViewStatsMenu, ViewUtilMenU);
+    ViewMenus(ViewMenu, ViewStatsMenu, ViewUtilMenu, ViewPlayersMenu);
     Write('> ');
     ReadLn(cmd);
 
@@ -305,7 +305,7 @@ begin
               ViewMenu := false;
               ViewStatsMenu := true;
               ViewUtilMenu := false;
-              ViewPlayersMenu: false;
+              ViewPlayersMenu := false;
             end;
         end;
       'p', 'P':  //** View Players Menu **//
@@ -336,7 +336,7 @@ begin
           else
             WriteLn('Cannot deal from stock (either empty or a pile is empty).');
         end;
-      'm', 'M':  //** View Main Menu **//
+      'm', 'M':  //** Move Card(s) from column to column **//
         begin
           if ParseMove(cmd, FromPile, StartIndex, ToPile) then
           begin

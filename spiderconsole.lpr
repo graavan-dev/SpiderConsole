@@ -258,7 +258,7 @@ begin
     else
       RecordGameEnd(G.Stats, G.Difficulty, False);
 
-    ViewMenus(ViewMenu, ViewStatsMenu, ViewUtilMenu);
+    ViewMenus(ViewMenu, ViewStatsMenu, ViewUtilMenu, ViewPlayersMenu);
     Write('> ');
     ReadLn(cmd);
 
@@ -305,7 +305,7 @@ begin
               ViewMenu := false;
               ViewStatsMenu := true;
               ViewUtilMenu := false;
-              ViewPlayersMenu: false;
+              ViewPlayersMenu := false;
             end;
         end;
       'p', 'P':  //** View Players Menu **//
@@ -372,7 +372,7 @@ begin
           EndLog(G.Logger);
           WriteLn('Logging stopped.');
         end;
-      'p', 'P':  //** Replay Log (replay game?) **//
+      'k', 'K':  //** Replay Log (replay game?) **//
         begin
           Delete(cmd, 1, 1);
           cmd := Trim(cmd);

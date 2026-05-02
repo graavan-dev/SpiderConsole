@@ -5,19 +5,21 @@ unit UserProfiles;
 interface
 
 uses
-  Classes, SysUtils, SpiderStats;
+  Classes, SysUtils, SpiderStats,
+    fpjson, jsonparser;
 
 type
   TUserProfile = record
     UserName: string[32];
-    Stats: TSpiderStats;       // your existing stats type
+    Stats: TSpiderStats;
     LastDifficulty: Integer;
     HasSavedGame: Boolean;
-    //SavedGame: TSpiderGame;  // your existing game state type
+    //SavedGame: TSpiderGame;
   end;
 
   TUserList = record
     Count: Integer;
+
     Items: array of TUserProfile;
   end;
 

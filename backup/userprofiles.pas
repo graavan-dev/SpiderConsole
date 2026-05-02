@@ -5,7 +5,8 @@ unit UserProfiles;
 interface
 
 uses
-  Classes, SysUtils, SpiderStats;
+  Classes, SysUtils, SpiderStats,
+    fpjson, jsonparser;
 
 type
   TUserProfile = record
@@ -66,7 +67,7 @@ var
   i: Integer;
   Users: TUserList;
 begin
-  AssignFile(F, USERS_FILE);
+  AssignFile(F, USERS_FILE);  //** error popping up **//
   Rewrite(F);
   try
     for i := 0 to Users.Count - 1 do
