@@ -9,12 +9,18 @@ uses
 
 type
   TSpiderStats = record
-    GamesPlayed: Integer;
+    GamesPlayed: integer;
     GamesWon: Integer;
     GamesLost: Integer;
-    TotalMoves: Integer;
+    GamesDrawn: Integer;
+    WinPercentage: Integer;
+    HighScore: Integer;
+    AverageScorePerGame: Integer;
+    BestTime: TDateTime;
+    AverageTimePerGame: TDateTime;
+    TotalStacks: Integer;
+    AverageStacksPerGame: Integer;
 
-    // Difficulty breakdown
     OneSuitPlayed: Integer;
     OneSuitWon: Integer;
 
@@ -23,6 +29,9 @@ type
 
     FourSuitPlayed: Integer;
     FourSuitWon: Integer;
+
+    LastDifficulty: Integer;
+    HasSavedGame: Boolean;
   end;
 
 procedure InitStats(var S: TSpiderStats);

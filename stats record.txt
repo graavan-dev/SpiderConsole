@@ -1,0 +1,18 @@
+GamesPlayed: integer;
+GamesWon: Integer;
+GamesLost: Integer;
+GamesDrawn: Integer;
+WinPercentage: Integer;
+HighScore: Integer;
+AverageScorePerGame: Integer;
+BestTime
+AverageTimePerGame
+TotalStacks: Integer;
+AverageStacksPerGame: Integer;
+OneSuitPlayed: Integer;
+OneSuitWon: Integer;
+TwoSuitPlayed: Integer;
+TwoSuitWon: Integer;
+FourSuitPlayed: Integer;
+FourSuitWon: Integer;
+

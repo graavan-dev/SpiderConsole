@@ -1,2 +1,13 @@
 Spider Program ToDos
 
+    "GamesPlayed": 0,
+    "GamesWon": 0,
+    "GamesLost": 0,
+    "GamesDrawn": 0,
+    "WinPercentage": 0,
+    "HighScore": 0,
+    "AverageScorePerGame": 0,
+    "BestTime": "00:00",
+    "AverageTimePerGame":"00:00" ,
+    "TotalStacks": 0,
+    "AverageStacksPerGame": 0

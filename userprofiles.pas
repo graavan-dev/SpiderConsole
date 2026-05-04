@@ -9,22 +9,25 @@ uses
     fpjson, jsonparser;
 
 type
-  TUserProfile = record
+  TUserProfiles = record
     UserName: string[32];
     Stats: TSpiderStats;
-    LastDifficulty: Integer;
-    HasSavedGame: Boolean;
-    //SavedGame: TSpiderGame;
   end;
 
   TUserList = record
     Count: Integer;
-
-    Items: array of TUserProfile;
+    Players: array of TUserProfile;
   end;
 
+  var
+    JSONData: TJSONData;
+    JSONObject: TJSONObject;
+    JSONArray: TJSONArray;
+    JSONFileName: string;
+    FileStream: TFileStream;
+
 const
-  USERS_FILE = 'users.txt';
+  USERS_FILE = 'userdata.json';
 
   procedure LoadUsers;
   procedure SaveUsers;
@@ -37,9 +40,10 @@ implementation
 
 procedure LoadUsers;
 var
-  F: file of TUserProfile;
-  U: TUserProfile;
+  DataFile: file of TUserProfile;
+  User: TUserProfile;
   Users: TUserList;
+
 begin
   Users.Count := 0;
   SetLength(Users.Items, 0);

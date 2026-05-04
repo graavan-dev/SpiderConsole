@@ -5,14 +5,21 @@ unit SpiderStats;
 interface
 
 uses
-  SysUtils;
+  SysUtils,  CardDeck;
 
 type
   TSpiderStats = record
-    GamesPlayed: Integer;
+    GamesPlayed: integer;
     GamesWon: Integer;
     GamesLost: Integer;
-    TotalMoves: Integer;
+    GamesDrawn: Integer;
+    WinPercentage: Integer;
+    HighScore: Integer;
+    AverageScorePerGame: Integer;
+    BestTime: TDateTime;
+    AverageTimePerGame: TDateTime;
+    TotalStacks: Integer;
+    AverageStacksPerGame: Integer;
 
     // Difficulty breakdown
     OneSuitPlayed: Integer;
