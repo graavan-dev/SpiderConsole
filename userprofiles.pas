@@ -6,10 +6,10 @@ interface
 
 uses
   Classes, SysUtils, SpiderStats,
-    fpjson, jsonparser;
+    fpjson, jsonparser, jsonwriter;
 
 type
-  TUserProfiles = record
+  TUserProfile = record
     UserName: string[32];
     Stats: TSpiderStats;
   end;
@@ -29,8 +29,8 @@ type
 const
   USERS_FILE = 'userdata.json';
 
-  procedure LoadUsers;
-  procedure SaveUsers;
+  function LoadUsersFromJSON(const FileName: string): TUserList;
+  procedure SaveUsersToJSON(const FileName: string; const Users: TUserList);
   function FindUserIndex(const Name: string): Integer;
   function AddUser(const Name: string): Integer;
   procedure DeleteUser(Index: Integer);
@@ -38,92 +38,233 @@ const
 
 implementation
 
-procedure LoadUsers;
+function LoadUsersFromJSON(const FileName: string): TUserList;
 var
-  DataFile: file of TUserProfile;
-  User: TUserProfile;
-  Users: TUserList;
-
+  JSON: TJSONData;
+  Obj: TJSONObject;
+  Keys: TStringList;
+  i: Integer;
+  UserObj: TJSONObject;
+  StatsArr: TJSONArray;
+  StatsObj: TJSONObject;
 begin
-  Users.Count := 0;
-  SetLength(Users.Items, 0);
+  JSON := GetJSON(ReadFileToString(FileName));
+  Obj := TJSONObject(JSON);
 
-  if not FileExists(USERS_FILE) then
-    Exit;
-
-  AssignFile(F, USERS_FILE);
-  Reset(F);
+  Keys := TStringList.Create;
   try
-    while not Eof(F) do
+    Obj.GetNames(Keys);
+
+    Result.Count := Keys.Count;
+    SetLength(Result.Players, Result.Count);
+
+    for i := 0 to Keys.Count - 1 do
     begin
-      Read(F, U);
-      Inc(Users.Count);
-      SetLength(Users.Items, Users.Count);
-      Users.Items[Users.Count - 1] := U;
+      UserObj := Obj.Objects[Keys[i]];
+
+      // Load username
+      Result.Players[i].UserName := UserObj.Get('Name', '');
+
+      // Stats is an array with one object
+      StatsArr := UserObj.Arrays['Stats'];
+      StatsObj := StatsArr.Objects[0];
+
+      with Result.Players[i].Stats do
+      begin
+        GamesPlayed := StatsObj.Get('GamesPlayed', 0);
+        GamesWon := StatsObj.Get('GamesWon', 0);
+        GamesLost := StatsObj.Get('GamesLost', 0);
+        GamesDrawn := StatsObj.Get('GamesDrawn', 0);
+        WinPercentage := StatsObj.Get('WinPercentage', 0);
+        HighScore := StatsObj.Get('HighScore', 0);
+        AverageScorePerGame := StatsObj.Get('AverageScorePerGame', 0);
+
+        // Times stored as "HH:MM" strings → convert to TDateTime
+        BestTime := StrToTimeDef(StatsObj.Get('BestTime', '00:00'), 0);
+        AverageTimePerGame := StrToTimeDef(StatsObj.Get('AverageTimePerGame', '00:00'), 0);
+
+        TotalStacks := StatsObj.Get('TotalStacks', 0);
+        AverageStacksPerGame := StatsObj.Get('AverageStacksPerGame', 0);
+        OneSuitPlayed := StatsObj.Get('OneSuitPlayed', 0);
+        OneSuitWon := StatsObj.Get('OneSuitWon', 0);
+        TwoSuitPlayed := StatsObj.Get('TwoSuitPlayed', 0);
+        TwoSuitWon := StatsObj.Get('TwoSuitWon', 0);
+        FourSuitPlayed := StatsObj.Get('FourSuitPlayed', 0);
+        FourSuitWon := StatsObj.Get('FourSuitWon', 0);
+
+        LastDifficulty := StatsObj.Get('LastDifficulty', 0);
+        HasSavedGame := StatsObj.Get('HasSavedGame', False);
+      end;
     end;
+
   finally
-    CloseFile(F);
+    Keys.Free;
+    JSON.Free;
   end;
 end;
 
-procedure SaveUsers;
+procedure SaveUsersToJSON(const FileName: string; const Users: TUserList);
 var
-  F: file of TUserProfile;
+  RootObj: TJSONObject;
+  UserObj: TJSONObject;
+  StatsArr: TJSONArray;
+  StatsObj: TJSONObject;
   i: Integer;
-  Users: TUserList;
+  Writer: TJSONWriter;
 begin
-  AssignFile(F, USERS_FILE);  //** error popping up **//
-  Rewrite(F);
+  RootObj := TJSONObject.Create;
+
   try
     for i := 0 to Users.Count - 1 do
-      Write(F, Users.Items[i]);
+    begin
+      UserObj := TJSONObject.Create;
+      UserObj.Add('Name', Users.Players[i].UserName);
+
+      StatsArr := TJSONArray.Create;
+      StatsObj := TJSONObject.Create;
+
+      with Users.Players[i].Stats do
+      begin
+        StatsObj.Add('GamesPlayed', GamesPlayed);
+        StatsObj.Add('GamesWon', GamesWon);
+        StatsObj.Add('GamesLost', GamesLost);
+        StatsObj.Add('GamesDrawn', GamesDrawn);
+        StatsObj.Add('WinPercentage', WinPercentage);
+        StatsObj.Add('HighScore', HighScore);
+        StatsObj.Add('AverageScorePerGame', AverageScorePerGame);
+
+        // Convert TDateTime → "HH:MM"
+        StatsObj.Add('BestTime', FormatDateTime('hh:nn', BestTime));
+        StatsObj.Add('AverageTimePerGame', FormatDateTime('hh:nn', AverageTimePerGame));
+
+        StatsObj.Add('TotalStacks', TotalStacks);
+        StatsObj.Add('AverageStacksPerGame', AverageStacksPerGame);
+        StatsObj.Add('OneSuitPlayed', OneSuitPlayed);
+        StatsObj.Add('OneSuitWon', OneSuitWon);
+        StatsObj.Add('TwoSuitPlayed', TwoSuitPlayed);
+        StatsObj.Add('TwoSuitWon', TwoSuitWon);
+        StatsObj.Add('FourSuitPlayed', FourSuitPlayed);
+        StatsObj.Add('FourSuitWon', FourSuitWon);
+
+        StatsObj.Add('LastDifficulty', LastDifficulty);
+        StatsObj.Add('HasSavedGame', HasSavedGame);
+      end;
+
+      StatsArr.Add(StatsObj);
+      UserObj.Add('Stats', StatsArr);
+
+      // Add user to root object under their username key
+      RootObj.Add(Users.Players[i].UserName, UserObj);
+    end;
+
+    // Write JSON to file
+    Writer := TJSONWriter.Create(FileName);
+    try
+      Writer.WriteJSON(RootObj, True); // True = pretty formatting
+    finally
+      Writer.Free;
+    end;
+
   finally
-    CloseFile(F);
+    RootObj.Free;
   end;
 end;
 
-function FindUserIndex(const Name: string): Integer;
+function FindUserIndex(const Users: TUserList; const UserName: string): Integer;
 var
   i: Integer;
-  Users: TUserList;
 begin
-  Result := -1;
   for i := 0 to Users.Count - 1 do
-    if SameText(Users.Items[i].UserName, Name) then
+    if SameText(Users.Players[i].UserName, UserName) then
       Exit(i);
+
+  Result := -1;
 end;
 
-function AddUser(const Name: string): Integer;
+function DeleteUser(var Users: TUserList; const UserName: string): Boolean;
 var
-    Users: TUserList;
+  idx, i: Integer;
 begin
-  Inc(Users.Count);
-  SetLength(Users.Items, Users.Count);
-  with Users.Items[Users.Count - 1] do
+  Result := False;
+  idx := FindUserIndex(Users, UserName);
+  if idx = -1 then Exit;
+
+  // Shift everything down
+  for i := idx to Users.Count - 2 do
+    Users.Players[i] := Users.Players[i + 1];
+
+  Dec(Users.Count);
+  SetLength(Users.Players, Users.Count);
+
+  Result := True;
+end;
+
+function RenameUser(var Users: TUserList; const OldName, NewName: string): Boolean;
+var
+  idx: Integer;
+begin
+  Result := False;
+
+  // Prevent duplicate names
+  if FindUserIndex(Users, NewName) <> -1 then Exit;
+
+  idx := FindUserIndex(Users, OldName);
+  if idx = -1 then Exit;
+
+  Users.Players[idx].UserName := NewName;
+  Result := True;
+end;
+
+procedure ResetStats(var Stats: TSpiderStats);
+begin
+  with Stats do
   begin
-    UserName := Name;
-    FillChar(Stats, SizeOf(Stats), 0);
-    LastDifficulty := 1;
+    GamesPlayed := 0;
+    GamesWon := 0;
+    GamesLost := 0;
+    GamesDrawn := 0;
+    WinPercentage := 0;
+    HighScore := 0;
+    AverageScorePerGame := 0;
+
+    BestTime := 0;
+    AverageTimePerGame := 0;
+
+    TotalStacks := 0;
+    AverageStacksPerGame := 0;
+
+    OneSuitPlayed := 0;
+    OneSuitWon := 0;
+    TwoSuitPlayed := 0;
+    TwoSuitWon := 0;
+    FourSuitPlayed := 0;
+    FourSuitWon := 0;
+
+    LastDifficulty := 0;
     HasSavedGame := False;
   end;
-  Result := Users.Count - 1;
 end;
 
-procedure DeleteUser(Index: Integer);
+function CloneUserFromTemplate(var Users: TUserList; const NewName: string): Boolean;
 var
-  i: Integer;
-  Users: TUserList;
+  TemplateIndex: Integer;
 begin
-  if (Index < 0) or (Index >= Users.Count) then Exit;
-  for i := Index to Users.Count - 2 do
-    Users.Items[i] := Users.Items[i + 1];
-  Dec(Users.Count);
-  SetLength(Users.Items, Users.Count);
-end;
+  Result := False;
 
-function GetUserSaveFile(const U: TUserProfile): string;
-begin
-  Result := 'save_' + Trim(U.UserName) + '.dat';
+  // Prevent duplicates
+  if FindUserIndex(Users, NewName) <> -1 then Exit;
+
+  TemplateIndex := FindUserIndex(Users, 'Template');
+  if TemplateIndex = -1 then Exit;
+
+  // Add new user
+  if not AddUser(Users, NewName) then Exit;
+
+  // Copy stats from template
+  Users.Players[Users.Count - 1].Stats :=
+    Users.Players[TemplateIndex].Stats;
+
+  Result := True;
 end;
 
 

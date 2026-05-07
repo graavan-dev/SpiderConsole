@@ -243,7 +243,7 @@ procedure GameLoop;
 begin
   while True do
   begin
-    LoadStats(Stats, 'spider_stats.txt');
+    LoadStats(Stats, 'spider_stats.txt'); { #todo : Will need to be corrected. }
     G.Stats := Stats;
     ClearScreen;
     PrintGame;
@@ -325,6 +325,7 @@ begin
       'q', 'Q':  //** Quit Game **//
         begin
           //AddUser('Peter');
+          { #todo : Is this correct place for AddUsers and SaveUsersToJSON to be called? }
           //SaveUsers;
           RecordGameEnd(G.Stats, G.Difficulty, False);
           Exit;
@@ -386,6 +387,7 @@ begin
         end;
       'z', 'Z': Undo(G);
       'r', 'R': Redo(G);
+      { #todo : Add a View Stats choice. }
     else
       WriteLn('Unknown command.');
     end;
@@ -413,6 +415,8 @@ begin
     2: NewGame(G, sdTwoSuit);
     4: NewGame(G, sdFourSuit);
   end;
+
+  { #todo : Does loading users take place here? }
 
   ViewMenu := true;
   ViewStatsMenu := false;

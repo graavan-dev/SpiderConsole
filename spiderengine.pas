@@ -397,7 +397,7 @@ begin
   SetLength(G.Tableau[ToPile], i + moveCount);
   Move(temp[0], G.Tableau[ToPile][i], moveCount * SizeOf(TCard));
 
-  RecordMove(G.Stats);
+  //RecordMove(G.Stats);
   Inc(G.MovesThisGame);
   RemoveCompletedRuns(G);
 end;
@@ -424,7 +424,7 @@ var
 begin
   if not CanDealFromStock(G) then
   begin
-    LogLine(G.Logger, 'Attempted illegal stock deal.');
+    LogLine(G.Logger, 'No cards left to deal.');
     Exit;
   end;
 
@@ -439,7 +439,7 @@ begin
     Inc(G.StockPos);
   end;
 
-  RecordMove(G.Stats);
+  //RecordMove(G.Stats);
   Inc(G.MovesThisGame);
   RemoveCompletedRuns(G);
 end;

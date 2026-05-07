@@ -261,7 +261,7 @@ function ParseMove(const S: string; out FromPile, StartIndex, ToPile: Integer): 
 var
   t: string;
   nums: array[1..3] of string;
-  i, n, count: Integer;
+  i, n: Integer;
 begin
   Result := False;
 
@@ -397,7 +397,7 @@ begin
   SetLength(G.Tableau[ToPile], i + moveCount);
   Move(temp[0], G.Tableau[ToPile][i], moveCount * SizeOf(TCard));
 
-  RecordMove(G.Stats);
+  //RecordMove(G.Stats);
   Inc(G.MovesThisGame);
   RemoveCompletedRuns(G);
 end;

@@ -1,0 +1,90 @@
+{
+  {
+  "Name": "Computer",
+  "Stats": [
+    {
+    "GamesPlayed": 0,
+    "GamesWon": 0,
+    "GamesLost": 0,
+    "GamesDrawn": 0,
+    "WinPercentage": 0,
+    "HighScore": 0,
+    "AverageScorePerGame": 0,
+    "BestTime": "00:00",
+    "AverageTimePerGame":"00:00" ,
+    "TotalStacks": 0,
+    "AverageStacksPerGame": 0,
+    "OneSuitPlayed": 0,
+    "OneSuitWon": 0,
+    "TwoSuitPlayed": 0,
+    "TwoSuitWon": 0,
+    "FourSuitPlayed": 0,
+    "FourSuitWon": 0,
+    "LastDifficulty": 0,
+    "HasSavedGame": false
+    }
+  ]
+  },
+  {
+  "Name": "PeterK": [
+    {
+    "GamesPlayed": 0,
+    "GamesWon": 0,
+    "GamesLost": 0,
+    "GamesDrawn": 0,
+    "WinPercentage": 0,
+    "HighScore": 0,
+    "AverageScorePerGame": 0,
+    "BestTime": "00:00",
+    "AverageTimePerGame":"00:00" ,
+    "TotalStacks": 0,
+    "AverageStacksPerGame": 0,
+    "OneSuitPlayed": 0,
+    "OneSuitWon": 0,
+    "TwoSuitPlayed": 0,
+    "TwoSuitWon": 0,
+    "FourSuitPlayed": 0,
+    "FourSuitWon": 0
+    }
+  ]
+  },
+  "NicklausW": {
+    "GamesPlayed": 0,
+    "GamesWon": 0,
+    "GamesLost": 0,
+    "GamesDrawn": 0,
+    "WinPercentage": 0,
+    "HighScore": 0,
+    "AverageScorePerGame": 0,
+    "BestTime": "00:00",
+    "AverageTimePerGame":"00:00" ,
+    "TotalStacks": 0,
+    "AverageStacksPerGame": 0,
+    "OneSuitPlayed": 0,
+    "OneSuitWon": 0,
+    "TwoSuitPlayed": 0,
+    "TwoSuitWon": 0,
+    "FourSuitPlayed": 0,
+    "FourSuitWon": 0
+  },
+  "Template": {
+    "GamesPlayed": 0,
+    "GamesWon": 0,
+    "GamesLost": 0,
+    "GamesDrawn": 0,
+    "WinPercentage": 0,
+    "HighScore": 0,
+    "AverageScorePerGame": 0,
+    "BestTime": "00:00",
+    "AverageTimePerGame":"00:00" ,
+    "TotalStacks": 0,
+    "AverageStacksPerGame": 0,
+    "OneSuitPlayed": 0,
+    "OneSuitWon": 0,
+    "TwoSuitPlayed": 0,
+    "TwoSuitWon": 0,
+    "FourSuitPlayed": 0,
+    "FourSuitWon": 0
+  }
+}
+}

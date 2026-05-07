@@ -243,7 +243,7 @@ procedure GameLoop;
 begin
   while True do
   begin
-    LoadStats(Stats, 'spider_stats.txt');
+    LoadStats(Stats, 'spider_stats.txt'); { #todo : Will need to be corrected. }
     G.Stats := Stats;
     ClearScreen;
     PrintGame;
@@ -372,7 +372,7 @@ begin
           EndLog(G.Logger);
           WriteLn('Logging stopped.');
         end;
-      'p', 'P':  //** Replay Log (replay game?) **//
+      'k', 'K':  //** Replay Log (replay game?) **//
         begin
           Delete(cmd, 1, 1);
           cmd := Trim(cmd);
@@ -386,6 +386,7 @@ begin
         end;
       'z', 'Z': Undo(G);
       'r', 'R': Redo(G);
+      { #todo : Add a View Stats choice. }
     else
       WriteLn('Unknown command.');
     end;
