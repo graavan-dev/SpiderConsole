@@ -26,6 +26,7 @@ type
     JSONFileName: string;
     FileStream: TFileStream;
     //JSONWriter: TJSONWriter;
+    ActiveUserIndex: Integer;
 
 const
   USERS_FILE = 'userdata.json';
@@ -33,8 +34,8 @@ const
   function LoadUsersFromJSON(const FileName: string): TUserList;
   procedure SaveUsersToJSON(const FileName: string; const Users: TUserList);
   //function FindUserIndex(const Name: string): Integer;
-  function AddUser(const Name: string): Integer;
-  procedure DeleteUser(Index: Integer);
+  //function AddUser(const Name: string): Integer;
+  //procedure DeleteUser(Index: Integer);
   function RenameUser(var Users: TUserList; const OldName, NewName: string): Boolean;
   procedure ResetStats(var Stats: TSpiderStats);
   function CloneUserFromTemplate(var Users: TUserList; const NewName: string): Boolean;
@@ -43,6 +44,11 @@ const
   procedure UserManagementMenu(var Users: TUserList);
 
 implementation
+
+procedure ClearScreen;
+begin
+  Write(#27'[2J'#27'[H');
+end;
 
 function ReadFileToString(const FileName: string): string;
 var
@@ -387,7 +393,7 @@ begin
     WriteLn('------------------------------');
     Write('Enter choice: ');
     ReadLn(input);
-
+    ClearScreen;
     // Validate numeric input
     if not TryStrToInt(input, choice) then
     begin
@@ -417,9 +423,10 @@ procedure UserManagementMenu(var Users: TUserList);
 var
   choice: Integer;
   input, name, newName: string;
-  idx: Integer;
+  //idx: Integer;
 begin
   repeat
+    ClearScreen;
     WriteLn;
     WriteLn('===================================');
     WriteLn('         User Management Menu       ');
@@ -448,11 +455,11 @@ begin
       // ---------------------------------------------------------
       1:
         begin
-          idx := ChooseUser(Users);
-          if idx = -1 then
+          ActiveUserIndex := ChooseUser(Users);
+          if ActiveUserIndex = -1 then
             WriteLn('No user selected.')
           else
-            WriteLn('Selected user: ', Users.Players[idx].UserName);
+            WriteLn('Selected user: ', Users.Players[ActiveUserIndex].UserName);
         end;
 
       // ---------------------------------------------------------
@@ -508,12 +515,12 @@ begin
           Write('Enter username to reset stats: ');
           ReadLn(name);
 
-          idx := FindUserIndex(Users, name);
-          if idx = -1 then
+          ActiveUserIndex := FindUserIndex(Users, name);
+          if ActiveUserIndex = -1 then
             WriteLn('User not found.')
           else
           begin
-            ResetStats(Users.Players[idx].Stats);
+            ResetStats(Users.Players[ActiveUserIndex].Stats);
             WriteLn('Stats reset for "', name, '".');
           end;
         end;

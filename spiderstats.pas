@@ -101,7 +101,7 @@ begin
   CloseFile(F);
 end;
 
-procedure LoadStats(var S: TSpiderStats; const FileName: string); { #todo : This should happen when a user is loaded in UserProfiles. }
+procedure LoadStats(var S: TSpiderStats; const FileName: string);
 var
   F: Text;
 begin

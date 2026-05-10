@@ -145,7 +145,7 @@ begin
   WriteLn('Games Won:    ', S.GamesWon);
   WriteLn('Games Lost:   ', S.GamesLost);
   WriteLn('Win %:        ', FormatFloat('0.0', winPct));
-  WriteLn('Total Moves:  ', S.TotalMoves);
+  //WriteLn('Total Moves:  ', S.TotalMoves);
 
   WriteLn;
   WriteLn('--- Difficulty Breakdown ---');

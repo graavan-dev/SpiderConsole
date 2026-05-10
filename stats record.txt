@@ -15,4 +15,53 @@ TwoSuitPlayed: Integer;
 TwoSuitWon: Integer;
 FourSuitPlayed: Integer;
 FourSuitWon: Integer;
+LastDifficulty: Integer;
+HasSavedGame: Boolean;
+
+
+addtions to json file below
+
+    "OneSuitPlayed": 0,
+    "OneSuitWon": 0,
+    "TwoSuitPlayed": 0,
+    "TwoSuitWon": 0,
+    "FourSuitPlayed": 0,
+    "FourSuitWon": 0,
+    "LastDifficulty": 0,
+    "HasSavedGame": false
+
+Assuming the three following structures, please give me a basic example of loading the above json file using free pascal.
+
+  TUserList = record
+    Count: Integer;
+    Players: array of TUserProfile;
+  end;
+
+  TUserProfiles = record
+    UserName: string[32];
+    Stats: TSpiderStats;
+  end;
+
+  TSpiderStats = record
+    GamesPlayed: integer;
+    GamesWon: Integer;
+    GamesLost: Integer;
+    GamesDrawn: Integer;
+    WinPercentage: Integer;
+    HighScore: Integer;
+    AverageScorePerGame: Integer;
+    BestTime: TDateTime;
+    AverageTimePerGame: TDateTime;
+    TotalStacks: Integer;
+    AverageStacksPerGame: Integer;
+    OneSuitPlayed: Integer;
+    OneSuitWon: Integer;
+    TwoSuitPlayed: Integer;
+    TwoSuitWon: Integer;
+    FourSuitPlayed: Integer;
+    FourSuitWon: Integer;
+    LastDifficulty: Integer;
+    HasSavedGame: Boolean;
+  end;
+
 

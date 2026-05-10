@@ -9,10 +9,9 @@
         <Filename Value="spiderconsole.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderConsole"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="25"/>
-        <CursorPos X="5" Y="34"/>
-        <FoldState Value=" T3d0C7 PjSlU0 T0i4233 pibiO8I7393A PlOn8AM"/>
+        <TopLine Value="400"/>
+        <CursorPos Y="414"/>
+        <FoldState Value=" T3Y0C7 pjTkE0q1 PkKiB0 T0g233 pibiM8I73A2A PlXn2AF"/>
         <UsageCount Value="229"/>
         <Loaded Value="True"/>
       </Unit>
@@ -56,7 +55,7 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderStats"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="64"/>
+        <TopLine Value="89"/>
         <CursorPos Y="134"/>
         <FoldState Value=" T3i103212 PiSj30 T0iP271Q"/>
         <UsageCount Value="234"/>
@@ -66,9 +65,11 @@
         <Filename Value="userprofiles.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="UserProfiles"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="27"/>
-        <CursorPos X="5" Y="37"/>
+        <TopLine Value="533"/>
+        <CursorPos X="53" Y="523"/>
+        <FoldState Value=" T3i4032 pjAjJ0.4]91kZ0S2 PiS]I T0j3233]OBig6N22211]SEnD4k"/>
         <UsageCount Value="214"/>
         <Loaded Value="True"/>
       </Unit>
@@ -77,7 +78,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="16" Y="2"/>
-        <UsageCount Value="79"/>
+        <UsageCount Value="93"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit>
       <Unit>
@@ -85,14 +86,14 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="3" Y="4"/>
-        <UsageCount Value="76"/>
+        <UsageCount Value="90"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit>
       <Unit>
         <Filename Value="code backup.txt"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="4" Y="2"/>
-        <UsageCount Value="223"/>
+        <UsageCount Value="222"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit>
       <Unit>
@@ -100,7 +101,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="59"/>
         <CursorPos X="13" Y="72"/>
-        <UsageCount Value="195"/>
+        <UsageCount Value="194"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit>
       <Unit>
@@ -108,59 +109,11 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="61"/>
         <CursorPos X="43" Y="29"/>
-        <UsageCount Value="195"/>
+        <UsageCount Value="194"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="userprofiles.pas"/>
-        <Caret Line="19" Column="35" TopLine="2"/>
-      </Position>
-      <Position>
-        <Filename Value="spiderconsole.lpr"/>
-        <Caret Line="242"/>
-      </Position>
-      <Position>
-        <Filename Value="userprofiles.pas"/>
-        <Caret Line="52" Column="19" TopLine="5"/>
-      </Position>
-      <Position>
-        <Filename Value="userprofiles.pas"/>
-        <Caret Line="166" Column="17" TopLine="153"/>
-      </Position>
-      <Position>
-        <Filename Value="userprofiles.pas"/>
-        <Caret Line="164" Column="14" TopLine="154"/>
-      </Position>
-      <Position>
-        <Filename Value="userprofiles.pas"/>
-        <Caret Line="28" Column="29" TopLine="14"/>
-      </Position>
-      <Position>
-        <Filename Value="userprofiles.pas"/>
-        <Caret Line="22" Column="6" TopLine="16"/>
-      </Position>
-      <Position>
-        <Filename Value="userprofiles.pas"/>
-        <Caret Line="28" Column="5" TopLine="10"/>
-      </Position>
-      <Position>
-        <Filename Value="userprofiles.pas"/>
-        <Caret Line="9" Column="27" TopLine="4"/>
-      </Position>
-      <Position>
-        <Filename Value="userprofiles.pas"/>
-        <Caret Line="28" Column="7" TopLine="19"/>
-      </Position>
-      <Position>
-        <Filename Value="userprofiles.pas"/>
-        <Caret Line="53" Column="19" TopLine="43"/>
-      </Position>
-      <Position>
-        <Filename Value="userprofiles.pas"/>
-        <Caret Line="115" Column="11" TopLine="106"/>
-      </Position>
       <Position>
         <Filename Value="userprofiles.pas"/>
         <Caret Line="43" Column="54" TopLine="35"/>
@@ -172,10 +125,6 @@
       <Position>
         <Filename Value="userprofiles.pas"/>
         <Caret Line="64" Column="15" TopLine="56"/>
-      </Position>
-      <Position>
-        <Filename Value="userprofiles.pas"/>
-        <Caret Line="47" TopLine="349"/>
       </Position>
       <Position>
         <Filename Value="userprofiles.pas"/>
@@ -232,6 +181,57 @@
       <Position>
         <Filename Value="spiderconsole.lpr"/>
         <Caret Line="24" Column="5" TopLine="15"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="34" Column="5" TopLine="25"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="247" Column="7" TopLine="407"/>
+      </Position>
+      <Position>
+        <Filename Value="userprofiles.pas"/>
+        <Caret Line="423" Column="17" TopLine="340"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="416" TopLine="401"/>
+      </Position>
+      <Position>
+        <Filename Value="userprofiles.pas"/>
+        <Caret Line="395" Column="17" TopLine="390"/>
+      </Position>
+      <Position>
+        <Filename Value="userprofiles.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="userprofiles.pas"/>
+        <Caret Line="42" Column="22" TopLine="24"/>
+      </Position>
+      <Position>
+        <Filename Value="userprofiles.pas"/>
+        <Caret Line="368" Column="20" TopLine="52"/>
+      </Position>
+      <Position>
+        <Filename Value="spiderconsole.lpr"/>
+        <Caret Line="414" TopLine="400"/>
+      </Position>
+      <Position>
+        <Filename Value="userprofiles.pas"/>
+        <Caret Line="462" Column="69" TopLine="487"/>
+      </Position>
+      <Position>
+        <Filename Value="userprofiles.pas"/>
+        <Caret Line="459" Column="29" TopLine="446"/>
+      </Position>
+      <Position>
+        <Filename Value="userprofiles.pas"/>
+        <Caret Line="462" Column="69" TopLine="452"/>
+      </Position>
+      <Position>
+        <Filename Value="userprofiles.pas"/>
+        <Caret Line="519" Column="29" TopLine="508"/>
       </Position>
     </JumpHistory>
     <RunParams>

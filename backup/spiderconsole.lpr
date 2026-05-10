@@ -21,7 +21,6 @@ uses
 
 var
   G: TSpiderGame;
-  //Stats: TSpiderStats;
   F: Text;
   cardStr: string;
   cmd: string;
@@ -31,11 +30,7 @@ var
   ViewUtilMenu: Boolean;
   ViewPlayersMenu: Boolean;
   Users: TUserList;
-  //CurrentUserIndex: Integer = -1;
 
-// *******************************
-// ** Enable ANSI / Color Codes
-// *******************************
 
 procedure EnableANSI;
 var
@@ -76,9 +71,6 @@ begin
   Result := ColorText('XX', '30', '47');  // dim black on white
 end;
 
-// *****************
-// ** Print / Save Game
-// *****************
 procedure PrintGame;
 var
   p, i, maxLen, len: Integer;
@@ -88,6 +80,7 @@ begin
   WriteLn;
   WriteLn('Completed runs: ', G.CompletedRuns, ' / 8');
   WriteLn('Stock deals remaining: ', GetStockDealsRemaining(G));
+  WriteLn('Active player: ', Users.Players[ActiveUserIndex].UserName);
   WriteLn;
 
   // Find tallest pile
@@ -236,15 +229,12 @@ begin
   end;
 end;
 
-// ******************
-// ** Main Loop
-// ******************
 procedure GameLoop;
 begin
   while True do
   begin
     //LoadStats(Stats, 'spider_stats.txt'); { #todo : Will need to be corrected. }
-    G.Stats := Stats;
+    //G.Stats := Stats;
     ClearScreen;
     PrintGame;
     if IsWon(G) then //** WINNER! WINNER! CHICKEN DINNER!
@@ -324,9 +314,6 @@ begin
         end;
       'q', 'Q':  //** Quit Game **//
         begin
-          //AddUser('Peter');
-          { #todo : Is this correct place for AddUsers and SaveUsersToJSON to be called? }
-          //SaveUsers;
           RecordGameEnd(G.Stats, G.Difficulty, False);
           Exit;
         end;
@@ -387,7 +374,6 @@ begin
         end;
       'z', 'Z': Undo(G);
       'r', 'R': Redo(G);
-      { #todo : Add a View Stats choice. }
     else
       WriteLn('Unknown command.');
     end;
@@ -416,21 +402,20 @@ begin
     4: NewGame(G, sdFourSuit);
   end;
 
-
-
-  { #todo : Does loading users take place here? }
-
   ViewMenu := true;
   ViewStatsMenu := false;
   ViewUtilMenu := false;
   ViewPlayersMenu := false;
 
-  Users := LoadUsersFromJSON('users.json');
+  Users := LoadUsersFromJSON('userdata.json');
   UserManagementMenu(Users);
+  //ActiveUserIndex := ChooseUser(Users);
+  WriteLn('Active player: ', Users.Players[ActiveUserIndex].UserName);
 
+  ClearScreen;
   GameLoop;
 
-  SaveUsersToJSON('users.json', Users);
+  SaveUsersToJSON('userdata.json', Users);
 
 end.
 
