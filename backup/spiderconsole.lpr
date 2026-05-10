@@ -21,7 +21,7 @@ uses
 
 var
   G: TSpiderGame;
-  Stats: TSpiderStats;
+  //Stats: TSpiderStats;
   F: Text;
   cardStr: string;
   cmd: string;
@@ -31,7 +31,7 @@ var
   ViewUtilMenu: Boolean;
   ViewPlayersMenu: Boolean;
   Users: TUserList;
-  CurrentUserIndex: Integer = -1;
+  //CurrentUserIndex: Integer = -1;
 
 // *******************************
 // ** Enable ANSI / Color Codes
@@ -243,7 +243,7 @@ procedure GameLoop;
 begin
   while True do
   begin
-    LoadStats(Stats, 'spider_stats.txt'); { #todo : Will need to be corrected. }
+    //LoadStats(Stats, 'spider_stats.txt'); { #todo : Will need to be corrected. }
     G.Stats := Stats;
     ClearScreen;
     PrintGame;
@@ -254,9 +254,9 @@ begin
         WriteLn('You won! All 8 runs completed.');
         ReadLn;
         Exit;
-      end
-    else
-      RecordGameEnd(G.Stats, G.Difficulty, False);
+      end;
+    //else
+    //  RecordGameEnd(G.Stats, G.Difficulty, False);
 
     ViewMenus(ViewMenu, ViewStatsMenu, ViewUtilMenu, ViewPlayersMenu);
     Write('> ');
@@ -325,6 +325,7 @@ begin
       'q', 'Q':  //** Quit Game **//
         begin
           //AddUser('Peter');
+          { #todo : Is this correct place for AddUsers and SaveUsersToJSON to be called? }
           //SaveUsers;
           RecordGameEnd(G.Stats, G.Difficulty, False);
           Exit;
@@ -415,13 +416,21 @@ begin
     4: NewGame(G, sdFourSuit);
   end;
 
+
+
+  { #todo : Does loading users take place here? }
+
   ViewMenu := true;
   ViewStatsMenu := false;
   ViewUtilMenu := false;
   ViewPlayersMenu := false;
 
+  Users := LoadUsersFromJSON('users.json');
+  UserManagementMenu(Users);
 
   GameLoop;
+
+  SaveUsersToJSON('users.json', Users);
 
 end.
 

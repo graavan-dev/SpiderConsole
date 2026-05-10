@@ -1,0 +1,136 @@
+function LoadUsersFromJSON(const FileName: string): TUserList;
+var
+  JSON: TJSONData;
+  Obj: TJSONObject;
+  Keys: TStringList;
+  i: Integer;
+  UserObj: TJSONObject;
+  StatsArr: TJSONArray;
+  StatsObj: TJSONObject;
+begin
+  JSON := GetJSON(ReadFileToString(FileName));
+  Obj := TJSONObject(JSON);
+
+  Keys := TStringList.Create;
+  try
+    Obj.GetNames(Keys);
+
+    Result.Count := Keys.Count;
+    SetLength(Result.Players, Result.Count);
+
+    for i := 0 to Keys.Count - 1 do
+    begin
+      UserObj := Obj.Objects[Keys[i]];
+
+      // Load username
+      Result.Players[i].UserName := UserObj.Get('Name', '');
+
+      // Stats is an array with one object
+      StatsArr := UserObj.Arrays['Stats'];
+      StatsObj := StatsArr.Objects[0];
+
+      with Result.Players[i].Stats do
+      begin
+        GamesPlayed := StatsObj.Get('GamesPlayed', 0);
+        GamesWon := StatsObj.Get('GamesWon', 0);
+        GamesLost := StatsObj.Get('GamesLost', 0);
+        GamesDrawn := StatsObj.Get('GamesDrawn', 0);
+        WinPercentage := StatsObj.Get('WinPercentage', 0);
+        HighScore := StatsObj.Get('HighScore', 0);
+        AverageScorePerGame := StatsObj.Get('AverageScorePerGame', 0);
+
+        // Times stored as "HH:MM" strings → convert to TDateTime
+        BestTime := StrToTimeDef(StatsObj.Get('BestTime', '00:00'), 0);
+        AverageTimePerGame := StrToTimeDef(StatsObj.Get('AverageTimePerGame', '00:00'), 0);
+
+        TotalStacks := StatsObj.Get('TotalStacks', 0);
+        AverageStacksPerGame := StatsObj.Get('AverageStacksPerGame', 0);
+        OneSuitPlayed := StatsObj.Get('OneSuitPlayed', 0);
+        OneSuitWon := StatsObj.Get('OneSuitWon', 0);
+        TwoSuitPlayed := StatsObj.Get('TwoSuitPlayed', 0);
+        TwoSuitWon := StatsObj.Get('TwoSuitWon', 0);
+        FourSuitPlayed := StatsObj.Get('FourSuitPlayed', 0);
+        FourSuitWon := StatsObj.Get('FourSuitWon', 0);
+
+        LastDifficulty := StatsObj.Get('LastDifficulty', 0);
+        HasSavedGame := StatsObj.Get('HasSavedGame', False);
+      end;
+    end;
+
+  finally
+    Keys.Free;
+    JSON.Free;
+  end;
+end;
+
+procedure SaveUsersToJSON(const FileName: string; const Users: TUserList);
+var
+  RootObj: TJSONObject;
+  UserObj: TJSONObject;
+  StatsArr: TJSONArray;
+  StatsObj: TJSONObject;
+  i: Integer;
+  Writer: TJSONWriter;
+begin
+  RootObj := TJSONObject.Create;
+
+  try
+    for i := 0 to Users.Count - 1 do
+    begin
+      UserObj := TJSONObject.Create;
+      UserObj.Add('Name', Users.Players[i].UserName);
+
+      StatsArr := TJSONArray.Create;
+      StatsObj := TJSONObject.Create;
+
+      with Users.Players[i].Stats do
+      begin
+        StatsObj.Add('GamesPlayed', GamesPlayed);
+        StatsObj.Add('GamesWon', GamesWon);
+        StatsObj.Add('GamesLost', GamesLost);
+        StatsObj.Add('GamesDrawn', GamesDrawn);
+        StatsObj.Add('WinPercentage', WinPercentage);
+        StatsObj.Add('HighScore', HighScore);
+        StatsObj.Add('AverageScorePerGame', AverageScorePerGame);
+
+        // Convert TDateTime → "HH:MM"
+        StatsObj.Add('BestTime', FormatDateTime('hh:nn', BestTime));
+        StatsObj.Add('AverageTimePerGame', FormatDateTime('hh:nn', AverageTimePerGame));
+
+        StatsObj.Add('TotalStacks', TotalStacks);
+        StatsObj.Add('AverageStacksPerGame', AverageStacksPerGame);
+        StatsObj.Add('OneSuitPlayed', OneSuitPlayed);
+        StatsObj.Add('OneSuitWon', OneSuitWon);
+        StatsObj.Add('TwoSuitPlayed', TwoSuitPlayed);
+        StatsObj.Add('TwoSuitWon', TwoSuitWon);
+        StatsObj.Add('FourSuitPlayed', FourSuitPlayed);
+        StatsObj.Add('FourSuitWon', FourSuitWon);
+
+        StatsObj.Add('LastDifficulty', LastDifficulty);
+        StatsObj.Add('HasSavedGame', HasSavedGame);
+      end;
+
+      StatsArr.Add(StatsObj);
+      UserObj.Add('Stats', StatsArr);
+
+      // Add user to root object under their username key
+      RootObj.Add(Users.Players[i].UserName, UserObj);
+    end;
+
+    // Write JSON to file
+    Writer := TJSONWriter.Create(FileName);
+    try
+      Writer.WriteJSON(RootObj, True); // True = pretty formatting
+    finally
+      Writer.Free;
+    end;
+
+  finally
+    RootObj.Free;
+  end;
+end;
+
+
+I'm only getting the following two errors:
+userprofiles.pas(64,15) Error: Identifier not found "ReadFileToString"
+userprofiles.pas(77,9) Error: identifier idents no member "GetNames"

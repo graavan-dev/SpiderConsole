@@ -1,0 +1,8 @@
+{"version":1,"strings":[
+{"hash":81671931,"name":"jsonwriter.serrnoobjectsonstack","sourcebytes":[78,111,32,111,98,106,101,99,116,115,32,99,114,101,97,116,101,100,32,111,110,32,115,116,97,99,107],"value":"No objects created on stack"},
+{"hash":158002194,"name":"jsonwriter.spropertynamealreadyset","sourcebytes":[67,97,110,110,111,116,32,115,101,116,32,112,114,111,112,101,114,116,121,32,110,97,109,101,32,116,111,32,34,37,115,34,44,32,105,116,32,105,115,32,97,108,114,101,97,100,121,32,115,101,116,32,116,111,32,34,37,115,34],"value":"Cannot set property name to \"%s\", it is already set to \"%s\""},
+{"hash":230358293,"name":"jsonwriter.serrnotatstructuredvalue","sourcebytes":[67,117,114,114,101,110,116,32,118,97,108,117,101,32,105,115,32,110,111,116,32,97,32,115,116,114,117,99,116,117,114,101,100,32,118,97,108,117,101],"value":"Current value is not a structured value"},
+{"hash":88085337,"name":"jsonwriter.serrcannotpop","sourcebytes":[67,97,110,110,111,116,32,112,111,112,44,32,115,116,97,99,107,32,101,109,112,116,121],"value":"Cannot pop, stack empty"},
+{"hash":236552805,"name":"jsonwriter.serrnopushonsimplevalue","sourcebytes":[67,97,110,110,111,116,32,112,117,115,104,32,111,110,32,116,111,112,32,111,102,32,110,111,110,45,115,116,114,117,99,116,117,114,101,100,32,118,97,108,117,101],"value":"Cannot push on top of non-structured value"},
+{"hash":148964741,"name":"jsonwriter.serrnopropertynameforpush","sourcebytes":[67,97,110,110,111,116,32,112,117,115,104,32,116,111,32,111,98,106,101,99,116,32,119,105,116,104,111,117,116,32,112,114,111,112,101,114,116,121,32,110,97,109,101],"value":"Cannot push to object without property name"}
+]}

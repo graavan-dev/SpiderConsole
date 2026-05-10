@@ -21,7 +21,7 @@ uses
 
 var
   G: TSpiderGame;
-  Stats: TSpiderStats;
+  //Stats: TSpiderStats;
   F: Text;
   cardStr: string;
   cmd: string;
@@ -31,7 +31,7 @@ var
   ViewUtilMenu: Boolean;
   ViewPlayersMenu: Boolean;
   Users: TUserList;
-  CurrentUserIndex: Integer = -1;
+  //CurrentUserIndex: Integer = -1;
 
 // *******************************
 // ** Enable ANSI / Color Codes
@@ -243,8 +243,8 @@ procedure GameLoop;
 begin
   while True do
   begin
-    LoadStats(Stats, 'spider_stats.txt'); { #todo : Will need to be corrected. }
-    G.Stats := Stats;
+    //LoadStats(Stats, 'spider_stats.txt'); { #todo : Will need to be corrected. }
+    //G.Stats := Stats;
     ClearScreen;
     PrintGame;
     if IsWon(G) then //** WINNER! WINNER! CHICKEN DINNER!
@@ -254,9 +254,9 @@ begin
         WriteLn('You won! All 8 runs completed.');
         ReadLn;
         Exit;
-      end
-    else
-      RecordGameEnd(G.Stats, G.Difficulty, False);
+      end;
+    //else
+    //  RecordGameEnd(G.Stats, G.Difficulty, False);
 
     ViewMenus(ViewMenu, ViewStatsMenu, ViewUtilMenu, ViewPlayersMenu);
     Write('> ');
@@ -416,6 +416,8 @@ begin
     4: NewGame(G, sdFourSuit);
   end;
 
+
+
   { #todo : Does loading users take place here? }
 
   ViewMenu := true;
@@ -423,8 +425,12 @@ begin
   ViewUtilMenu := false;
   ViewPlayersMenu := false;
 
+  Users := LoadUsersFromJSON('users.json');
+  UserManagementMenu(Users);
 
   GameLoop;
+
+  SaveUsersToJSON('users.json', Users);
 
 end.
 

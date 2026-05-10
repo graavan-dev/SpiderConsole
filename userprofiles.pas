@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, SpiderStats,
-    fpjson, jsonparser, jsonwriter;
+    fpjson, jsonparser; //, jsonwriter;
 
 type
   TUserProfile = record
@@ -25,18 +25,41 @@ type
     JSONArray: TJSONArray;
     JSONFileName: string;
     FileStream: TFileStream;
+    //JSONWriter: TJSONWriter;
 
 const
   USERS_FILE = 'userdata.json';
 
   function LoadUsersFromJSON(const FileName: string): TUserList;
   procedure SaveUsersToJSON(const FileName: string; const Users: TUserList);
-  function FindUserIndex(const Name: string): Integer;
-  function AddUser(const Name: string): Integer;
-  procedure DeleteUser(Index: Integer);
-  function GetUserSaveFile(const U: TUserProfile): string;
+  //function FindUserIndex(const Name: string): Integer;
+  //function AddUser(const Name: string): Integer;
+  //procedure DeleteUser(Index: Integer);
+  function RenameUser(var Users: TUserList; const OldName, NewName: string): Boolean;
+  procedure ResetStats(var Stats: TSpiderStats);
+  function CloneUserFromTemplate(var Users: TUserList; const NewName: string): Boolean;
+  //function GetUserSaveFile(const U: TUserProfile): string;
+  function ChooseUser(const Users: TUserList): Integer;
+  procedure UserManagementMenu(var Users: TUserList);
 
 implementation
+
+function ReadFileToString(const FileName: string): string;
+var
+  //FS: TFileStream;
+  S: TStringList;
+begin
+  Result := '';
+  if not FileExists(FileName) then Exit;
+
+  S := TStringList.Create;
+  try
+    S.LoadFromFile(FileName);
+    Result := S.Text;
+  finally
+    S.Free;
+  end;
+end;
 
 function LoadUsersFromJSON(const FileName: string): TUserList;
 var
@@ -47,13 +70,31 @@ var
   UserObj: TJSONObject;
   StatsArr: TJSONArray;
   StatsObj: TJSONObject;
+  S: string;
 begin
-  JSON := GetJSON(ReadFileToString(FileName));
+  Result.Count := 0;
+  SetLength(Result.Players, 0);
+
+  // Read entire file into a string
+  S := '';
+  if FileExists(FileName) then
+    S := Trim(ReadFileToString(FileName));
+
+  if S = '' then
+  begin
+    WriteLn('Warning: JSON file empty or missing: ', FileName);
+    Exit;
+  end;
+
+  JSON := GetJSON(S);
   Obj := TJSONObject(JSON);
 
   Keys := TStringList.Create;
   try
-    Obj.GetNames(Keys);
+    Keys.Clear;
+    for i := 0 to Obj.Count - 1 do
+      Keys.Add(Obj.Names[i]);
+
 
     Result.Count := Keys.Count;
     SetLength(Result.Players, Result.Count);
@@ -79,7 +120,7 @@ begin
         HighScore := StatsObj.Get('HighScore', 0);
         AverageScorePerGame := StatsObj.Get('AverageScorePerGame', 0);
 
-        // Times stored as "HH:MM" strings → convert to TDateTime
+        // Convert "HH:MM" → TDateTime
         BestTime := StrToTimeDef(StatsObj.Get('BestTime', '00:00'), 0);
         AverageTimePerGame := StrToTimeDef(StatsObj.Get('AverageTimePerGame', '00:00'), 0);
 
@@ -110,7 +151,8 @@ var
   StatsArr: TJSONArray;
   StatsObj: TJSONObject;
   i: Integer;
-  Writer: TJSONWriter;
+  FS: TFileStream;
+  S: string;
 begin
   RootObj := TJSONObject.Create;
 
@@ -133,7 +175,6 @@ begin
         StatsObj.Add('HighScore', HighScore);
         StatsObj.Add('AverageScorePerGame', AverageScorePerGame);
 
-        // Convert TDateTime → "HH:MM"
         StatsObj.Add('BestTime', FormatDateTime('hh:nn', BestTime));
         StatsObj.Add('AverageTimePerGame', FormatDateTime('hh:nn', AverageTimePerGame));
 
@@ -153,16 +194,18 @@ begin
       StatsArr.Add(StatsObj);
       UserObj.Add('Stats', StatsArr);
 
-      // Add user to root object under their username key
       RootObj.Add(Users.Players[i].UserName, UserObj);
     end;
 
-    // Write JSON to file
-    Writer := TJSONWriter.Create(FileName);
+    // Convert JSON to pretty string
+    S := RootObj.FormatJSON([], 2);
+
+    // Write to file
+    FS := TFileStream.Create(FileName, fmCreate);
     try
-      Writer.WriteJSON(RootObj, True); // True = pretty formatting
+      FS.WriteBuffer(S[1], Length(S));
     finally
-      Writer.Free;
+      FS.Free;
     end;
 
   finally
@@ -179,6 +222,56 @@ begin
       Exit(i);
 
   Result := -1;
+end;
+
+function AddUser(var Users: TUserList; const NewName: string): Boolean;
+var
+  i: Integer;
+  idx: Integer;
+begin
+  Result := False;
+
+  // Prevent duplicates
+  for i := 0 to Users.Count - 1 do
+    if SameText(Users.Players[i].UserName, NewName) then
+      Exit; // user already exists
+
+  // Add new user
+  idx := Users.Count;
+  Inc(Users.Count);
+  SetLength(Users.Players, Users.Count);
+
+  // Initialize profile
+  Users.Players[idx].UserName := NewName;
+
+  with Users.Players[idx].Stats do
+  begin
+    GamesPlayed := 0;
+    GamesWon := 0;
+    GamesLost := 0;
+    GamesDrawn := 0;
+    WinPercentage := 0;
+    HighScore := 0;
+    AverageScorePerGame := 0;
+
+    BestTime := 0;               // TDateTime = 0 → "00:00"
+    AverageTimePerGame := 0;
+
+    TotalStacks := 0;
+    AverageStacksPerGame := 0;
+
+    OneSuitPlayed := 0;
+    OneSuitWon := 0;
+    TwoSuitPlayed := 0;
+    TwoSuitWon := 0;
+    FourSuitPlayed := 0;
+    FourSuitWon := 0;
+
+    LastDifficulty := 0;
+    HasSavedGame := False;
+  end;
+
+  Result := True;
 end;
 
 function DeleteUser(var Users: TUserList; const UserName: string): Boolean;
@@ -258,7 +351,7 @@ begin
   if TemplateIndex = -1 then Exit;
 
   // Add new user
-  if not AddUser(Users, NewName) then Exit;
+  // if not AddUser(Users, NewName) then Exit;
 
   // Copy stats from template
   Users.Players[Users.Count - 1].Stats :=
@@ -267,6 +360,190 @@ begin
   Result := True;
 end;
 
+function ChooseUser(const Users: TUserList): Integer;
+var
+  i, choice: Integer;
+  input: string;
+begin
+  Result := -1;
+
+  if Users.Count = 0 then
+  begin
+    WriteLn('No users available.');
+    Exit;
+  end;
+
+  while True do
+  begin
+    WriteLn;
+    WriteLn('==============================');
+    WriteLn('        Select a User         ');
+    WriteLn('==============================');
+
+    for i := 0 to Users.Count - 1 do
+      WriteLn('  ', i + 1, ') ', Users.Players[i].UserName);
+
+    WriteLn('  0) Cancel');
+    WriteLn('------------------------------');
+    Write('Enter choice: ');
+    ReadLn(input);
+
+    // Validate numeric input
+    if not TryStrToInt(input, choice) then
+    begin
+      WriteLn('Invalid input. Please enter a number.');
+      Continue;
+    end;
+
+    // Cancel
+    if choice = 0 then
+    begin
+      Result := -1;
+      Exit;
+    end;
+
+    // Valid range
+    if (choice >= 1) and (choice <= Users.Count) then
+    begin
+      Result := choice - 1;
+      Exit;
+    end;
+
+    WriteLn('Invalid choice. Try again.');
+  end;
+end;
+
+procedure UserManagementMenu(var Users: TUserList);
+var
+  choice: Integer;
+  input, name, newName: string;
+  idx: Integer;
+begin
+  repeat
+    WriteLn;
+    WriteLn('===================================');
+    WriteLn('         User Management Menu       ');
+    WriteLn('===================================');
+    WriteLn(' 1) Choose User');
+    WriteLn(' 2) Create New User');
+    WriteLn(' 3) Delete User');
+    WriteLn(' 4) Rename User');
+    WriteLn(' 5) Reset User Stats');
+    WriteLn(' 6) Clone User From Template');
+    WriteLn(' 0) Exit');
+    WriteLn('-----------------------------------');
+    Write('Enter choice: ');
+    ReadLn(input);
+
+    if not TryStrToInt(input, choice) then
+    begin
+      WriteLn('Invalid input. Please enter a number.');
+      Continue;
+    end;
+
+    case choice of
+
+      // ---------------------------------------------------------
+      // 1) Choose User
+      // ---------------------------------------------------------
+      1:
+        begin
+          idx := ChooseUser(Users);
+          if idx = -1 then
+            WriteLn('No user selected.')
+          else
+            WriteLn('Selected user: ', Users.Players[idx].UserName);
+        end;
+
+      // ---------------------------------------------------------
+      // 2) Create New User
+      // ---------------------------------------------------------
+      2:
+        begin
+          Write('Enter new username: ');
+          ReadLn(name);
+
+          if AddUser(Users, name) then
+            WriteLn('User "', name, '" created.')
+          else
+            WriteLn('User "', name, '" already exists.');
+        end;
+
+      // ---------------------------------------------------------
+      // 3) Delete User
+      // ---------------------------------------------------------
+      3:
+        begin
+          Write('Enter username to delete: ');
+          ReadLn(name);
+
+          if DeleteUser(Users, name) then
+            WriteLn('User "', name, '" deleted.')
+          else
+            WriteLn('User "', name, '" not found.');
+        end;
+
+      // ---------------------------------------------------------
+      // 4) Rename User
+      // ---------------------------------------------------------
+      4:
+        begin
+          Write('Enter existing username: ');
+          ReadLn(name);
+
+          Write('Enter new username: ');
+          ReadLn(newName);
+
+          if RenameUser(Users, name, newName) then
+            WriteLn('User "', name, '" renamed to "', newName, '".')
+          else
+            WriteLn('Rename failed. User may not exist or new name already taken.');
+        end;
+
+      // ---------------------------------------------------------
+      // 5) Reset Stats
+      // ---------------------------------------------------------
+      5:
+        begin
+          Write('Enter username to reset stats: ');
+          ReadLn(name);
+
+          idx := FindUserIndex(Users, name);
+          if idx = -1 then
+            WriteLn('User not found.')
+          else
+          begin
+            ResetStats(Users.Players[idx].Stats);
+            WriteLn('Stats reset for "', name, '".');
+          end;
+        end;
+
+      // ---------------------------------------------------------
+      // 6) Clone From Template
+      // ---------------------------------------------------------
+      6:
+        begin
+          Write('Enter new username to clone template into: ');
+          ReadLn(name);
+
+          if CloneUserFromTemplate(Users, name) then
+            WriteLn('User "', name, '" created from template.')
+          else
+            WriteLn('Clone failed. Template missing or user already exists.');
+        end;
+
+      // ---------------------------------------------------------
+      // 0) Exit
+      // ---------------------------------------------------------
+      0:
+        WriteLn('Exiting user management menu...');
+
+    else
+      WriteLn('Invalid choice. Try again.');
+    end;
+
+  until choice = 0;
+end;
 
 end.
 
