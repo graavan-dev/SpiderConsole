@@ -14,7 +14,6 @@ program SpiderConsole;
 
 {$mode objfpc}{$H+}
 
-
 uses
   SysUtils, CardDeck, SpiderEngine, StrUtils,
     Windows, SpiderLog, SpiderStats, Drivers, UserProfiles;
@@ -30,7 +29,6 @@ var
   ViewUtilMenu: Boolean;
   ViewPlayersMenu: Boolean;
   Users: TUserList;
-
 
 procedure EnableANSI;
 var
@@ -71,7 +69,7 @@ begin
   Result := ColorText('XX', '30', '47');  // dim black on white
 end;
 
-procedure PrintGame;
+procedure DrawGameOnScreen;
 var
   p, i, maxLen, len: Integer;
   c: TCard;
@@ -234,7 +232,7 @@ begin
   while True do
   begin
     ClearScreen;
-    PrintGame;
+    DrawGameOnScreen;
     if IsWon(G) then //** WINNER! WINNER! CHICKEN DINNER!
       begin
         ClearScreen;
@@ -331,6 +329,18 @@ begin
           end
           else
             WriteLn('Invalid move. Use mXYZ or m X Y Z.');
+
+          // have game check if any more moves exist
+          if not HasAnyMovesLeft(G) then
+          begin
+            // GAME OVER MAN!
+            // https://youtu.be/dsx2vdn7gpY?si=Io9XpPCfDfRgflv_
+            // warning, link above is NSFW
+            writeln('Game Over Man!');
+            readln;
+            exit;
+          end;
+
         end;
       's', 'S':  //** Save Game **//
         begin
@@ -376,18 +386,11 @@ begin
   end;
 end;
 
+procedure DifficultyAndNewGame;
 var
   diff: Integer;
 
-{$R *.res}
-
 begin
-  SetConsoleOutputCP(CP_UTF8);
-  SetConsoleCP(CP_UTF8);
-  EnableANSI;
-  Randomize;
-
-
   WriteLn;
   WriteLn('==============================');
   WriteLn('       Select difficulty      ');
@@ -402,15 +405,24 @@ begin
     2: NewGame(G, sdTwoSuit);
     4: NewGame(G, sdFourSuit);
   end;
+end;
+
+{$R *.res}
+
+begin
+  SetConsoleOutputCP(CP_UTF8);
+  SetConsoleCP(CP_UTF8);
+  EnableANSI;
+  Randomize;
 
   ViewMenu := true;
   ViewStatsMenu := false;
   ViewUtilMenu := false;
   ViewPlayersMenu := false;
 
+  DifficultyAndNewGame;
   Users := LoadUsersFromJSON('userdata.json');
   UserManagementMenu(Users);
-  WriteLn('Active player: ', Users.Players[ActiveUserIndex].UserName);
 
   ClearScreen;
   GameLoop;

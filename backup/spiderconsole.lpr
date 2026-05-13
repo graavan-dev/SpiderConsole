@@ -14,7 +14,6 @@ program SpiderConsole;
 
 {$mode objfpc}{$H+}
 
-
 uses
   SysUtils, CardDeck, SpiderEngine, StrUtils,
     Windows, SpiderLog, SpiderStats, Drivers, UserProfiles;
@@ -30,7 +29,6 @@ var
   ViewUtilMenu: Boolean;
   ViewPlayersMenu: Boolean;
   Users: TUserList;
-
 
 procedure EnableANSI;
 var
@@ -71,7 +69,7 @@ begin
   Result := ColorText('XX', '30', '47');  // dim black on white
 end;
 
-procedure PrintGame;
+procedure DrawGameOnScreen;
 var
   p, i, maxLen, len: Integer;
   c: TCard;
@@ -233,10 +231,8 @@ procedure GameLoop;
 begin
   while True do
   begin
-    //LoadStats(Stats, 'spider_stats.txt'); { #todo : Will need to be corrected. }
-    //G.Stats := Stats;
     ClearScreen;
-    PrintGame;
+    DrawGameOnScreen;
     if IsWon(G) then //** WINNER! WINNER! CHICKEN DINNER!
       begin
         ClearScreen;
@@ -245,8 +241,6 @@ begin
         ReadLn;
         Exit;
       end;
-    //else
-    //  RecordGameEnd(G.Stats, G.Difficulty, False);
 
     ViewMenus(ViewMenu, ViewStatsMenu, ViewUtilMenu, ViewPlayersMenu);
     Write('> ');
@@ -335,6 +329,18 @@ begin
           end
           else
             WriteLn('Invalid move. Use mXYZ or m X Y Z.');
+
+          // have game check if any more moves exist
+          if not HasAnyMovesLeft(G) then
+          begin
+            // GAME OVER MAN!
+            // https://youtu.be/dsx2vdn7gpY?si=Io9XpPCfDfRgflv_
+            // warning, link above is NSFW
+            writeln('Game Over Man!');
+            readln;
+            exit;
+          end;
+
         end;
       's', 'S':  //** Save Game **//
         begin
@@ -380,17 +386,15 @@ begin
   end;
 end;
 
-var
+procedure DifficultyAndNewGame;
+begin
+  var
   diff: Integer;
 
-{$R *.res}
-
-begin
-  SetConsoleOutputCP(CP_UTF8);
-  SetConsoleCP(CP_UTF8);
-  EnableANSI;
-  Randomize;
-  WriteLn('Select difficulty:');
+  WriteLn;
+  WriteLn('==============================');
+  WriteLn('       Select difficulty      ');
+  WriteLn('==============================');
   WriteLn('1 = One Suit (Easy)');
   WriteLn('2 = Two Suit (Medium)');
   WriteLn('4 = Four Suit (Hard)');
@@ -401,16 +405,24 @@ begin
     2: NewGame(G, sdTwoSuit);
     4: NewGame(G, sdFourSuit);
   end;
+end;
+
+{$R *.res}
+
+begin
+  SetConsoleOutputCP(CP_UTF8);
+  SetConsoleCP(CP_UTF8);
+  EnableANSI;
+  Randomize;
 
   ViewMenu := true;
   ViewStatsMenu := false;
   ViewUtilMenu := false;
   ViewPlayersMenu := false;
 
+  DifficultyAndNewGame;
   Users := LoadUsersFromJSON('userdata.json');
   UserManagementMenu(Users);
-  //ActiveUserIndex := ChooseUser(Users);
-  WriteLn('Active player: ', Users.Players[ActiveUserIndex].UserName);
 
   ClearScreen;
   GameLoop;

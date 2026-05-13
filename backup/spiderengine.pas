@@ -308,6 +308,90 @@ begin
   Result := True;
 end;
 
+function HasAnyMovesLeft(const Game: TSpiderGame): Boolean;
+var
+  src, dst: Integer;
+  srcTop, dstTop: Integer;
+  i: Integer;
+  card, dest: TCard;
+begin
+  Result := False;
+
+  // ---------------------------------------------------------
+  // 1. If stock still has cards, moves exist
+  // ---------------------------------------------------------
+  if Game.StockPos < 50 then
+  begin
+    Result := True;
+    Exit;
+  end;
+
+  // ---------------------------------------------------------
+  // 2. Check tableau-to-tableau moves
+  // ---------------------------------------------------------
+  for src := 0 to 9 do
+  begin
+    // Skip empty piles
+    if Length(Game.Tableau[src]) = 0 then
+      Continue;
+
+    // Find the top of the movable sequence
+    srcTop := High(Game.Tableau[src]);
+
+    // Walk backwards to find the start of the descending sequence
+    i := srcTop;
+    while (i > 0) do
+    begin
+      // Check descending rank
+      if Ord(Game.Tableau[src][i].Rank) + 1 <> Ord(Game.Tableau[src][i - 1].Rank) then
+        Break;
+
+      // Check suit match (Spider rule for multi-card moves)
+      if Game.Tableau[src][i].Suit <> Game.Tableau[src][i - 1].Suit then
+        Break;
+
+      Dec(i);
+    end;
+
+    // i is now the first card of the movable sequence
+    card := Game.Tableau[src][i];
+
+    // Try moving to every other pile
+    for dst := 0 to 9 do
+    begin
+      if src = dst then
+        Continue;
+
+      // -----------------------------------------------------
+      // Empty pile? Always allowed
+      // -----------------------------------------------------
+      if Length(Game.Tableau[dst]) = 0 then
+      begin
+        Result := True;
+        Exit;
+      end;
+
+      // -----------------------------------------------------
+      // Non-empty pile: check rank match
+      // -----------------------------------------------------
+      dstTop := High(Game.Tableau[dst]);
+      dest := Game.Tableau[dst][dstTop];
+
+      // Can move if destination rank is exactly one higher
+      if Ord(dest.Rank) = Ord(card.Rank) + 1 then
+      begin
+        Result := True;
+        Exit;
+      end;
+    end;
+  end;
+
+  // ---------------------------------------------------------
+  // 3. No moves found
+  // ---------------------------------------------------------
+  Result := False;
+end;
+
 // ---------------------------
 // Completed Run Removal
 // ---------------------------
@@ -424,7 +508,7 @@ var
 begin
   if not CanDealFromStock(G) then
   begin
-    LogLine(G.Logger, 'Attempted illegal stock deal.');
+    LogLine(G.Logger, 'No cards left to deal.');
     Exit;
   end;
 
@@ -439,7 +523,7 @@ begin
     Inc(G.StockPos);
   end;
 
-  RecordMove(G.Stats);
+  //RecordMove(G.Stats);
   Inc(G.MovesThisGame);
   RemoveCompletedRuns(G);
 end;

@@ -1,0 +1,38 @@
+Thank you, however there was a number things that didn't work so allow me to refresh you memory of the existing types. Then let's try building that previous function again.
+
+  TDeck = array[0..TOTAL_CARDS - 1] of TCard;
+  TPile = array of TCard;          // A tableau pile
+  TTableau = array[0..9] of TPile; // 10 piles
+  TSuit = (Hearts, Diamonds, Clubs, Spades);
+  TRank = (Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King);
+  TSpiderDifficulty = (sdOneSuit, sdTwoSuit, sdFourSuit);
+
+  TCard = record
+    Rank: TRank;
+    Suit: TSuit;
+    FaceUp: Boolean;
+    Value: Integer;
+  end;
+
+  TSpiderGameState = record
+    Tableau: TTableau;
+    Stock: array[0..49] of TCard;
+    StockPos: Integer;
+    CompletedRuns: Integer;
+  end;
+
+  TSpiderGame = record
+    Tableau: TTableau;
+    Stock: array[0..49] of TCard;
+    StockPos: Integer;
+    CompletedRuns: Integer;
+
+    Logger: TSpiderLogger;
+
+    Stats: TSpiderStats;
+    MovesThisGame: Integer;
+    Difficulty: TSpiderDifficulty;
+
+    UndoStack: array of TSpiderGameState;
+    RedoStack: array of TSpiderGameState;
+  end;

@@ -1,0 +1,2 @@
+HasAnyMovesLeft(G);
+
