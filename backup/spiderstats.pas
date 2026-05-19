@@ -18,6 +18,7 @@ type
     AverageScorePerGame: Integer;
     BestTime: TDateTime;
     AverageTimePerGame: TDateTime;
+    TotalMoves: Integer;
     TotalStacks: Integer;
     AverageStacksPerGame: Integer;
     OneSuitPlayed: Integer;
@@ -32,12 +33,10 @@ type
 
 procedure InitStats(var S: TSpiderStats);
 procedure RecordGameStart(var S: TSpiderStats; Difficulty: TSpiderDifficulty);
-//procedure RecordMove(var S: TSpiderStats);
+procedure RecordMove(var S: TSpiderStats);
 procedure RecordGameEnd(var S: TSpiderStats; Difficulty: TSpiderDifficulty; Won: Boolean);
-
 procedure SaveStats(const S: TSpiderStats; const FileName: string);
 procedure LoadStats(var S: TSpiderStats; const FileName: string);
-
 procedure PrintStats(const S: TSpiderStats);
 
 implementation
@@ -56,12 +55,23 @@ begin
     sdTwoSuit: Inc(S.TwoSuitPlayed);
     sdFourSuit: Inc(S.FourSuitPlayed);
   end;
+
+  // Newer fields that must be initialized
+  S.LastDifficulty := Ord(Difficulty);
+  S.HasSavedGame := False;
+
+  // Per-game metrics reset
+  S.BestTime := 0;
+  S.AverageTimePerGame := 0;
+  S.TotalStacks := 0;
+  S.AverageStacksPerGame := 0;
 end;
 
-//procedure RecordMove(var S: TSpiderStats);
-//begin
-//  Inc(S.TotalMoves);
-//end;
+procedure RecordMove(var S: TSpiderStats);
+begin
+  Inc(S.TotalMoves);
+  //Inc(Users.Players[ActiveUserIndex].Stats.TotalMoves);
+end;
 
 procedure RecordGameEnd(var S: TSpiderStats; Difficulty: TSpiderDifficulty; Won: Boolean);
 begin
@@ -87,7 +97,7 @@ begin
   WriteLn(F, S.GamesPlayed);
   WriteLn(F, S.GamesWon);
   WriteLn(F, S.GamesLost);
-  //WriteLn(F, S.TotalMoves);
+  WriteLn(F, S.TotalMoves);
 
   WriteLn(F, S.OneSuitPlayed);
   WriteLn(F, S.OneSuitWon);
@@ -101,7 +111,7 @@ begin
   CloseFile(F);
 end;
 
-procedure LoadStats(var S: TSpiderStats; const FileName: string); { #todo : This should happen when a user is loaded in UserProfiles. }
+procedure LoadStats(var S: TSpiderStats; const FileName: string);
 var
   F: Text;
 begin
@@ -117,7 +127,7 @@ begin
   ReadLn(F, S.GamesPlayed);
   ReadLn(F, S.GamesWon);
   ReadLn(F, S.GamesLost);
-  //ReadLn(F, S.TotalMoves);
+  ReadLn(F, S.TotalMoves);
 
   ReadLn(F, S.OneSuitPlayed);
   ReadLn(F, S.OneSuitWon);

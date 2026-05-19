@@ -24,7 +24,7 @@ type
     Logger: TSpiderLogger;
 
     Stats: TSpiderStats;
-    MovesThisGame: Integer;
+    MovesThisGame: Integer;  { #todo : What is this for? Really needed? }
     Difficulty: TSpiderDifficulty;
 
     UndoStack: array of TSpiderGameState;

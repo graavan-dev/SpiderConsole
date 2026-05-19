@@ -124,6 +124,7 @@ begin
         BestTime := StrToTimeDef(StatsObj.Get('BestTime', '00:00'), 0);
         AverageTimePerGame := StrToTimeDef(StatsObj.Get('AverageTimePerGame', '00:00'), 0);
 
+        TotalMoves := StatsObj.Get('TotalMoves', 0);
         TotalStacks := StatsObj.Get('TotalStacks', 0);
         AverageStacksPerGame := StatsObj.Get('AverageStacksPerGame', 0);
         OneSuitPlayed := StatsObj.Get('OneSuitPlayed', 0);
@@ -178,6 +179,7 @@ begin
         StatsObj.Add('BestTime', FormatDateTime('hh:nn', BestTime));
         StatsObj.Add('AverageTimePerGame', FormatDateTime('hh:nn', AverageTimePerGame));
 
+        StatsObj.Add('TotalMoves', TotalMoves);
         StatsObj.Add('TotalStacks', TotalStacks);
         StatsObj.Add('AverageStacksPerGame', AverageStacksPerGame);
         StatsObj.Add('OneSuitPlayed', OneSuitPlayed);
@@ -257,6 +259,7 @@ begin
     BestTime := 0;               // TDateTime = 0 → "00:00"
     AverageTimePerGame := 0;
 
+    TotalMoves := 0;
     TotalStacks := 0;
     AverageStacksPerGame := 0;
 
@@ -323,6 +326,7 @@ begin
     BestTime := 0;
     AverageTimePerGame := 0;
 
+    TotalMoves := 0;
     TotalStacks := 0;
     AverageStacksPerGame := 0;
 

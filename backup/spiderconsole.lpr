@@ -15,7 +15,7 @@ program SpiderConsole;
 {$mode objfpc}{$H+}
 
 uses
-  SysUtils, CardDeck, SpiderEngine, StrUtils,
+  SysUtils, CardDeck, SpiderEngine, //StrUtils,
     Windows, SpiderLog, SpiderStats, Drivers, UserProfiles;
 
 var
@@ -29,6 +29,9 @@ var
   ViewUtilMenu: Boolean;
   ViewPlayersMenu: Boolean;
   Users: TUserList;
+  Stats: TSpiderStats;
+  Diff: TSpiderDifficulty;
+  Won: Boolean;
 
 procedure EnableANSI;
 var
@@ -196,7 +199,7 @@ begin
     WriteLn('Stats Menu ');
     WriteLn('  TBD                                 - save stats');
     WriteLn('  TBD                                 - load stats');
-    WriteLn('  TBD                                 - print stats');
+    WriteLn('  TBD                                 - show stats');
     WriteLn('  TBD                                 - reset stats');
     WriteLn('  v                                   - show/hide main menu');
     WriteLn('  t                                   - show/hide utility menu');
@@ -232,6 +235,7 @@ begin
   while True do
   begin
     ClearScreen;
+    RecordGameStart(Stats, Diff);
     DrawGameOnScreen;
     if IsWon(G) then //** WINNER! WINNER! CHICKEN DINNER!
       begin
@@ -323,7 +327,11 @@ begin
           if ParseMove(cmd, FromPile, StartIndex, ToPile) then
           begin
             if CanMoveSequence(G, FromPile, StartIndex, ToPile) then
-              MoveSequence(G, FromPile, StartIndex, ToPile)
+            begin
+              MoveSequence(G, FromPile, StartIndex, ToPile);
+              //RecordMove(Stats);
+              Inc(Users.Players[ActiveUserIndex].Stats.TotalMoves);
+            end
             else
               WriteLn('Illegal move.');
           end
@@ -387,10 +395,10 @@ begin
 end;
 
 procedure DifficultyAndNewGame;
-begin
-  var
+var
   diff: Integer;
 
+begin
   WriteLn;
   WriteLn('==============================');
   WriteLn('       Select difficulty      ');
@@ -426,6 +434,7 @@ begin
 
   ClearScreen;
   GameLoop;
+  RecordGameEnd(Stats, Diff, Won);
 
   SaveUsersToJSON('userdata.json', Users);
 

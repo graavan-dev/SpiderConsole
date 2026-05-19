@@ -24,7 +24,7 @@ type
     Logger: TSpiderLogger;
 
     Stats: TSpiderStats;
-    MovesThisGame: Integer;
+    MovesThisGame: Integer;  { #todo : What is this for? Really needed? }
     Difficulty: TSpiderDifficulty;
 
     UndoStack: array of TSpiderGameState;
@@ -40,6 +40,7 @@ procedure MoveSequence(var G: TSpiderGame; FromPile, StartIndex, ToPile: Integer
 function ParseMove(const S: string; out FromPile, StartIndex, ToPile: Integer): Boolean;
 function CanDealFromStock(const G: TSpiderGame): Boolean;
 procedure DealFromStock(var G: TSpiderGame);
+function HasAnyMovesLeft(const Game: TSpiderGame): Boolean;
 
 // Undo/Redo
 procedure Undo(var G: TSpiderGame);
@@ -196,7 +197,7 @@ begin
     IntToStr(Ord(Difficulty)));
 end;
 
-// ---------------------------
+// ---------------------------https://youtu.be/dsx2vdn7gpY?si=Io9XpPCfDfRgflv_
 // Utility
 // ---------------------------
 

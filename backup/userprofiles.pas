@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, SpiderStats,
-    fpjson, jsonparser; //, jsonwriter;
+    fpjson, jsonparser;
 
 type
   TUserProfile = record
@@ -25,7 +25,6 @@ type
     JSONArray: TJSONArray;
     JSONFileName: string;
     FileStream: TFileStream;
-    //JSONWriter: TJSONWriter;
     ActiveUserIndex: Integer;
 
 const
@@ -33,13 +32,9 @@ const
 
   function LoadUsersFromJSON(const FileName: string): TUserList;
   procedure SaveUsersToJSON(const FileName: string; const Users: TUserList);
-  //function FindUserIndex(const Name: string): Integer;
-  //function AddUser(const Name: string): Integer;
-  //procedure DeleteUser(Index: Integer);
   function RenameUser(var Users: TUserList; const OldName, NewName: string): Boolean;
   procedure ResetStats(var Stats: TSpiderStats);
   function CloneUserFromTemplate(var Users: TUserList; const NewName: string): Boolean;
-  //function GetUserSaveFile(const U: TUserProfile): string;
   function ChooseUser(const Users: TUserList): Integer;
   procedure UserManagementMenu(var Users: TUserList);
 
@@ -52,7 +47,6 @@ end;
 
 function ReadFileToString(const FileName: string): string;
 var
-  //FS: TFileStream;
   S: TStringList;
 begin
   Result := '';
@@ -356,9 +350,6 @@ begin
   TemplateIndex := FindUserIndex(Users, 'Template');
   if TemplateIndex = -1 then Exit;
 
-  // Add new user
-  // if not AddUser(Users, NewName) then Exit;
-
   // Copy stats from template
   Users.Players[Users.Count - 1].Stats :=
     Users.Players[TemplateIndex].Stats;
@@ -381,6 +372,7 @@ begin
 
   while True do
   begin
+    ClearScreen;
     WriteLn;
     WriteLn('==============================');
     WriteLn('        Select a User         ');
@@ -423,7 +415,7 @@ procedure UserManagementMenu(var Users: TUserList);
 var
   choice: Integer;
   input, name, newName: string;
-  //idx: Integer;
+
 begin
   repeat
     ClearScreen;
