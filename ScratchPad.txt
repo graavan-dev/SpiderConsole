@@ -1,6 +1,6 @@
 Users.Players[ActiveUserIndex].UserName
 
-Users.Players[ActiveUserIndex].Stats.TotalMoves
+Users.Players[ActiveUserIndex].Stats.GamesLost
 
     GamesPlayed: integer;
     GamesWon: Integer;

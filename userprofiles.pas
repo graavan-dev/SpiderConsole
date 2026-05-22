@@ -26,6 +26,7 @@ type
     JSONFileName: string;
     FileStream: TFileStream;
     ActiveUserIndex: Integer;
+    Users: TUserList;
 
 const
   USERS_FILE = 'userdata.json';

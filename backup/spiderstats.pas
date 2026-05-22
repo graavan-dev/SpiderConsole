@@ -5,7 +5,7 @@ unit SpiderStats;
 interface
 
 uses
-  SysUtils,  CardDeck;
+  SysUtils,  CardDeck;  //, UserProfiles;
 
 type
   TSpiderStats = record
@@ -15,7 +15,7 @@ type
     GamesDrawn: Integer;
     WinPercentage: Integer;
     HighScore: Integer;
-    AverageScorePerGame: Integer;
+    AverageScorePerGame: Integer;  { #todo : Need to a new field to track total points from all games }
     BestTime: TDateTime;
     AverageTimePerGame: TDateTime;
     TotalMoves: Integer;
@@ -48,7 +48,10 @@ end;
 
 procedure RecordGameStart(var S: TSpiderStats; Difficulty: TSpiderDifficulty);
 begin
+  //Users: TUserList;
+
   Inc(S.GamesPlayed);
+  //Inc(Users.Players[ActiveUserIndex].Stats.GamesPlayed);
 
   case Difficulty of
     sdOneSuit: Inc(S.OneSuitPlayed);
@@ -60,11 +63,11 @@ begin
   S.LastDifficulty := Ord(Difficulty);
   S.HasSavedGame := False;
 
-  // Per-game metrics reset
-  S.BestTime := 0;
-  S.AverageTimePerGame := 0;
-  S.TotalStacks := 0;
-  S.AverageStacksPerGame := 0;
+  // Per-game metrics reset  { #todo : Not sure I agree with these. }
+  //S.BestTime := 0;
+  //S.AverageTimePerGame := 0;
+  //S.TotalStacks := 0;
+  //S.AverageStacksPerGame := 0;
 end;
 
 procedure RecordMove(var S: TSpiderStats);
@@ -85,7 +88,8 @@ begin
     end;
   end
   else
-    Inc(S.GamesLost);
+    Inc(Users.Players[ActiveUserIndex].Stats.GamesLost);
+    //Inc(S.GamesLost);
 end;
 
 procedure SaveStats(const S: TSpiderStats; const FileName: string);
@@ -155,7 +159,7 @@ begin
   WriteLn('Games Won:    ', S.GamesWon);
   WriteLn('Games Lost:   ', S.GamesLost);
   WriteLn('Win %:        ', FormatFloat('0.0', winPct));
-  //WriteLn('Total Moves:  ', S.TotalMoves);
+  WriteLn('Total Moves:  ', S.TotalMoves);
 
   WriteLn;
   WriteLn('--- Difficulty Breakdown ---');

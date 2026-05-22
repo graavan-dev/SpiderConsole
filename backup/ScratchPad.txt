@@ -1,4 +1,25 @@
 Users.Players[ActiveUserIndex].UserName
 
+Users.Players[ActiveUserIndex].Stats.TotalMoves
 
+    GamesPlayed: integer;
+    GamesWon: Integer;
+    GamesLost: Integer;
+    GamesDrawn: Integer;
+    WinPercentage: Integer;
+    HighScore: Integer;
+    AverageScorePerGame: Integer;
+    BestTime: TDateTime;
+    AverageTimePerGame: TDateTime;
+    TotalMoves: Integer;
+    TotalStacks: Integer;
+    AverageStacksPerGame: Integer;
+    OneSuitPlayed: Integer;
+    OneSuitWon: Integer;
+    TwoSuitPlayed: Integer;
+    TwoSuitWon: Integer;
+    FourSuitPlayed: Integer;
+    FourSuitWon: Integer;
+    LastDifficulty: Integer;
+    HasSavedGame: Boolean;
 

@@ -240,6 +240,7 @@ begin
     if IsWon(G) then //** WINNER! WINNER! CHICKEN DINNER!
       begin
         ClearScreen;
+        Inc(Users.Players[ActiveUserIndex].Stats.GamesWon);
         WriteLn('CONGRATULATIONS!! ');
         WriteLn('You won! All 8 runs completed.');
         ReadLn;
@@ -312,6 +313,7 @@ begin
         end;
       'q', 'Q':  //** Quit Game **//
         begin
+          //Inc(Users.Players[ActiveUserIndex].Stats.GamesLost);
           RecordGameEnd(G.Stats, G.Difficulty, False);
           Exit;
         end;
@@ -329,7 +331,7 @@ begin
             if CanMoveSequence(G, FromPile, StartIndex, ToPile) then
             begin
               MoveSequence(G, FromPile, StartIndex, ToPile);
-              //RecordMove(Stats);
+              //RecordMove(Stats); { #todo : Is RecordMove a good function? }
               Inc(Users.Players[ActiveUserIndex].Stats.TotalMoves);
             end
             else
@@ -344,6 +346,7 @@ begin
             // GAME OVER MAN!
             // https://youtu.be/dsx2vdn7gpY?si=Io9XpPCfDfRgflv_
             // warning, link above is NSFW due to swearing
+            Inc(Users.Players[ActiveUserIndex].Stats.GamesLost);
             writeln('Game Over Man!');
             readln;
             exit;
