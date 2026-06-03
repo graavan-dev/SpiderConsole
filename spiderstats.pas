@@ -31,6 +31,9 @@ type
     HasSavedGame: Boolean;
   end;
 
+//var
+//  Users: TUserList;
+
 procedure InitStats(var S: TSpiderStats);
 procedure RecordGameStart(var S: TSpiderStats; Difficulty: TSpiderDifficulty);
 procedure RecordMove(var S: TSpiderStats);
@@ -48,8 +51,6 @@ end;
 
 procedure RecordGameStart(var S: TSpiderStats; Difficulty: TSpiderDifficulty);
 begin
-  //Users: TUserList;
-
   Inc(S.GamesPlayed);
   //Inc(Users.Players[ActiveUserIndex].Stats.GamesPlayed);
 
