@@ -4,24 +4,25 @@ unit CardDeck;
 
 interface
 
-//uses Windows;
+uses
+  SpiderTypes;
 
-type
-  TSuit = (Hearts, Diamonds, Clubs, Spades);
-  TRank = (Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King);
-  TSpiderDifficulty = (sdOneSuit, sdTwoSuit, sdFourSuit);
-
-  TCard = record
-    Rank: TRank;
-    Suit: TSuit;
-    FaceUp: Boolean;
-    Value: Integer;
-  end;
-
-const
-  NUM_OF_DECKS = 2;
-  CARDS_PER_DECK = 52;
-  TOTAL_CARDS = 104;
+//type
+//  TSuit = (Hearts, Diamonds, Clubs, Spades);
+//  TRank = (Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King);
+//  TSpiderDifficulty = (sdOneSuit, sdTwoSuit, sdFourSuit);
+//
+//  TCard = record
+//    Rank: TRank;
+//    Suit: TSuit;
+//    FaceUp: Boolean;
+//    Value: Integer;
+//  end;
+//
+//const
+//  NUM_OF_DECKS = 2;
+//  CARDS_PER_DECK = 52;
+//  TOTAL_CARDS = 104;
 
 type
   TDeck = array[0..TOTAL_CARDS - 1] of TCard;
@@ -121,7 +122,6 @@ begin
     Spades:   Result := 'S';
   end;
 end;
-
 
 end.
 

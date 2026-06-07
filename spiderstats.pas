@@ -5,31 +5,31 @@ unit SpiderStats;
 interface
 
 uses
-  SysUtils,  CardDeck;  //, UserProfiles;
+  SysUtils, SpiderTypes;  //, UserProfiles;
 
-type
-  TSpiderStats = record
-    GamesPlayed: integer;
-    GamesWon: Integer;
-    GamesLost: Integer;
-    GamesDrawn: Integer;
-    WinPercentage: Integer;
-    HighScore: Integer;
-    AverageScorePerGame: Integer;  { #todo : Need to a new field to track total points from all games }
-    BestTime: TDateTime;
-    AverageTimePerGame: TDateTime;
-    TotalMoves: Integer;
-    TotalStacks: Integer;
-    AverageStacksPerGame: Integer;
-    OneSuitPlayed: Integer;
-    OneSuitWon: Integer;
-    TwoSuitPlayed: Integer;
-    TwoSuitWon: Integer;
-    FourSuitPlayed: Integer;
-    FourSuitWon: Integer;
-    LastDifficulty: Integer;
-    HasSavedGame: Boolean;
-  end;
+//type
+  //TSpiderStats = record
+  //  GamesPlayed: integer;
+  //  GamesWon: Integer;
+  //  GamesLost: Integer;
+  //  GamesDrawn: Integer;
+  //  WinPercentage: Integer;
+  //  HighScore: Integer;
+  //  AverageScorePerGame: Integer;  { #todo : Need to a new field to track total points from all games }
+  //  BestTime: TDateTime;
+  //  AverageTimePerGame: TDateTime;
+  //  TotalMoves: Integer;
+  //  TotalStacks: Integer;
+  //  AverageStacksPerGame: Integer;
+  //  OneSuitPlayed: Integer;
+  //  OneSuitWon: Integer;
+  //  TwoSuitPlayed: Integer;
+  //  TwoSuitWon: Integer;
+  //  FourSuitPlayed: Integer;
+  //  FourSuitWon: Integer;
+  //  LastDifficulty: Integer;
+  //  HasSavedGame: Boolean;
+  //end;
 
 //var
 //  Users: TUserList;
@@ -60,9 +60,8 @@ begin
     sdFourSuit: Inc(S.FourSuitPlayed);
   end;
 
-  // Newer fields that must be initialized
   S.LastDifficulty := Ord(Difficulty);
-  S.HasSavedGame := False;
+  //S.HasSavedGame := False; //???
 
   // Per-game metrics reset  { #todo : Not sure I agree with these. }
   //S.BestTime := 0;
@@ -93,6 +92,7 @@ begin
     Inc(S.GamesLost);
 end;
 
+// Not being used at this time?
 procedure SaveStats(const S: TSpiderStats; const FileName: string);
 var
   F: Text;
@@ -116,6 +116,7 @@ begin
   CloseFile(F);
 end;
 
+// same for this procedure, not being used.
 procedure LoadStats(var S: TSpiderStats; const FileName: string);
 var
   F: Text;

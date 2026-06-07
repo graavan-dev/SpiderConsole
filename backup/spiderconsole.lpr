@@ -16,7 +16,7 @@ program SpiderConsole;
 
 uses
   SysUtils, CardDeck, SpiderEngine, //StrUtils,
-    Windows, SpiderLog, SpiderStats, Drivers, UserProfiles;
+    Windows, SpiderLog, SpiderStats, Drivers, UserProfiles, SpiderTypes;
 
 var
   G: TSpiderGame;
@@ -287,7 +287,8 @@ begin
         begin
           if (ViewStatsMenu) then
             begin
-              ViewStatsMenu := false
+              ViewStatsMenu := false;
+            end
           else
             begin
               ViewMenu := false;

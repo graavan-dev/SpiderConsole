@@ -5,7 +5,7 @@ unit SpiderLog;
 interface
 
 uses
-  SysUtils;
+  SysUtils, SpiderTypes;
 
 type
   TSpiderLogger = record
@@ -16,7 +16,6 @@ type
 procedure StartLog(var L: TSpiderLogger; const FileName: string);
 procedure LogLine(var L: TSpiderLogger; const S: string);
 procedure EndLog(var L: TSpiderLogger);
-//procedure ReplayLog(const FileName: string);
 function Timestamp: string;
 
 implementation

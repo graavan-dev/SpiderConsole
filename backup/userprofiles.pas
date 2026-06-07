@@ -5,30 +5,30 @@ unit UserProfiles;
 interface
 
 uses
-  Classes, SysUtils, SpiderStats,
-    fpjson, jsonparser;
+  Classes, SysUtils, fpjson, jsonparser, SpiderTypes;
 
-type
-  TUserProfile = record
-    UserName: string[32];
-    Stats: TSpiderStats;
-  end;
+//type
+//  TUserProfile = record
+//    UserName: string[32];
+//    Stats: TSpiderStats;
+//  end;
+//
+//  TUserList = record
+//    Count: Integer;
+//    Players: array of TUserProfile;
+//  end;
 
-  TUserList = record
-    Count: Integer;
-    Players: array of TUserProfile;
-  end;
+  //var
+  //  JSONData: TJSONData;
+  //  JSONObject: TJSONObject;
+  //  JSONArray: TJSONArray;
+  //  JSONFileName: string;
+  //  FileStream: TFileStream;
+  //  ActiveUserIndex: Integer;
+  //  Users: TUserList;
 
-  var
-    JSONData: TJSONData;
-    JSONObject: TJSONObject;
-    JSONArray: TJSONArray;
-    JSONFileName: string;
-    FileStream: TFileStream;
-    ActiveUserIndex: Integer;
-
-const
-  USERS_FILE = 'userdata.json';
+//const
+//  USERS_FILE = 'userdata.json';
 
   function LoadUsersFromJSON(const FileName: string): TUserList;
   procedure SaveUsersToJSON(const FileName: string; const Users: TUserList);

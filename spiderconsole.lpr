@@ -16,22 +16,22 @@ program SpiderConsole;
 
 uses
   SysUtils, CardDeck, SpiderEngine, //StrUtils,
-    Windows, SpiderLog, SpiderStats, Drivers, UserProfiles;
+    Windows, SpiderLog, SpiderStats, Drivers, UserProfiles, SpiderTypes;
 
-var
-  G: TSpiderGame;
-  F: Text;
-  cardStr: string;
-  cmd: string;
-  FromPile, ToPile, StartIndex: Integer;
-  ViewMenu: Boolean;
-  ViewStatsMenu: Boolean;
-  ViewUtilMenu: Boolean;
-  ViewPlayersMenu: Boolean;
-  Users: TUserList;
-  Stats: TSpiderStats;
-  Diff: TSpiderDifficulty;
-  Won: Boolean;
+//var
+//  G: TSpiderGame;
+//  F: Text;
+//  cardStr: string;
+//  cmd: string;
+//  FromPile, ToPile, StartIndex: Integer;
+//  ViewMenu: Boolean;
+//  ViewStatsMenu: Boolean;
+//  ViewUtilMenu: Boolean;
+//  ViewPlayersMenu: Boolean;
+//  Users: TUserList;
+//  Stats: TSpiderStats;
+//  Diff: TSpiderDifficulty;
+//  Won: Boolean;
 
 procedure EnableANSI;
 var

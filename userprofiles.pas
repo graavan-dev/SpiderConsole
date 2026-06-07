@@ -5,39 +5,38 @@ unit UserProfiles;
 interface
 
 uses
-  Classes, SysUtils, SpiderStats,
-    fpjson, jsonparser;
+  Classes, SysUtils, fpjson, jsonparser, SpiderTypes;
 
-type
-  TUserProfile = record
-    UserName: string[32];
-    Stats: TSpiderStats;
-  end;
+//type
+//  TUserProfile = record
+//    UserName: string[32];
+//    Stats: TSpiderStats;
+//  end;
+//
+//  TUserList = record
+//    Count: Integer;
+//    Players: array of TUserProfile;
+//  end;
 
-  TUserList = record
-    Count: Integer;
-    Players: array of TUserProfile;
-  end;
+  //var
+  //  JSONData: TJSONData;
+  //  JSONObject: TJSONObject;
+  //  JSONArray: TJSONArray;
+  //  JSONFileName: string;
+  //  FileStream: TFileStream;
+  //  ActiveUserIndex: Integer;
+  //  Users: TUserList;
 
-  var
-    JSONData: TJSONData;
-    JSONObject: TJSONObject;
-    JSONArray: TJSONArray;
-    JSONFileName: string;
-    FileStream: TFileStream;
-    ActiveUserIndex: Integer;
-    Users: TUserList;
+//const
+//  USERS_FILE = 'userdata.json';
 
-const
-  USERS_FILE = 'userdata.json';
-
-  function LoadUsersFromJSON(const FileName: string): TUserList;
-  procedure SaveUsersToJSON(const FileName: string; const Users: TUserList);
-  function RenameUser(var Users: TUserList; const OldName, NewName: string): Boolean;
-  procedure ResetStats(var Stats: TSpiderStats);
-  function CloneUserFromTemplate(var Users: TUserList; const NewName: string): Boolean;
-  function ChooseUser(const Users: TUserList): Integer;
-  procedure UserManagementMenu(var Users: TUserList);
+function LoadUsersFromJSON(const FileName: string): TUserList;
+procedure SaveUsersToJSON(const FileName: string; const Users: TUserList);
+function RenameUser(var Users: TUserList; const OldName, NewName: string): Boolean;
+procedure ResetStats(var Stats: TSpiderStats);
+function CloneUserFromTemplate(var Users: TUserList; const NewName: string): Boolean;
+function ChooseUser(const Users: TUserList): Integer;
+procedure UserManagementMenu(var Users: TUserList);
 
 implementation
 

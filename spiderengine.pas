@@ -5,31 +5,31 @@ unit SpiderEngine;
 interface
 
 uses
-  CardDeck, SpiderLog, SysUtils, SpiderStats;
+  CardDeck, SpiderLog, SysUtils, SpiderStats, SpiderTypes;
 
-type
-  TSpiderGameState = record
-    Tableau: TTableau;
-    Stock: array[0..49] of TCard;
-    StockPos: Integer;
-    CompletedRuns: Integer;
-  end;
+//type
+  //TSpiderGameState = record
+  //  Tableau: TTableau;
+  //  Stock: array[0..49] of TCard;
+  //  StockPos: Integer;
+  //  CompletedRuns: Integer;
+  //end;
 
-  TSpiderGame = record
-    Tableau: TTableau;
-    Stock: array[0..49] of TCard;
-    StockPos: Integer;
-    CompletedRuns: Integer;
-
-    Logger: TSpiderLogger;
-
-    Stats: TSpiderStats;
-    MovesThisGame: Integer;  { #todo : What is this for? Really needed? }
-    Difficulty: TSpiderDifficulty;
-
-    UndoStack: array of TSpiderGameState;
-    RedoStack: array of TSpiderGameState;
-  end;
+  //TSpiderGame = record
+  //  Tableau: TTableau;
+  //  Stock: array[0..49] of TCard;
+  //  StockPos: Integer;
+  //  CompletedRuns: Integer;
+  //
+  //  Logger: TSpiderLogger;
+  //
+  //  Stats: TSpiderStats;
+  //  MovesThisGame: Integer;  { #todo : What is this for? Really needed? }
+  //  Difficulty: TSpiderDifficulty;
+  //
+  //  UndoStack: array of TSpiderGameState;
+  //  RedoStack: array of TSpiderGameState;
+  //end;
 
 // Game lifecycle
 procedure NewGame(var G: TSpiderGame; Difficulty: TSpiderDifficulty);

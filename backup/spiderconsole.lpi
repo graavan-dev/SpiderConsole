@@ -72,6 +72,11 @@
         <Filename Value="ScratchPad.txt"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="spidertypes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SpiderTypes"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

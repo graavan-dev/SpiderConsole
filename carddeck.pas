@@ -4,28 +4,31 @@ unit CardDeck;
 
 interface
 
-type
-  TSuit = (Hearts, Diamonds, Clubs, Spades);
-  TRank = (Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King);
-  TSpiderDifficulty = (sdOneSuit, sdTwoSuit, sdFourSuit);
+uses
+  SpiderTypes;
 
-  TCard = record
-    Rank: TRank;
-    Suit: TSuit;
-    FaceUp: Boolean;
-    Value: Integer;
-  end;
+//type
+//  TSuit = (Hearts, Diamonds, Clubs, Spades);
+//  TRank = (Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King);
+//  TSpiderDifficulty = (sdOneSuit, sdTwoSuit, sdFourSuit);
+//
+//  TCard = record
+//    Rank: TRank;
+//    Suit: TSuit;
+//    FaceUp: Boolean;
+//    Value: Integer;
+//  end;
+//
+//const
+//  NUM_OF_DECKS = 2;
+//  CARDS_PER_DECK = 52;
+//  TOTAL_CARDS = 104;
 
-const
-  NUM_OF_DECKS = 2;
-  CARDS_PER_DECK = 52;
-  TOTAL_CARDS = 104;
-
-type
-  TDeck = array[0..TOTAL_CARDS - 1] of TCard;
-
-  TPile = array of TCard;          // A tableau pile
-  TTableau = array[0..9] of TPile; // 10 piles
+//type
+//  TDeck = array[0..TOTAL_CARDS - 1] of TCard;
+//
+//  TPile = array of TCard;          // A tableau pile
+//  TTableau = array[0..9] of TPile; // 10 piles
 
 procedure BuildDeck(var Deck: TDeck; Difficulty: TSpiderDifficulty);
 procedure ShuffleDeck(var Deck: TDeck);
