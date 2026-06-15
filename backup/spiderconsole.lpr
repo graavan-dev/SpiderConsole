@@ -15,23 +15,8 @@ program SpiderConsole;
 {$mode objfpc}{$H+}
 
 uses
-  SysUtils, CardDeck, SpiderEngine, //StrUtils,
+  SysUtils, CardDeck, SpiderEngine,
     Windows, SpiderLog, SpiderStats, Drivers, UserProfiles, SpiderTypes;
-
-var
-  G: TSpiderGame;
-  F: Text;
-  cardStr: string;
-  cmd: string;
-  FromPile, ToPile, StartIndex: Integer;
-  ViewMenu: Boolean;
-  ViewStatsMenu: Boolean;
-  ViewUtilMenu: Boolean;
-  ViewPlayersMenu: Boolean;
-  Users: TUserList;
-  Stats: TSpiderStats;
-  Diff: TSpiderDifficulty;
-  Won: Boolean;
 
 procedure EnableANSI;
 var
@@ -397,7 +382,7 @@ begin
   end;
 end;
 
-procedure DifficultyAndNewGame;
+procedure ChooseDifficulty;
 var
   diff: Integer;
 
@@ -412,9 +397,21 @@ begin
   ReadLn(diff);
 
   case diff of
-    1: NewGame(G, sdOneSuit);
-    2: NewGame(G, sdTwoSuit);
-    4: NewGame(G, sdFourSuit);
+    1:
+      begin
+        NewGame(G, sdOneSuit);
+        //Inc(Users.Players[ActiveUserIndex].Stats.OneSuitPlayed);
+      end;
+    2:
+      begin
+        NewGame(G, sdTwoSuit);
+        //Inc(Users.Players[ActiveUserIndex].Stats.TwoSuitPlayed);
+      end;
+    4:
+      begin
+        NewGame(G, sdFourSuit);
+        //Inc(Users.Players[ActiveUserIndex].Stats.FourSuitPlayed);
+      end;
   end;
 end;
 
@@ -431,13 +428,15 @@ begin
   ViewUtilMenu := false;
   ViewPlayersMenu := false;
 
-  DifficultyAndNewGame;
+  ChooseDifficulty;
   Users := LoadUsersFromJSON('userdata.json');
   UserManagementMenu(Users);
 
   ClearScreen;
   GameLoop;
   RecordGameEnd(Stats, Diff, Won);
+
+  Inc(Users.Players[ActiveUserIndex].Stats.HighScore);
 
   SaveUsersToJSON('userdata.json', Users);
 

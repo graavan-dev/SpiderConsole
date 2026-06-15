@@ -7,30 +7,6 @@ interface
 uses
   CardDeck, SpiderLog, SysUtils, SpiderStats, SpiderTypes;
 
-type
-  //TSpiderGameState = record
-  //  Tableau: TTableau;
-  //  Stock: array[0..49] of TCard;
-  //  StockPos: Integer;
-  //  CompletedRuns: Integer;
-  //end;
-
-  //TSpiderGame = record
-  //  Tableau: TTableau;
-  //  Stock: array[0..49] of TCard;
-  //  StockPos: Integer;
-  //  CompletedRuns: Integer;
-  //
-  //  Logger: TSpiderLogger;
-  //
-  //  Stats: TSpiderStats;
-  //  MovesThisGame: Integer;  { #todo : What is this for? Really needed? }
-  //  Difficulty: TSpiderDifficulty;
-  //
-  //  UndoStack: array of TSpiderGameState;
-  //  RedoStack: array of TSpiderGameState;
-  //end;
-
 // Game lifecycle
 procedure NewGame(var G: TSpiderGame; Difficulty: TSpiderDifficulty);
 
@@ -193,8 +169,7 @@ begin
   SetLength(G.UndoStack, 0);
   SetLength(G.RedoStack, 0);
 
-  LogLine(G.Logger, 'New game started with difficulty: ' +
-    IntToStr(Ord(Difficulty)));
+  LogLine(G.Logger, 'New game started with difficulty: ' + IntToStr(Ord(Difficulty)));
 end;
 
 // ---------------------------https://youtu.be/dsx2vdn7gpY?si=Io9XpPCfDfRgflv_

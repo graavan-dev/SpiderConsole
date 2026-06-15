@@ -5,37 +5,10 @@ unit SpiderStats;
 interface
 
 uses
-  SysUtils, SpiderTypes;  //, UserProfiles;
-
-//type
-  //TSpiderStats = record
-  //  GamesPlayed: integer;
-  //  GamesWon: Integer;
-  //  GamesLost: Integer;
-  //  GamesDrawn: Integer;
-  //  WinPercentage: Integer;
-  //  HighScore: Integer;
-  //  AverageScorePerGame: Integer;  { #todo : Need to a new field to track total points from all games }
-  //  BestTime: TDateTime;
-  //  AverageTimePerGame: TDateTime;
-  //  TotalMoves: Integer;
-  //  TotalStacks: Integer;
-  //  AverageStacksPerGame: Integer;
-  //  OneSuitPlayed: Integer;
-  //  OneSuitWon: Integer;
-  //  TwoSuitPlayed: Integer;
-  //  TwoSuitWon: Integer;
-  //  FourSuitPlayed: Integer;
-  //  FourSuitWon: Integer;
-  //  LastDifficulty: Integer;
-  //  HasSavedGame: Boolean;
-  //end;
-
-//var
-//  Users: TUserList;
+  SysUtils, SpiderTypes;
 
 procedure InitStats(var S: TSpiderStats);
-procedure RecordGameStart(var S: TSpiderStats; Difficulty: TSpiderDifficulty);
+procedure RecordGameStart(var U: Users; S: TSpiderStats; Difficulty: TSpiderDifficulty);
 procedure RecordMove(var S: TSpiderStats);
 procedure RecordGameEnd(var S: TSpiderStats; Difficulty: TSpiderDifficulty; Won: Boolean);
 procedure SaveStats(const S: TSpiderStats; const FileName: string);
@@ -49,10 +22,10 @@ begin
   FillChar(S, SizeOf(S), 0);
 end;
 
-procedure RecordGameStart(var S: TSpiderStats; Difficulty: TSpiderDifficulty);
+procedure RecordGameStart(var U: Users; S: TSpiderStats; Difficulty: TSpiderDifficulty);
 begin
-  Inc(S.GamesPlayed);
-  //Inc(Users.Players[ActiveUserIndex].Stats.GamesPlayed);
+  //Inc(S.GamesPlayed);
+  Inc(Users.Players[ActiveUserIndex].Stats.GamesPlayed);
 
   case Difficulty of
     sdOneSuit: Inc(S.OneSuitPlayed);

@@ -7,11 +7,11 @@ interface
 uses
   SysUtils, SpiderTypes;
 
-type
-  TSpiderLogger = record
-    Active: Boolean;
-    F: Text;
-  end;
+//type
+//  TSpiderLogger = record
+//    Active: Boolean;
+//    F: Text;
+//  end;
 
 procedure StartLog(var L: TSpiderLogger; const FileName: string);
 procedure LogLine(var L: TSpiderLogger; const S: string);

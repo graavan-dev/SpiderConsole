@@ -7,29 +7,6 @@ interface
 uses
   Classes, SysUtils, fpjson, jsonparser, SpiderTypes;
 
-//type
-//  TUserProfile = record
-//    UserName: string[32];
-//    Stats: TSpiderStats;
-//  end;
-//
-//  TUserList = record
-//    Count: Integer;
-//    Players: array of TUserProfile;
-//  end;
-
-  //var
-  //  JSONData: TJSONData;
-  //  JSONObject: TJSONObject;
-  //  JSONArray: TJSONArray;
-  //  JSONFileName: string;
-  //  FileStream: TFileStream;
-  //  ActiveUserIndex: Integer;
-  //  Users: TUserList;
-
-//const
-//  USERS_FILE = 'userdata.json';
-
 function LoadUsersFromJSON(const FileName: string): TUserList;
 procedure SaveUsersToJSON(const FileName: string; const Users: TUserList);
 function RenameUser(var Users: TUserList; const OldName, NewName: string): Boolean;
@@ -456,6 +433,7 @@ begin
             WriteLn('No user selected.')
           else
             WriteLn('Selected user: ', Users.Players[ActiveUserIndex].UserName);
+            //readln;
         end;
 
       // ---------------------------------------------------------
