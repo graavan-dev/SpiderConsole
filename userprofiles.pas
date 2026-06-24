@@ -288,6 +288,7 @@ begin
   Result := True;
 end;
 
+// Move this to SpiderStats unit.
 procedure ResetStats(var Stats: TSpiderStats);
 begin
   with Stats do

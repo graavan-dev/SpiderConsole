@@ -67,6 +67,7 @@ begin
   WriteLn('Completed runs: ', G.CompletedRuns, ' / 8');
   WriteLn('Stock deals remaining: ', GetStockDealsRemaining(G));
   WriteLn('Active player: ', Users.Players[ActiveUserIndex].UserName);
+  WriteLn('Number of moves: ', G.MovesThisGame);
   WriteLn;
 
   // Find tallest pile
@@ -168,8 +169,8 @@ begin
     WriteLn('Main Menu');
     WriteLn('  m <fromPile> <startIndex> <toPile>  - move sequence');
     WriteLn('  d                                   - deal from stock');
-    WriteLn('  s                                   - save game');
-    WriteLn('  o                                   - open game');
+    //WriteLn('  s                                   - save game');
+    //WriteLn('  o                                   - open game');
     WriteLn('  u                                   - undo');
     WriteLn('  r                                   - redo');
     WriteLn('  q                                   - quit');
@@ -182,10 +183,10 @@ begin
   if (ViewStatsMenu) then
   begin
     WriteLn('Stats Menu ');
-    WriteLn('  TBD                                 - save stats');
-    WriteLn('  TBD                                 - load stats');
-    WriteLn('  TBD                                 - show stats');
-    WriteLn('  TBD                                 - reset stats');
+    WriteLn('  f                                   - save stats');
+    WriteLn('  g                                   - load stats');
+    WriteLn('  h                                   - show stats');
+    WriteLn('  i                                   - reset stats');
     WriteLn('  v                                   - show/hide main menu');
     WriteLn('  t                                   - show/hide utility menu');
     WriteLn('  a                                   - show/hide stats menu');
@@ -220,12 +221,11 @@ begin
   while True do
   begin
     ClearScreen;
-    RecordGameStart(Users, Stats, Diff);
     DrawGameOnScreen;
     if IsWon(G) then //** WINNER! WINNER! CHICKEN DINNER!
       begin
         ClearScreen;
-        Inc(Users.Players[ActiveUserIndex].Stats.GamesWon);
+        //Inc(Users.Players[ActiveUserIndex].Stats.GamesWon);
         WriteLn('CONGRATULATIONS!! ');
         WriteLn('You won! All 8 runs completed.');
         ReadLn;
@@ -298,8 +298,7 @@ begin
         end;
       'q', 'Q':  //** Quit Game **//
         begin
-          //Inc(Users.Players[ActiveUserIndex].Stats.GamesLost);
-          RecordGameEnd(G.Stats, G.Difficulty, False);
+          RecordGameEnd(Users, diff, False);
           Exit;
         end;
       'd', 'D':  //** Deal From Stock **//
@@ -316,7 +315,6 @@ begin
             if CanMoveSequence(G, FromPile, StartIndex, ToPile) then
             begin
               MoveSequence(G, FromPile, StartIndex, ToPile);
-              //RecordMove(Stats); { #todo : Is RecordMove a good function? }
               Inc(Users.Players[ActiveUserIndex].Stats.TotalMoves);
             end
             else
@@ -327,12 +325,12 @@ begin
 
           // have game check if any more moves exist
           if not HasAnyMovesLeft(G) then
-          begin
-            // GAME OVER MAN!
+          begin  // GAME OVER MAN!
             // https://youtu.be/dsx2vdn7gpY?si=Io9XpPCfDfRgflv_
             // warning, link above is NSFW due to swearing
             Inc(Users.Players[ActiveUserIndex].Stats.GamesLost);
             writeln('Game Over Man!');
+            writeln;
             readln;
             exit;
           end;
@@ -344,6 +342,12 @@ begin
           Rewrite(F);
           SaveGame(G, F);  { #todo : Need to confirm file is correct format. }
           CloseFile(F);
+        end;
+      'h', 'H': //** Show Stats **//
+        begin
+          ClearScreen;
+          ShowStats(Users);
+          ClearScreen;
         end;
       'l', 'L':  //** Start Logging **//
         begin
@@ -383,8 +387,6 @@ begin
 end;
 
 procedure ChooseDifficulty;
-var
-  diff: Integer;
 
 begin
   WriteLn;
@@ -394,24 +396,16 @@ begin
   WriteLn('1 = One Suit (Easy)');
   WriteLn('2 = Two Suit (Medium)');
   WriteLn('4 = Four Suit (Hard)');
-  ReadLn(diff);
+  ReadLn(intDiff);
 
-  case diff of
-    1:
-      begin
-        NewGame(G, sdOneSuit);
-        //Inc(Users.Players[ActiveUserIndex].Stats.OneSuitPlayed);
-      end;
+  case intDiff of
+    1: NewGame(G, sdOneSuit);
     2:
       begin
-        NewGame(G, sdTwoSuit);
-        //Inc(Users.Players[ActiveUserIndex].Stats.TwoSuitPlayed);
+        diff := sdTwoSuit;
+        NewGame(G, diff);
       end;
-    4:
-      begin
-        NewGame(G, sdFourSuit);
-        //Inc(Users.Players[ActiveUserIndex].Stats.FourSuitPlayed);
-      end;
+    4: NewGame(G, sdFourSuit);
   end;
 end;
 
@@ -433,8 +427,9 @@ begin
   UserManagementMenu(Users);
 
   ClearScreen;
+  RecordGameStart(Users, Diff);
   GameLoop;
-  RecordGameEnd(Stats, Diff, Won);
+  RecordGameEnd(Users, Diff, Won);
 
   Inc(Users.Players[ActiveUserIndex].Stats.HighScore);
 

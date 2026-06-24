@@ -433,7 +433,7 @@ begin
             WriteLn('No user selected.')
           else
             WriteLn('Selected user: ', Users.Players[ActiveUserIndex].UserName);
-            readln;
+            //readln;
         end;
 
       // ---------------------------------------------------------

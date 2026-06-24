@@ -13,14 +13,10 @@ const
   TOTAL_CARDS = 104;
   USERS_FILE = 'userdata.json';
 
-
 type
   TSuit = (Hearts, Diamonds, Clubs, Spades);
   TRank = (Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King);
   TSpiderDifficulty = (sdOneSuit, sdTwoSuit, sdFourSuit);
-
-
-
 
   TCard = record
     Rank: TRank;
@@ -29,13 +25,9 @@ type
     Value: Integer;
   end;
 
-
-
-
   TDeck = array[0..TOTAL_CARDS - 1] of TCard;
   TPile = array of TCard;          // A tableau pile
   TTableau = array[0..9] of TPile; // 10 piles
-
 
   TSpiderLogger = record
     Active: Boolean;
@@ -115,14 +107,6 @@ var
   Stats: TSpiderStats;
   Diff: TSpiderDifficulty;
   Won: Boolean;
-
-
-
-
-
-
-
-
 
 implementation
 

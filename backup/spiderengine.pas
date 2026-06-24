@@ -158,7 +158,7 @@ begin
   G.Difficulty := Difficulty;
   G.MovesThisGame := 0;
 
-  RecordGameStart(G.Stats, Difficulty);
+  //RecordGameStart(Users, G.Stats, Difficulty);
 
   BuildDeck(Deck, Difficulty);
   ShuffleDeck(Deck);
@@ -457,7 +457,6 @@ begin
   SetLength(G.Tableau[ToPile], i + moveCount);
   Move(temp[0], G.Tableau[ToPile][i], moveCount * SizeOf(TCard));
 
-  //RecordMove(G.Stats);
   Inc(G.MovesThisGame);
   RemoveCompletedRuns(G);
 end;
@@ -499,7 +498,6 @@ begin
     Inc(G.StockPos);
   end;
 
-  //RecordMove(G.Stats);
   Inc(G.MovesThisGame);
   RemoveCompletedRuns(G);
 end;
@@ -511,7 +509,7 @@ end;
 function IsWon(var G: TSpiderGame): Boolean;
 begin
   Result := (G.CompletedRuns = 8);
-  RecordGameEnd(G.Stats, G.Difficulty, True);
+  //RecordGameEnd(Users, diff, True);
 end;
 
 end.
