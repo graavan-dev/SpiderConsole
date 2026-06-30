@@ -147,7 +147,7 @@ begin
       begin
         StatsObj.Add('GamesPlayed', GamesPlayed);
         StatsObj.Add('GamesWon', GamesWon);
-        StatsObj.Add('GamesLost', GamesLost);
+        //StatsObj.Add('GamesLost', GamesLost);
         StatsObj.Add('GamesDrawn', GamesDrawn);
         StatsObj.Add('WinPercentage', WinPercentage);
         StatsObj.Add('HighScore', HighScore);

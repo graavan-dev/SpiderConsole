@@ -10,7 +10,7 @@ uses
 procedure InitStats(var S: TSpiderStats);
 procedure RecordGameStart(var U: TUserList; Difficulty: TSpiderDifficulty);
 //procedure RecordMove(var U: TUserList);
-procedure RecordGameEnd(var U: TUserList; Difficulty: TSpiderDifficulty; Won: Boolean);
+procedure RecordGameEnd(var G: TSpiderGame; U: TUserList; Difficulty: TSpiderDifficulty; Won: Boolean);
 //procedure SaveStats(const S: TSpiderStats; const FileName: string);
 //procedure LoadStats(var S: TSpiderStats; const FileName: string);
 procedure ShowStats(const U: TUserList);
@@ -33,6 +33,8 @@ begin
     sdFourSuit: Inc(U.Players[ActiveUserIndex].Stats.FourSuitPlayed);
   end;
 
+  U.Players[ActiveUserIndex].Stats.LastDifficulty := Ord(Difficulty);
+
   //S.LastDifficulty := Ord(Difficulty);
   //S.HasSavedGame := False; //???
 
@@ -49,7 +51,7 @@ end;
 //  Inc(U.Players[ActiveUserIndex].Stats.TotalMoves);
 //end;
 
-procedure RecordGameEnd(var U: TUserList; Difficulty: TSpiderDifficulty; Won: Boolean);
+procedure RecordGameEnd(var G: TSpiderGame; U: TUserList; Difficulty: TSpiderDifficulty; Won: Boolean);
 begin
   if Won then
   begin
@@ -62,6 +64,9 @@ begin
   end
   else
     Inc(U.Players[ActiveUserIndex].Stats.GamesLost);
+
+  // Final stats
+
 end;
 
 // Not being used at this time?
@@ -144,6 +149,7 @@ begin
   WriteLn('4-Suit: ', U.Players[ActiveUserIndex].Stats.FourSuitWon, ' wins / ', U.Players[ActiveUserIndex].Stats.FourSuitPlayed, ' played');
 
   WriteLn('Press any key to continue.');
+  WriteLn;
   ReadLn;
 end;
 

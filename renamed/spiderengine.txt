@@ -9,7 +9,6 @@ uses
 
 // Game lifecycle
 procedure NewGame(var G: TSpiderGame; Difficulty: TSpiderDifficulty);
-procedure FireworksDisplay;
 
 // Moves and actions
 function CanMoveSequence(const G: TSpiderGame; FromPile, StartIndex, ToPile: Integer): Boolean;
@@ -30,11 +29,6 @@ function GetStockDealsRemaining(const G: TSpiderGame): Integer;
 function GetCard(const G: TSpiderGame; Pile, Index: Integer): TCard;
 
 implementation
-
-procedure ClearScreen;
-begin
-  Write(#27'[2J'#27'[H');
-end;
 
 // ---------------------------
 // State Save/Restore
@@ -176,7 +170,7 @@ begin
   LogLine(G.Logger, 'New game started with difficulty: ' + IntToStr(Ord(Difficulty)));
 end;
 
-// ---------------------------
+// ---------------------------https://youtu.be/dsx2vdn7gpY?si=Io9XpPCfDfRgflv_
 // Utility
 // ---------------------------
 
@@ -428,7 +422,7 @@ begin
   end;
 end;
 
-// --------------------procedure FireworksDisplay;-------
+// ---------------------------
 // Move Sequence
 // ---------------------------
 
@@ -513,48 +507,6 @@ end;
 function IsWon(var G: TSpiderGame): Boolean;
 begin
   Result := (G.CompletedRuns = 8);
-end;
-
-procedure FireworksDisplay;
-const
-  Colors: array[0..5] of string = ('31', '32', '33', '34', '35', '36'); // red, green, yellow, blue, magenta, cyan
-var
-  x, y, c, i: Integer;
-  msg: string;
-
-  procedure PutXY(px, py: Integer; const S: string);
-  begin
-    Write(#27'[', py, ';', px, 'H', S);
-  end;
-
-begin
-  ClearScreen;
-  Randomize;
-
-  // Run several bursts
-  for i := 1 to 1000 do
-  begin
-    x := Random(60) + 10;   // horizontal position
-    y := Random(10) + 5;    // vertical position
-    c := Random(6);         // color index
-
-    // Center burst
-    PutXY(x, y, #27'[' + Colors[c] + 'm' + '*' + #27'[0m');
-
-    // Surrounding sparks
-    PutXY(x-1, y,   #27'[' + Colors[c] + 'm' + '.' + #27'[0m');
-    PutXY(x+1, y,   #27'[' + Colors[c] + 'm' + '.' + #27'[0m');
-    PutXY(x,   y-1, #27'[' + Colors[c] + 'm' + '.' + #27'[0m');
-    PutXY(x,   y+1, #27'[' + Colors[c] + 'm' + '.' + #27'[0m');
-
-    Sleep(120);
-  end;
-
-  // Final celebratory message
-  msg := 'Press any key to continue';
-  PutXY(40 - (Length(msg) div 2), 22, msg);
-
-  ReadLn;
 end;
 
 end.

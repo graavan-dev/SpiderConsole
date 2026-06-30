@@ -221,7 +221,6 @@ begin
   while True do
   begin
     ClearScreen;
-    //RecordGameStart(Users, Diff);
     DrawGameOnScreen;
     if IsWon(G) then //** WINNER! WINNER! CHICKEN DINNER!
       begin
@@ -299,7 +298,7 @@ begin
         end;
       'q', 'Q':  //** Quit Game **//
         begin
-          RecordGameEnd(Users, diff, False);
+          RecordGameEnd(G, Users, Diff, False);
           Exit;
         end;
       'd', 'D':  //** Deal From Stock **//
@@ -326,12 +325,12 @@ begin
 
           // have game check if any more moves exist
           if not HasAnyMovesLeft(G) then
-          begin
-            // GAME OVER MAN!
+          begin  // GAME OVER MAN!
             // https://youtu.be/dsx2vdn7gpY?si=Io9XpPCfDfRgflv_
             // warning, link above is NSFW due to swearing
             Inc(Users.Players[ActiveUserIndex].Stats.GamesLost);
             writeln('Game Over Man!');
+            writeln;
             readln;
             exit;
           end;
@@ -388,8 +387,6 @@ begin
 end;
 
 procedure ChooseDifficulty;
-//var
-  //diff: Integer;
 
 begin
   WriteLn;
@@ -427,14 +424,16 @@ begin
 
   ChooseDifficulty;
   Users := LoadUsersFromJSON('userdata.json');
-  UserManagementMenu(Users);
+  //UserManagementMenu(Users); // This is only temp so I don't
+  ActiveUserIndex := 1;        // to choose every single test run.
 
   ClearScreen;
+  //FireworksDisplay;
   RecordGameStart(Users, Diff);
   GameLoop;
-  RecordGameEnd(Users, Diff, Won);
+  RecordGameEnd(G, Users, Diff, Won);
 
-  Inc(Users.Players[ActiveUserIndex].Stats.HighScore);
+  //Inc(Users.Players[ActiveUserIndex].Stats.HighScore);
 
   SaveUsersToJSON('userdata.json', Users);
 

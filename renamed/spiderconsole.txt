@@ -424,16 +424,14 @@ begin
 
   ChooseDifficulty;
   Users := LoadUsersFromJSON('userdata.json');
-  //UserManagementMenu(Users); // This is only temp so I don't have
-  ActiveUserIndex := 1;        // to choose every single test run.
+  UserManagementMenu(Users);
 
   ClearScreen;
-  //FireworksDisplay;
   RecordGameStart(Users, Diff);
   GameLoop;
   RecordGameEnd(G, Users, Diff, Won);
 
-  //Inc(Users.Players[ActiveUserIndex].Stats.HighScore);
+  Inc(Users.Players[ActiveUserIndex].Stats.HighScore);
 
   SaveUsersToJSON('userdata.json', Users);
 
