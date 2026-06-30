@@ -77,6 +77,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderTypes"/>
       </Unit>
+      <Unit>
+        <Filename Value="backup\SaveLoadStats.txt"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

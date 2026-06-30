@@ -433,9 +433,6 @@ begin
   GameLoop;
   RecordGameEnd(G, Users, Diff, Won);
 
-  //Inc(Users.Players[ActiveUserIndex].Stats.HighScore);
-
   SaveUsersToJSON('userdata.json', Users);
-
 end.
 

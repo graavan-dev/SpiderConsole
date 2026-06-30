@@ -1,0 +1,55 @@
+// Not being used at this time?
+//procedure SaveStats(const S: TSpiderStats; const FileName: string);
+//var
+//  F: Text;
+//begin
+//  AssignFile(F, FileName);
+//  Rewrite(F);
+//  WriteLn(F, S.GamesPlayed);
+//  WriteLn(F, S.GamesWon);
+//  WriteLn(F, S.GamesLost);
+//  WriteLn(F, S.TotalMoves);
+//
+//  WriteLn(F, S.OneSuitPlayed);
+//  WriteLn(F, S.OneSuitWon);
+//
+//  WriteLn(F, S.TwoSuitPlayed);
+//  WriteLn(F, S.TwoSuitWon);
+//
+//  WriteLn(F, S.FourSuitPlayed);
+//  WriteLn(F, S.FourSuitWon);
+//
+//  CloseFile(F);
+//end;
+
+// same for this procedure, not being used.
+//procedure LoadStats(var S: TSpiderStats; const FileName: string);
+//var
+//  F: Text;
+//begin
+//  if not FileExists(FileName) then
+//  begin
+//    InitStats(S);
+//    Exit;
+//  end;
+//
+//  AssignFile(F, FileName);
+//  Reset(F);
+//
+//  ReadLn(F, S.GamesPlayed);
+//  ReadLn(F, S.GamesWon);
+//  ReadLn(F, S.GamesLost);
+//  ReadLn(F, S.TotalMoves);
+//
+//  ReadLn(F, S.OneSuitPlayed);
+//  ReadLn(F, S.OneSuitWon);
+//
+//  ReadLn(F, S.TwoSuitPlayed);
+//  ReadLn(F, S.TwoSuitWon);
+//
+//  ReadLn(F, S.FourSuitPlayed);
+//  ReadLn(F, S.FourSuitWon);
+//
+//  CloseFile(F);
+//end;
+

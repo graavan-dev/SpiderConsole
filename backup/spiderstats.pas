@@ -66,7 +66,7 @@ begin
     Inc(U.Players[ActiveUserIndex].Stats.GamesLost);
 
   // Final stats
-
+  Inc(U.Players[ActiveUserIndex].Stats.TotalStacks, G.CompletedRuns);
 end;
 
 // Not being used at this time?
