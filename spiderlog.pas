@@ -16,7 +16,7 @@ implementation
 
 function Timestamp: string;
 begin
-  Result := FormatDateTime('yyyy-mm-dd hh:nn:ss.zzz', Now);
+  Result := FormatDateTime('yyyy-mm-dd hh:nn:ss', Now);
 end;
 
 procedure StartLog(var L: TSpiderLogger; const FileName: string);

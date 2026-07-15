@@ -461,8 +461,8 @@ begin
           if ActiveUserIndex = -1 then
             WriteLn('User not found.')
           else
-          begin
-            ResetStats(Users.Players[ActiveUserIndex].Stats);
+          begin { #todo : May need to see how ResetStats works and rebuilt? }
+            //ResetStats(Users.Players[ActiveUserIndex].Stats);
             WriteLn('Stats reset for "', name, '".');
           end;
         end;

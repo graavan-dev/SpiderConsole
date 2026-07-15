@@ -134,7 +134,7 @@ begin
     if Length(G.Tableau[p]) > maxLen then
       maxLen := Length(G.Tableau[p]);
 
-  Write(F, 'Pile: ');
+  Write(F, 'Pile:');
   for p := 0 to 9 do
     Write(F, Format(' %2d ', [p]));
   WriteLn(F);
@@ -402,10 +402,14 @@ begin
     1: NewGame(G, sdOneSuit);
     2:
       begin
-        diff := sdTwoSuit;
-        NewGame(G, diff);
+        Diff := sdTwoSuit;
+        NewGame(G, Diff);
       end;
-    4: NewGame(G, sdFourSuit);
+    4:
+      begin
+        Diff := sdFourSuit;
+        NewGame(G, sdFourSuit);
+      end;
   end;
 end;
 

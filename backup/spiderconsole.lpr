@@ -402,10 +402,14 @@ begin
     1: NewGame(G, sdOneSuit);
     2:
       begin
-        diff := sdTwoSuit;
-        NewGame(G, diff);
+        Diff := sdTwoSuit;
+        NewGame(G, Diff);
       end;
-    4: NewGame(G, sdFourSuit);
+    4:
+      begin
+        Diff := sdFourSuit;
+        NewGame(G, sdFourSuit);
+      end;
   end;
 end;
 
@@ -433,9 +437,6 @@ begin
   GameLoop;
   RecordGameEnd(G, Users, Diff, Won);
 
-  //Inc(Users.Players[ActiveUserIndex].Stats.HighScore);
-
   SaveUsersToJSON('userdata.json', Users);
-
 end.
 

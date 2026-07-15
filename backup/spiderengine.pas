@@ -428,7 +428,7 @@ begin
   end;
 end;
 
-// --------------------procedure FireworksDisplay;-------
+// ---------------------------
 // Move Sequence
 // ---------------------------
 

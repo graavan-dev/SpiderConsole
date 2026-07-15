@@ -17,7 +17,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MinorVersionNr Value="5"/>
-      <StringTable CompanyName="Myriad Software"/>
+      <StringTable CompanyName="Dragon Song Software" ProductName="Spider Console"/>
     </VersionInfo>
     <BuildModes>
       <Item Name="Default" Default="True"/>

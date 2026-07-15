@@ -17,7 +17,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MinorVersionNr Value="5"/>
-      <StringTable CompanyName="Myriad Software"/>
+      <StringTable CompanyName="Dragon Song Software" ProductName="Spider Console"/>
     </VersionInfo>
     <BuildModes>
       <Item Name="Default" Default="True"/>
@@ -76,6 +76,10 @@
         <Filename Value="spidertypes.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderTypes"/>
+      </Unit>
+      <Unit>
+        <Filename Value="backup\SaveLoadStats.txt"/>
+        <IsPartOfProject Value="True"/>
       </Unit>
     </Units>
   </ProjectOptions>

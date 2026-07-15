@@ -1,0 +1,13 @@
+
+Completed runs: 0 / 8
+Stock deals remaining: 5
+
+Pile:   0   1   2   3   4   5   6   7   8   9 
+  0:  XX  XX  XX  XX  XX  XX  XX  XX  XX  XX 
+  1:  XX  XX  XX  XX  XX  XX  XX  XX  XX  XX 
+  2:  XX  XX  XX  XX  XX  XX  XX  XX  8S  XX 
+  3:  XX  XX  3H  XX  JH  5H  5H  XX     10S 
+  4: 10S  XX      XX 10H  4H  4H  AH      9S 
+  5:      KS      KS  9H  3H  3S          8S 
+  6:                                      7S 
+

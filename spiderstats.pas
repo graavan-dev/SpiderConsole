@@ -17,12 +17,11 @@ implementation
 
 procedure InitStats(var S: TSpiderStats);
 begin
-  FillChar(S, SizeOf(S), 0);
+  FillChar(S, SizeOf(S), 0);  { #todo : What the eff is this doing?!?! }
 end;
 
 procedure RecordGameStart(var U: TUserList; Difficulty: TSpiderDifficulty);
 begin
-  //Inc(S.GamesPlayed);
   Inc(U.Players[ActiveUserIndex].Stats.GamesPlayed);
 
   case Difficulty of
@@ -31,16 +30,9 @@ begin
     sdFourSuit: Inc(U.Players[ActiveUserIndex].Stats.FourSuitPlayed);
   end;
 
-  U.Players[ActiveUserIndex].Stats.LastDifficulty := Ord(Difficulty);
+  U.Players[ActiveUserIndex].Stats.LastDifficulty := intDiff;
 
-  //S.LastDifficulty := Ord(Difficulty);
   //S.HasSavedGame := False; //???
-
-  // Per-game metrics reset  { #todo : Not sure I agree with these. }
-  //S.BestTime := 0;
-  //S.AverageTimePerGame := 0;
-  //S.TotalStacks := 0;
-  //S.AverageStacksPerGame := 0;
 end;
 
 procedure RecordGameEnd(var G: TSpiderGame; U: TUserList; Difficulty: TSpiderDifficulty; Won: Boolean);
@@ -70,8 +62,6 @@ begin
   else
     winPct := 0;
 
-  // U.Players[ActiveUserIndex].Stats
-
   WriteLn('=== Spider Solitaire Statistics ===');
   WriteLn('Games Played: ', U.Players[ActiveUserIndex].Stats.GamesPlayed);
   WriteLn('Games Won:    ', U.Players[ActiveUserIndex].Stats.GamesWon);
@@ -85,6 +75,7 @@ begin
   WriteLn('2-Suit: ', U.Players[ActiveUserIndex].Stats.TwoSuitWon, ' wins / ', U.Players[ActiveUserIndex].Stats.TwoSuitPlayed, ' played');
   WriteLn('4-Suit: ', U.Players[ActiveUserIndex].Stats.FourSuitWon, ' wins / ', U.Players[ActiveUserIndex].Stats.FourSuitPlayed, ' played');
 
+  WriteLn;
   WriteLn('Press any key to continue.');
   WriteLn;
   ReadLn;

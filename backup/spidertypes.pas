@@ -106,6 +106,7 @@ var
   ViewPlayersMenu: Boolean;
   Stats: TSpiderStats;
   Diff: TSpiderDifficulty;
+  intDiff: Integer;
   Won: Boolean;
 
 implementation

@@ -10,7 +10,6 @@ uses
 function LoadUsersFromJSON(const FileName: string): TUserList;
 procedure SaveUsersToJSON(const FileName: string; const Users: TUserList);
 function RenameUser(var Users: TUserList; const OldName, NewName: string): Boolean;
-procedure ResetStats(var Stats: TSpiderStats);
 function CloneUserFromTemplate(var Users: TUserList; const NewName: string): Boolean;
 function ChooseUser(const Users: TUserList): Integer;
 procedure UserManagementMenu(var Users: TUserList);
@@ -286,38 +285,6 @@ begin
 
   Users.Players[idx].UserName := NewName;
   Result := True;
-end;
-
-// Move this to SpiderStats unit.
-procedure ResetStats(var Stats: TSpiderStats);
-begin
-  with Stats do
-  begin
-    GamesPlayed := 0;
-    GamesWon := 0;
-    GamesLost := 0;
-    GamesDrawn := 0;
-    WinPercentage := 0;
-    HighScore := 0;
-    AverageScorePerGame := 0;
-
-    BestTime := 0;
-    AverageTimePerGame := 0;
-
-    TotalMoves := 0;
-    TotalStacks := 0;
-    AverageStacksPerGame := 0;
-
-    OneSuitPlayed := 0;
-    OneSuitWon := 0;
-    TwoSuitPlayed := 0;
-    TwoSuitWon := 0;
-    FourSuitPlayed := 0;
-    FourSuitWon := 0;
-
-    LastDifficulty := 0;
-    HasSavedGame := False;
-  end;
 end;
 
 function CloneUserFromTemplate(var Users: TUserList; const NewName: string): Boolean;
