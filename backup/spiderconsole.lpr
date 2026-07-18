@@ -134,7 +134,7 @@ begin
     if Length(G.Tableau[p]) > maxLen then
       maxLen := Length(G.Tableau[p]);
 
-  Write(F, 'Pile: ');
+  Write(F, 'Pile:');
   for p := 0 to 9 do
     Write(F, Format(' %2d ', [p]));
   WriteLn(F);

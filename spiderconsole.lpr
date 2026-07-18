@@ -119,7 +119,7 @@ begin
   end;
 end;
 
-procedure SaveGame(var G: TSpiderGame; var F: Text);
+ procedure SaveGame(var G: TSpiderGame; var F: Text);
 var
   p, i, maxLen, len: Integer;
   c: TCard;
