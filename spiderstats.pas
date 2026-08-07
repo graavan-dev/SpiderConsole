@@ -68,6 +68,7 @@ begin
   WriteLn('Games Lost:   ', U.Players[ActiveUserIndex].Stats.GamesLost);
   WriteLn('Win %:        ', FormatFloat('0.0', winPct));
   WriteLn('Total Moves:  ', U.Players[ActiveUserIndex].Stats.TotalMoves);
+  WriteLn('Total Moves:  ', U.Players[ActiveUserIndex].Stats.TotalStacks);
 
   WriteLn;
   WriteLn('--- Difficulty Breakdown ---');

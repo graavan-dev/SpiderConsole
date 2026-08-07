@@ -119,7 +119,7 @@ begin
   end;
 end;
 
-procedure SaveGame(var G: TSpiderGame; var F: Text);
+ procedure SaveGame(var G: TSpiderGame; var F: Text);
 var
   p, i, maxLen, len: Integer;
   c: TCard;
@@ -232,7 +232,7 @@ begin
         Exit;
       end;
 
-    ViewMenus(ViewMenu, ViewStatsMenu, ViewUtilMenu, ViewPlayersMenu);
+    ViewMenus(ViewMainMenu, ViewStatsMenu, ViewUtilMenu, ViewPlayersMenu);
     Write('> ');
     ReadLn(cmd);
 
@@ -242,13 +242,13 @@ begin
     case cmd[1] of
       'v', 'V':  //** View Main Menu **//
         begin
-          if (ViewMenu) then
+          if (ViewMainMenu) then
             begin
-              ViewMenu := false;
+              ViewMainMenu := false;
             end
           else
             begin
-              ViewMenu := true;
+              ViewMainMenu := true;
               ViewStatsMenu := false;
               ViewUtilMenu := false;
               ViewPlayersMenu := false;
@@ -262,7 +262,7 @@ begin
             end
           else
             begin
-              ViewMenu := false;
+              ViewMainMenu := false;
               ViewStatsMenu := false;
               ViewUtilMenu := true;
               ViewPlayersMenu := false;
@@ -276,7 +276,7 @@ begin
             end
           else
             begin
-              ViewMenu := false;
+              ViewMainMenu := false;
               ViewStatsMenu := true;
               ViewUtilMenu := false;
               ViewPlayersMenu := false;
@@ -290,7 +290,7 @@ begin
             end
           else
             begin
-              ViewMenu := false;
+              ViewMainMenu := false;
               ViewStatsMenu := false;
               ViewUtilMenu := false;
               ViewPlayersMenu := true;
@@ -421,7 +421,7 @@ begin
   EnableANSI;
   Randomize;
 
-  ViewMenu := true;
+  ViewMainMenu := true;
   ViewStatsMenu := false;
   ViewUtilMenu := false;
   ViewPlayersMenu := false;

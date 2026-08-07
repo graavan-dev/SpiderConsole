@@ -13,7 +13,7 @@ procedure FireworksDisplay;
 
 // Moves and actions
 function CanMoveSequence(const G: TSpiderGame; FromPile, StartIndex, ToPile: Integer): Boolean;
-procedure MoveSequence(var G: TSpiderGame; FromPile, StartIndex, ToPile: Integer);
+procedure MoveSequence(var G: TSpiderGame; U: TUserList; FromPile, StartIndex, ToPile: Integer);
 function ParseMove(const S: string; out FromPile, StartIndex, ToPile: Integer): Boolean;
 function CanDealFromStock(const G: TSpiderGame): Boolean;
 procedure DealFromStock(var G: TSpiderGame);
@@ -376,7 +376,7 @@ end;
 // Completed Run Removal
 // ---------------------------
 
-procedure RemoveCompletedRuns(var G: TSpiderGame);
+procedure RemoveCompletedRuns(var G: TSpiderGame; U TUserList);
 var
   p, i, len, startIdx: Integer;
   sameSuit: Boolean;
@@ -432,7 +432,7 @@ end;
 // Move Sequence
 // ---------------------------
 
-procedure MoveSequence(var G: TSpiderGame; FromPile, StartIndex, ToPile: Integer);
+procedure MoveSequence(var G: TSpiderGame; U: TUserList; FromPile, StartIndex, ToPile: Integer);
 var
   srcLen, moveCount, i: Integer;
   temp: array of TCard;
@@ -462,7 +462,8 @@ begin
   Move(temp[0], G.Tableau[ToPile][i], moveCount * SizeOf(TCard));
 
   Inc(G.MovesThisGame);
-  RemoveCompletedRuns(G);
+  //Inc(U.Players[ActiveUserIndex].Stats.TotalStacks);
+  RemoveCompletedRuns(G, Users);
 end;
 
 // ---------------------------

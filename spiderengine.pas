@@ -376,7 +376,7 @@ end;
 // Completed Run Removal
 // ---------------------------
 
-procedure RemoveCompletedRuns(var G: TSpiderGame);
+procedure RemoveCompletedRuns(var G: TSpiderGame; U: TUserList);
 var
   p, i, len, startIdx: Integer;
   sameSuit: Boolean;
@@ -413,6 +413,7 @@ begin
           begin
             SetLength(G.Tableau[p], len - 13);
             Inc(G.CompletedRuns);
+            Inc(U.Players[ActiveUserIndex].Stats.TotalStacks);
             LogLine(G.Logger, Format('Completed run removed. Total now: %d', [G.CompletedRuns]));
 
             len := Length(G.Tableau[p]);
@@ -462,7 +463,7 @@ begin
   Move(temp[0], G.Tableau[ToPile][i], moveCount * SizeOf(TCard));
 
   Inc(G.MovesThisGame);
-  RemoveCompletedRuns(G);
+  RemoveCompletedRuns(G, Users);
 end;
 
 // ---------------------------
@@ -503,7 +504,7 @@ begin
   end;
 
   Inc(G.MovesThisGame);
-  RemoveCompletedRuns(G);
+  RemoveCompletedRuns(G, Users);
 end;
 
 // ---------------------------

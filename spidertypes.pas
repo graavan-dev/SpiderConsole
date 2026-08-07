@@ -100,7 +100,7 @@ var
   cardStr: string;
   cmd: string;
   FromPile, ToPile, StartIndex: Integer;
-  ViewMenu: Boolean;
+  ViewMainMenu: Boolean;
   ViewStatsMenu: Boolean;
   ViewUtilMenu: Boolean;
   ViewPlayersMenu: Boolean;
