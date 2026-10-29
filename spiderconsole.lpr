@@ -119,7 +119,7 @@ begin
   end;
 end;
 
- procedure SaveGame(var G: TSpiderGame; var F: Text);
+procedure SaveGame(var G: TSpiderGame; var F: Text);
 var
   p, i, maxLen, len: Integer;
   c: TCard;
@@ -338,8 +338,20 @@ begin
         end;
       's', 'S':  //** Save Game **//
         begin
-          AssignFile(F, 'spider_output.txt');
+          AssignFile(F, '_Saved_Game.txt');
           Rewrite(F);
+
+          //ClearScreen;
+          Writeln;
+          //Writeln('Date : ',Date);
+          DeCodeDate (Date,YY,MM,DD);
+          Writeln(format ('Date is (DD/MM/YY): %d/%d/%d ',[dd,mm,yy]));
+          Writeln;
+          Writeln(TimeToStr(Time));
+          Writeln;
+          Readln;
+
+
           SaveGame(G, F);  { #todo : Need to confirm file is correct format. }
           CloseFile(F);
         end;

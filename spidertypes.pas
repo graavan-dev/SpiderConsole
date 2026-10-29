@@ -109,6 +109,8 @@ var
   intDiff: Integer;
   Won: Boolean;
 
+  Var YY,MM,DD: Word;
+
 implementation
 
 end.

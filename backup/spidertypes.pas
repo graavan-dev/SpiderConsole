@@ -100,7 +100,7 @@ var
   cardStr: string;
   cmd: string;
   FromPile, ToPile, StartIndex: Integer;
-  ViewMenu: Boolean;
+  ViewMainMenu: Boolean;
   ViewStatsMenu: Boolean;
   ViewUtilMenu: Boolean;
   ViewPlayersMenu: Boolean;
@@ -108,6 +108,9 @@ var
   Diff: TSpiderDifficulty;
   intDiff: Integer;
   Won: Boolean;
+
+  Var YY,MM,DD: Word;
+  //Var HH,MM,SS: Word;
 
 implementation
 
