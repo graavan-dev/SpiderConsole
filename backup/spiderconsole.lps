@@ -10,9 +10,8 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="SpiderConsole"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="427"/>
+        <TopLine Value="214"/>
         <CursorPos Y="224"/>
-        <FoldState Value=" T3K0C7 pjUkF0q011 PPmL0 T0S233 pibiN8I7]9ajR2801B]BXibC235213 Pi0jCAF"/>
         <UsageCount Value="229"/>
         <Bookmarks Count="2">
           <Item0 Y="331" Left="1" Top="327" ID="1"/>
@@ -111,14 +110,14 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="7" Y="54"/>
-        <UsageCount Value="165"/>
+        <UsageCount Value="205"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit>
       <Unit>
         <Filename Value="code backup.txt"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="4" Y="2"/>
-        <UsageCount Value="170"/>
+        <UsageCount Value="166"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit>
       <Unit>
@@ -126,7 +125,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="59"/>
         <CursorPos X="13" Y="72"/>
-        <UsageCount Value="142"/>
+        <UsageCount Value="138"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit>
       <Unit>
@@ -134,7 +133,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="61"/>
         <CursorPos X="43" Y="29"/>
-        <UsageCount Value="142"/>
+        <UsageCount Value="138"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit>
     </Units>

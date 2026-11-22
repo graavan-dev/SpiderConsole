@@ -29,7 +29,7 @@
     "Name" : "PeterK",
     "Stats" : [
       {
-        "GamesPlayed" : 11,
+        "GamesPlayed" : 13,
         "GamesWon" : 0,
         "GamesDrawn" : 0,
         "WinPercentage" : 0,
@@ -37,12 +37,12 @@
         "AverageScorePerGame" : 0,
         "BestTime" : "00:00",
         "AverageTimePerGame" : "00:00",
-        "TotalMoves" : 98,
+        "TotalMoves" : 129,
         "TotalStacks" : 0,
         "AverageStacksPerGame" : 0,
         "OneSuitPlayed" : 2,
         "OneSuitWon" : 0,
-        "TwoSuitPlayed" : 8,
+        "TwoSuitPlayed" : 10,
         "TwoSuitWon" : 0,
         "FourSuitPlayed" : 1,
         "FourSuitWon" : 0,
